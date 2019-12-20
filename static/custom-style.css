@@ -1,0 +1,1258 @@
+@charset "utf-8";
+/* CSS Document */
+.hint
+{
+	margin-left: 143px;
+    margin-right: 20px;
+    margin-top: -15px;
+}
+.span3.category-thumbs{ height:242px !important;}
+.main-bfBlock{background-color:#f2f2f2; width:48%; float:left; padding-bottom:37px;}
+
+.main-bfBlock_new {
+    background-color: hsl(0, 0%, 95%);
+    padding: 24px 60px 32px !important;
+}
+
+.tfa_2 .main-bfBlock_new {
+    padding: 34px 60px 37px !important;
+}
+
+.left_margin p {
+    font-size: 14px;
+    width: 250px;
+	margin-bottom:0;
+}
+
+.add-hostfamily-application textarea.full_inputss {
+    padding: 5px 12px;
+    width: 232px;
+	height:100px;
+}
+
+
+
+.date-icon
+{
+	background:#fff url(../img/date-icon.png) no-repeat scroll 98px center;
+}
+
+.half_input.date-icon#sha_airport_arrival_date
+{
+	background:#fff url(../img/date-icon.png) no-repeat scroll 108px center;
+}
+
+.half_input.best-time#sha_airport_arrival_time {
+    background: #fff url("../img/contact-time-icon.png") no-repeat scroll 108px center;
+}
+
+.add-hostfamily-application label, .add-hostfamily-application input, .add-hostfamily-application button, .add-hostfamily-application select, .add-hostfamily-application textarea {
+    font-size: 14px;
+	font-weight:normal;
+}
+
+.tfa_3 .main-bfBlock_new {
+    padding: 34px 60px 37px !important;
+}
+
+.full_width_field {
+    float: left;
+    margin: 6px 0 10px;
+    width: 100%;
+}
+select.full_input {
+    border-radius: 0;
+	margin-bottom:5px;
+}
+
+.add-hostfamily-application textarea.full_input {
+    padding: 5px 12px;
+    width: 252px;
+}
+
+.full_input.best-time {
+    background: hsl(0, 0%, 100%) url("../img/contact-time-icon.png") no-repeat scroll 251px center;
+}
+
+.hfa1_app_full label.selt, .hfa1_app_full label.selttwo {
+    color: hsl(0, 0%, 40%);
+    font-family: open sans;
+    font-size: 14px;
+}
+
+#tfa_0-A.actions.add_new_submission {
+    margin-top: 5px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+fieldset.hfa1_top_block_bedrooms {
+    padding: 60px 40px !important;
+}
+
+
+#tfa_5 .main-bfBlock_11.main-bfBlock_1.main-bfBlock_new, #tfa_6 .main-bfBlock_11.main-bfBlock_1.main-bfBlock_new, #tfa_7 .main-bfBlock_11.main-bfBlock_1.main-bfBlock_new,
+#tfa_8 .main-bfBlock_11.main-bfBlock_1.main-bfBlock_new {
+    padding: 20px !important;
+}
+
+.main-bfBlock_11.main-bfBlock_1.main-bfBlock_new > p {
+    color: hsl(146, 61%, 29%);
+    font-size: 14px;
+    margin-bottom: 10px;
+    margin-top: 15px;
+}
+
+.hfa1_top_block_bedrooms h2 {
+    color: hsl(146, 62%, 29%);
+    font-size: 18px;
+    font-weight: normal !important;
+    margin: 0 0 10px !important;
+}
+
+.hfa1_app_halfs {
+    float: left;
+    width: 123px;
+}
+
+.halfs_input {
+    width: 110px;
+}
+
+select.halfs_input {
+    width: 124px;
+	border-radius: 0;
+}
+
+.add_new_submission h4 {
+    font-size: 18px;
+    font-weight: normal;
+	color:#81af2b;
+	margin:0 !important;
+}
+
+.add-hostfamily-application .full_input {
+    margin-bottom: 5px;
+}
+
+.add-hostfamily-application.wFormContainer.new_forms {
+    margin-top: 30px;
+    position: relative;
+}
+
+.add_new_submission .new-buttn {
+    background: hsl(81, 52%, 49%) none repeat scroll 0 0 !important;
+    border: 0 none;
+    color: hsl(0, 0%, 100%);
+    font-size: 12px;
+    padding: 5px 20px;
+}
+
+.add-hostfamily-application .left_margin {
+    margin-bottom: 25px;
+}
+
+.add-hostfamily-application .full_input {
+    width: 264px;
+}
+
+.add-hostfamily-application select.full_input {
+    width: 278px;
+}
+
+.add-hostfamily-application .hfa1_app_onefourth {
+    float: left;
+    margin-right: 10px;
+    width: 78px;
+}
+
+.add-hostfamily-application select.half_input {
+    width: 134px;
+}
+
+.add-hostfamily-application .onefourth_input {
+    border-radius: 0;
+}
+
+.add-hostfamily-application .half_input {
+    border-radius: 0;
+    width: 120px;
+}
+
+#hfa1_home_right {
+    float: left;
+    margin-left: 30px;
+    width: 45%;
+}
+
+.add-hostfamily-application .margin_10
+{
+	margin-right:10px;
+}
+
+.hfa1_app_onefofth {
+    float: left;
+    width: 190px;
+}
+
+.hfa1_app_onefofth input#hfa1_name_contact {
+    width: 176px !important;
+}
+
+.hfa1_app_onefofth input#sha_name_contact {
+    width: 176px !important;
+}
+
+.add-hostfamily-application #tfa_8 select.half_input {
+    border-radius: 0;
+    width: 134px;
+}
+
+.full_inputss {
+    width: 244px;
+}
+
+.add-hostfamily-application #tfa_8 .half_input {
+    border-radius: 0;
+    width: 120px;
+}
+
+.add-hostfamily-application .full_textarea {
+    padding: 5px 10px;
+    width: 758px;
+}
+
+.hfa1_app_full > p {
+    color: hsl(0, 0%, 40%);
+    font-family: Lucida Grande,Lucida Sans Unicode,sans-serif;;
+    font-size: 14px;
+    font-weight: normal;
+	margin-bottom: 15px;
+}
+
+.add-hostfamily-application .full_textareas {
+    padding: 5px 10px;
+    width: 798px;
+	height:90px;
+}
+
+.full_input_select {
+    border-radius: 0;
+    width: 258px;
+}
+
+.choose-btn {
+    background: hsl(81, 52%, 49%) none repeat scroll 0 0;
+    border: 1px solid hsl(81, 52%, 49%);
+    color: hsl(0, 0%, 100%);
+    font-size: 12px !important;
+    height: 30px;
+    width: 100px !important;
+}
+
+.choose-btn:hover {
+	opacity:0.8;
+}
+
+.add-hostfamily-application #tfa_8 .half_input.date-icon {
+    background: #ffffff url("../img/date-icon.png") no-repeat scroll 108px center;
+}
+
+.add-hostfamily-application #tfa_14 .half_input.date-icon {
+    background: hsl(0, 0%, 100%) url("../img/date-icon.png") no-repeat scroll 108px center;
+}
+
+#sha_passport_expiry.full_input.date-icon {
+    background: hsl(0, 0%, 100%) url("../img/date-icon.png") no-repeat scroll 252px center;
+}
+
+.hfa1_app_onefofth input#hfa1_name_family {
+    width: 176px !important;
+}
+
+
+.hfa1_home_right {
+    float: left;
+    margin-left: 60px;
+    width: 38%;
+}
+
+.add-hostfamily-application h3 {
+    color: hsl(146, 62%, 29%);
+    font-family: "Open Sans";
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 0 13px;
+}
+
+.add-hostfamily-application .hfa1_top_block .full_input {
+    width: 217px;
+}
+
+.hfa1_top_block {
+    background: hsl(0, 0%, 87%) none repeat scroll 0 0;
+    border: 1px solid hsl(0, 0%, 80%);
+    padding: 5px 38px 25px !important;
+}
+
+.tfa_2 .headingHostForm, .tfa_3 .headingHostForm {
+    border-bottom: medium none;
+    color: hsl(146, 61%, 29%);
+    font-family: "Open Sans",arial,sans-serif;
+    font-size: 18px;
+    font-weight: normal;
+    margin-bottom: 10px;
+	line-height:24px;
+}
+
+.tfa_2 #myModal.reveal-modal, .tfa_3 #myModal.reveal-modal {
+    background: hsla(0, 0%, 0%, 0) none repeat scroll 0 0;
+    border: 1px solid hsl(0, 0%, 80%);
+    color: hsl(0, 0%, 0%);
+    font-family: "Open Sans",arial,sans-serif;
+    font-size: 13px;
+    height: 325px;
+    margin-top: 25px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding: 20px;
+    width: 100%;
+	margin-bottom:15px;
+}
+
+.main-bfBlock_new > span {
+    font-family: open sans;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.tfa_2 #myModal p, .tfa_3 #myModal p {
+    color: hsl(0, 0%, 0%);
+    list-style: outside none none;
+    margin-bottom: 15px !important;
+    padding: 0;
+}
+
+.tfa_2 #myModal > p, .tfa_3 #myModal > p {
+    color: hsl(0, 0%, 0%);
+    font-family: open sans;
+    font-size: 13px;
+    font-weight: normal;
+    margin-bottom: 10px;
+    margin-top: 8px;
+}
+
+.end-options > p {
+    color: hsl(28, 100%, 50%);
+    font-size: 14px;
+    margin: 0 0 3px;
+}
+
+.end-options-para {
+    color: hsl(81, 61%, 43%);
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.end-options {
+    border-bottom: 1px solid hsl(0, 0%, 80%);
+    padding: 25px 0;
+    position: relative;
+}
+
+.hfa_submit.btn-btn-medium {
+    background: hsl(81, 52%, 49%) none repeat scroll 0 0;
+    border: 0 none;
+    color: hsl(0, 0%, 100%);
+    font-size: 20px;
+    padding: 10px 20px;
+    text-align: left;
+    width: 245px;
+}
+
+#hfa_submit.btn-btn-medium:hover
+{
+	opacity:0.8;
+}
+
+.last-bfBlock{background-color:#f2f2f2; padding-bottom:113px;}
+h1.title{font-weight:bold;font-size:18px;color:#000; text-align:center;}
+.tell{font-size:15px; color:#84D100; font-family:'Kotta One',serif !important; text-align:center; margin-top:-32px;}
+.first{border-bottom:none; font-weight:bold; font-size:14px; color:#666666; margin-left:20px; margin-top:-15px; margin-bottom:5px;}
+.second{border-bottom:none; font-weight:bold; font-size:14px; color:#666666; margin-left:20px; margin-bottom:5px; margin-top:5px;}
+.bfNoSection{margin-top:10px;}
+.input{margin-left:10px;}
+.next{margin-top:10px;}
+.form1, .form{ float: left;
+    margin-left:20px;
+    text-align: right;
+    width:103px;
+	margin-right:20px;
+	}
+	
+	.last-bfBlocky{
+	background-color: #F2F2F2;
+    float: left;
+    margin-left: 20px;
+    padding-bottom: 15px;
+    width: 38%;
+	}
+	
+	
+	
+	.bfClearfix
+	{
+		width:460px;	
+	}
+	.bfClearfix span input[type="text"]
+	{
+		width:270px;
+		margin-left:0 ;
+		margin-bottom:20px;
+	}
+	.bfClearfix span input[type="radio"]
+	{
+		margin-bottom:0 !important;
+	}
+	.bfClearfix span textarea
+	{
+		width:270px;
+		margin-left:0 !important;
+	}
+	.bfClearfix span select
+	{
+		width:270px;
+		margin-left:0 !important;
+		border-radius:0;
+		margin-bottom:20px;
+	}
+	.bfClearfix span input[type="text"]:focus, .bfClearfix span select:focus, .bfClearfix span textarea:focus, .newsletter input[type="text"]:focus
+	{
+		border:1px solid #84d100;
+	}
+	
+	.inputs{width:269px!important;}
+	.gender{margin-top:10px;}
+	.maler{margin-top:10px;}
+
+
+.hfa1_home_left {
+    border-right: 1px solid hsl(0, 0%, 80%);
+    float: left;
+    width: 50%;
+}
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (min-width:480px) and (max-width:767px)
+{
+.main-bfBlock4 {
+    background-color: rgb(242, 242, 242);
+    float: left;
+    padding-bottom: 22px;
+    width: 48%;
+}
+}
+@media screen and (min-width:480px) and (max-width:768px)
+{
+	.inputs{width:241px!important;}
+	
+	
+}
+
+@media screen and (min-width:768px) and (max-width:800px)
+{
+
+	.flatx{margin-left:106px!important;}
+}
+
+@media screen and (min-width:768px) and (max-width:979px)
+{
+	.entertainSpec{ margin-right:29px !important;}
+		.house{margin-top:-4px!important;  margin-right:193px!important;}
+		.smkHouse{ margin-top:-4px!important; }
+		.allowSmk{ padding-top:15px!important; }
+		.smokeHome{ margin-top:3px !important;}
+	.hous{margin-top:0px!important;} 
+	.sen{margin-right:194px!important;}
+	.sene{margin-right:197px!important;}
+	
+	.flatUnto{margin-top:0px!important; margin-left:105px!important;}
+	.flat{margin-top:-4px!important; margin-right:61px!important;}
+		.flatUnt1{margin-top:0px!important;}
+	.flat1{margin-top:-4px!important; margin-right:170px!Important;}
+			.flatUnt2{margin-top:0px!important;}
+	.flat2{margin-top:-4px!important;}
+		.flatUnt3{margin-top:0px!important;}
+	.sene{margin-top:-4px!important;}
+		.flatx{margin-top:0px!important;}
+		.flatx1{margin-top:0px!important;}
+	.flat3{margin-top:-4px!important;}
+		.maler{width:194px!important;
+	margin-left:-22px!important;
+	}
+	
+	.last-bfBlocky{
+    padding-bottom:54px!important;
+   	}
+	.last-bfBlocky1
+	{
+		padding-bottom:30px !important;
+	}
+	.bfClearfix {
+    width: 357px;
+}
+
+.last-bfBlock {
+    margin-left: 10px !important;
+	padding-bottom:169px !important;
+}
+.last-bfBlocky {
+    margin-left: 10px !important;
+}
+
+.form1, .form {
+    float: left;
+    margin-left:15px;
+    margin-right: 15px;
+    width: 75px;
+}	
+
+.bfClearfix span select {
+    width: 220px;
+}
+.form_sucess
+{
+	width:48% !important;
+}
+.bfClearfix span input[type="text"], .bfClearfix span textarea {
+    width: 206px;
+}
+.otherSpec
+{   margin-right: 33px !important;
+}
+.ys
+{
+	margin-right:45px !important;
+}
+.lbYes
+ {
+	 margin-top:47px !important;
+	
+ }
+.yesTop
+ {
+	margin-top:50px !important;
+ }
+ .noBath
+ {
+	margin-left: 29px !important;
+    margin-top: 80px !important;
+ }
+ .seltOne
+ {
+	 margin-right:177px !important;
+ }
+ .flatUnt
+ {
+	 margin-left:105px !important;
+ }
+  .smokeOne
+ {
+	 margin-right:30px !important;
+ }
+.main-bfBlock {
+    padding-bottom:140px;
+}
+.study, .interships
+{
+	margin-right:53px !important;
+}
+.studntBth
+{
+	margin-top:50px !important;
+}
+.work1
+{
+	margin-right:55px !important;
+}
+.petOIp{ margin-top:24px !important;}
+.petOLb{ margin-top:21px !important;} 
+.dietAccIp { margin-top:85px !important;}
+.dietAccLb { margin-top:82px !important;}
+.dietSpAccIp, .hostedIp { margin-top:57px !important;}
+.dietSpAccLb, .hostedLb { margin-top:54px !important;}
+.dietSpAccIp { margin-top:57px !important;}
+.dietSpAccLb { margin-top:54px !important;}
+.dietSpAccDiv { margin-top:10px !important;}
+.accfevIp{ margin-top:93px !important;}
+.accfevLb{ margin-top:90px !important;}
+.accdisIp{ margin-top:39px !important;}
+.accdisLb{ margin-top:36px !important;}
+.accWheelIp{ margin-top:49px !important;}
+.accWheelLb{ margin-top:46px !important;}
+.hostAppLast{padding-bottom: 26px !important;}
+.bankdetailBlock{ padding-bottom:10px !important;}
+.anysmkHouse{ margin-top:23px !important;}
+.anysmkHouselabel{ margin-top:20px !important;}
+.allowsmkLb { margin-right:29px !important; margin-top:0 !important;}
+.allowsmk { margin-top:3px !important;}
+.allowsmkYes{margin-right: 193px !important;}
+.allowsmkNo{margin-right: 197px !important;}
+.allowsmkIpOut{margin-left: 105px !important;}
+
+.pickupServ_Yes, .pickupServ_No
+{
+	margin-top:57px !important;
+}
+.pickupServLabel
+{
+	margin-top:54px !important;	
+}
+.hostAppLast11_1 {
+    padding-bottom: 10px !important;
+}
+.med_Yes, .med_No
+{
+	margin-top:27px !important;
+}
+.med_label
+{
+	margin-top:24px !important;
+}
+.studyP, .internshipP
+{
+	margin-top:1px;
+}
+.study, .interships
+{
+	margin-top:-2px;
+}
+.chldOld, .chld11
+{
+	margin-top:37px !important;
+}
+.chldOldYes, .chldOldNo, .chld11Yes, .chld11No
+{
+	margin-top:34px !important;
+}
+.dosmokeIp
+{
+	margin-top:9px !important;
+}
+.dosmokeLabel
+{
+	margin-top:6px !important;
+}
+}
+@media screen and (max-width:767px)
+{
+.smokeHome
+{
+	margin-top:3px !important;
+}
+.vistPurpse
+{
+	margin-bottom:15px !important;
+}
+.med_label
+{
+	margin-top:24px !important;
+}
+.dosmokeIp
+{
+	margin-top:9px !important;
+}
+.dosmokeLabel
+{
+	margin-top:6px !important;
+}
+.pickupServ_Yes, .pickupServ_No
+{
+	margin-top:57px !important;
+}
+.pickupServLabel
+{
+	margin-top:54px !important;
+}
+.main-bfBlock{width:100%!important;}
+	
+	
+	.bfClearfix {
+    width:420px !important;
+}
+.hostApp
+{
+	width:400px !important;
+}
+.hostAppLast, .hostAppLast_1
+{
+	width:100% !important;
+	margin-left:0 !important;
+	margin-top:20px !important;
+}
+.form1, .form {
+    width: 75px !important;
+}
+.main-bfBlock_2{ padding-bottom:33px !important;}
+.bfClearfix span input[type="text"], .bfClearfix span textarea {
+    width: 252px !important;
+}
+.form_error ul li, .form_sucess
+{
+	margin-right:39px !important;
+}
+.form_error ul li
+{
+	width:63% !important;
+}
+.bfClearfix span select {
+    width: 266px !important;
+}
+.noBath
+{
+	 margin-left: 33px !important;
+    margin-top: 77px !important;
+}
+.noBathInp
+{
+	margin-right: 39px !important;
+}
+.lbYes
+{
+	margin-top:18px !important;
+}
+.studntBthLb
+{
+		margin-top:47px !important;
+}
+.studntBth
+{
+		margin-top:50px !important;
+}
+.yesTop
+{
+	margin-top:21px !important;
+}
+.seltOne
+{
+	margin-right:27px !important;
+}
+.selttwo
+{
+	margin-right:27px !important;
+}
+.petOIp{ margin-top:24px !important;}
+.petOLb{ margin-top:21px !important;} 
+.dietAccIp { margin-top:85px !important;}
+.dietAccLb { margin-top:82px !important;}
+.dietSpAccIp, .hostedIp { margin-top:57px !important;}
+.dietSpAccLb, .hostedLb { margin-top:54px !important;}
+.dietSpAccIp { margin-top:57px !important;}
+.dietSpAccLb { margin-top:54px !important;}
+.dietSpAccDiv { margin-top:10px !important;}
+.accfevIp{ margin-top:93px !important;}
+.accfevLb{ margin-top:90px !important;}
+.accdisIp{ margin-top:39px !important;}
+.accdisLb{ margin-top:36px !important;}
+.accWheelIp{ margin-top:49px !important;}
+.accWheelLb{ margin-top:46px !important;}
+.bankdetailBlock{ padding-bottom:20px !important;}
+.ys
+{
+	margin-right:40px !important;
+}
+.smokeOne
+{
+	margin-right:42px !important;
+}
+.smokeOne1
+{
+	margin-right:58px !important;
+}
+
+h1.title {
+    padding-top: 15px !important;
+}
+.smkHouseYes
+{
+	margin-right:54px !important;
+}
+.med_Yes, .med_No
+{
+	margin-top: 27px !important;
+}
+.selt1
+{
+	margin-top: 24px !important;
+}
+.chldOld, .chld11
+{
+	margin-top: 37px !important;
+}
+.chldOldYes, .chldOldNo, .chld11Yes, .chld11No
+{
+	margin-top: 34px !important;
+}
+.last-bfBlock
+{
+	padding-bottom:20px !important;
+}
+}
+
+@media screen and (min-width:767px) and (max-width:979px)
+{
+	.enter{margin-left:105px!important; margin-top:0px!important;
+	}
+	.former{margin-left:-8px!important;}
+	.para{margin-bottom:-20px!important;}
+	.inputs{width:169px!important;}
+	
+	.main-bfBlock{padding-bottom:165px!important;}
+	.main-bfBlock_1 {
+    padding-bottom:84px !important;
+}
+	.main-bfBlock_11 {
+    padding-bottom:64px !important;
+}
+.hint {
+    margin-left: 105px;
+    margin-right: 20px;
+    margin-top: -15px;
+}
+	.main-bfBlock2{padding-bottom:340px!important;}
+	.yess{margin-top:0px!important;}
+	.sent{margin-top:-4px!important; margin-right:194px!important;}
+	.main-bfBlock4{ 
+    width: 47% !important;
+	padding-bottom:40px !important;
+		margin-right:10px !important;
+	}
+	.main-bfBlock2{ 
+    width: 47% !important;
+	padding-bottom:360px !important;
+		margin-right:10px !important;
+	}
+}
+.inputed{margin-top:27px!important;}
+.inputing{margin-top:10px!important;}
+	.main-bfBlock2, .main-bfBlock4, .main-bfBlock5{ background-color: #F2F2F2;
+    float: left;
+    padding-bottom:22px;
+    width: 48%;
+	margin-right:20px;
+	}
+	
+
+@media screen and (min-width:480px) and (max-width:767px)
+{
+
+	.main-bfBlock2{ 
+		margin-right:0px !important;
+		margin-bottom:20px !important;
+	}
+	.sen{margin-right:51px!important;}
+	.sene{margin-right:54px!important;}
+	
+.main-bfBlock4 {
+    margin-bottom: 20px;
+    width: 100% !important;
+}
+	.main-bfBlock5{width:100%!important;}
+
+
+	.former{margin-left:0px!important;}
+	
+.hint {
+    margin-left: 114px;
+    margin-right: 35px;
+    margin-top: -15px;
+}
+}
+
+@media screen and (max-width:480px)
+{
+.main-bfBlock_2 {
+    margin-bottom: 20px;
+}
+.hint {
+    margin-left: 110px;
+    margin-right: 20px;
+    margin-top: -15px;
+}
+	.inputing{margin-top:0px!important;}
+		.yess{margin-top:0px!important;}
+	.sent{margin-top:-4px!important; margin-right:111px!important;}
+	
+	.house{margin-top:1px!important;  margin-right:111px!important; }
+.hous{margin-top:4px!important;}
+	.enter{margin-top:0px!important;
+	}
+	.former{margin-left:-8px!important;}
+		.para{margin-bottom:-20px!important;}
+	.flatUnto{margin-top:0px!important; margin-left:110px!important;}
+	.flat{margin-top:-4px!important; margin-right:61px!important;}
+		.flatUnt1{margin-top:0px!important;}
+	.flat1{margin-top:-26px!important; margin-right:170px!Important; margin-left:130px!important;}
+			.flatUnt2{margin-top:-3px!important; margin-left:110px!important;}
+	.flat2{margin-top:-7px!important;}
+		.flatUnt3{margin-top:0px!important;}
+	.sene{margin-top:-4px!important;}
+		.flatx{margin-top:0px!important;}
+		.flatx1{margin-top:0px!important;}
+	.flat3{margin-top:-4px!important;}
+	.sen{margin-right:112px!important;}
+	.sene{margin-right:115px!important;}
+	
+	
+	
+.main-bfBlock4 {
+    margin-bottom: 20px;
+    width: 100% !important;
+}
+	.main-bfBlock5{width:100%!important;}
+		.main-bfBlock2{width:100%!important;}
+	.main-bfBlock3{width:100%!important;}
+		.main-bfBlock1{width:100%!important;}
+
+	.main-bfBlock{width:100%!important;}
+	.faq-form{margin-left:16px!important;}
+	
+	.form2{width:62px!important;}
+	.form3{width:72px!important;}
+	.form4{width:9px!important; text-align:right!important; }
+	.gender{width:50px!important; float:left!important;}
+	.maler{width:157px!important; float:left!important; margin-left:-5px!important;}
+	.enter{margin-left:110px!important;
+	}
+	.form5{}
+	.sel{ margin-right: 16px !important;
+    width: 29px!important;}
+	.inputs{width:115px!important;}
+	
+	.bfClearfix {
+    width:280px !important;
+}
+.hostApp {
+    width: 280px !important;
+}
+.hostApp legend.headingHostForm
+{
+	 font-size: 20px !important;
+    line-height: 28px !important;
+    padding: 0 0 10px !important;
+}
+.form1, .form {
+    width:80px !important;
+	margin-left: 15px !important;
+    margin-right: 15px !important;
+}
+.bfClearfix span select {
+    width: 146px !important;
+}
+.bfClearfix span input[type="text"], .bfClearfix span textarea {
+    width: 132px !important;
+}
+.form_error ul li {
+    width: 83% !important;
+}
+.form_sucess
+{
+	width:65% !important;
+}
+.form_error ul li, .form_sucess {
+    margin-right: 24px !important;
+}
+.first, .second {
+    font-size: 14px !important;
+	margin-left: 12px !important;
+}
+.otherSpec
+{
+	margin-right:47px !important;
+}
+.noBathInp
+{
+	margin-right:24px !important;
+}
+.seltOne {
+    margin-right:95px !important;
+}
+.seltOne1 {
+    margin-right:86px !important;
+}
+.flatUnt
+{
+	margin-left: 108px !important;
+}
+.othSpec1
+{
+	margin-right:24px !important;
+}
+.smokeOne {
+    margin-right: 113px !important;
+}
+.smokeOne1 {
+    margin-right: 115px !important;
+	margin-top:1px !important;
+}
+.smokeHome
+{
+	margin-top:0px !important;
+}
+.smokeNo
+{
+	margin-top:4px !important;
+}
+.outsideOnly
+{
+	margin-top:0 !important;
+}
+.flatUnt
+{
+	margin-top:3px !important;
+}
+.smokeNo11
+{
+	margin-left: 108px !important;
+}
+.work1
+{
+	margin-right:19px !important;
+}
+.purpseOther
+{
+	margin-right:22px !important;
+}
+.chldOld
+{
+	margin-top:23px !important;
+}
+.chldOldYes, .chldOldNo
+{
+	margin-top:20px !important;
+}
+.allowsmkHme
+{
+padding-top: 10px !important;
+}
+.accfevIp{margin-top: 79px !important;}
+.accfevLb{margin-top: 76px !important;}
+.anysmkHouselabel {
+    margin-right: 41px !important;
+}
+.allowsmk{ margin-top:2px !important}
+.allowsmkLb { margin-top:0 !important;margin-bottom:0 !important;}
+.allowsmkYes { margin-right: 111px !important;}
+.allowsmkNo{ margin-right: 115px !important;}
+}
+
+
+.next{ background-color: #A0CE4B!important;
+    background-image: linear-gradient(to bottom, #ACDB56, #92C03C)!important;    background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25)!important; border:none!important; border-radius:4px 4px 4px 4px!important;
+	color:#FFF!important; padding:4px 12px!important; font-size:14px!important; border-style: solid!important;
+    border-width: 1px!important; }
+
+.faq-form{width:89%; margin-left:22px; margin-bottom:20px;}
+
+
+/*-----------------------student-homestay-application-form----------------------------*/
+
+.firsts
+{    border-bottom: medium none;
+    color: #666666;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 20px;
+	margin-top:15px;
+	width:300px;
+   }
+   
+    .main-bfBlock1{background-color: #F2F2F2;
+    float: left;
+    padding-bottom:168px;
+    width: 38%}
+	
+	
+	.main-bfBlockss{ background-color: #F2F2F2;
+    float: left;
+    padding-bottom: 37px;
+    width: 100%;
+}
+.conditions
+{
+	padding:30px 30px 30px 30px;
+}
+
+@media screen and (max-width:480px)
+{
+	.stud{margin-right:100px!important;}
+	.inter{margin-right:94px!important;}
+	.work{margin-right:112px!important;}
+	.flaty{margin-left:110px!important;}
+	.main-bfBlockss{width:320px!important;}
+.seconds{ width:250px!important;
+         line-height:20px!important;
+		 }
+		 .secondy{line-height:20px!important;}
+		 .flatU{margin-left:110px!important;}
+
+}
+
+@media screen and (min-width:768px) and (max-width:979px)
+{
+.seconds{ width:322px!important;
+         line-height:20px!important;
+		 }
+	.inter{margin-right:94px!important;}
+.flatU{margin-left:2px!important;}
+.main-bfBlockss{width:100%!important;}
+.span3.category-thumbs{ height:192px !important;}
+}
+
+@media screen and (min-width:480px) and (max-width:768px)
+{
+.main-bfBlockss{width:420px!important;}
+.span3.category-thumbs {
+    height: inherit !important;
+}
+}
+
+
+
+
+.seconds{ border-bottom: medium none;
+    color: #666666;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-left: 20px;
+    margin-top: 5px;}
+	
+
+.secondy{ border-bottom: medium none;
+    color: #666666;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-left: 20px;
+    margin-top: 5px;}
+	
+/*-----------------------share-house-application-form----------------------------*/
+
+@media screen and (max-width:480px)
+{
+	.span3.category-thumbs {
+    height: inherit !important;
+}
+	.sing{margin-right:-12px!important;}
+	.doub{margin-right:-18px!important;}
+	.trip{margin-right:-9px!important;}
+	.flatz{margin-left:0px!important;}
+	.shar{float:left!important;
+	width:100px!important;}
+	.shrd{float:left!important;
+	width:160px!important;
+	margin-left:5px!important;}
+	.pillow{float:left!important;
+    margin-left: 40px!important;
+    margin-top: -20px!important;
+    width: 245px!important;}
+	
+}
+@media screen and (min-width:480px) and (max-width:768px)
+{
+.sing{margin-right:-12px!important;}
+	.doub{margin-right:-18px!important;}
+	.trip{margin-right:-9px!important;}
+	.flatz{margin-left:0px!important;}
+	.shar{float:left!important;
+	width:100px!important;}
+	.shrd{float:left!important;
+	width:160px!important;
+	margin-left:10px!important;}
+}
+
+@media screen and (min-width:768px) and (max-width:979px)
+{
+	.sing{margin-right:-12px!important;}
+	.doub{margin-right:-18px!important;}
+	.trip{margin-right:-9px!important;}
+	.flatz{margin-left:0px!important;}
+	.shar{float:left!important;
+	width:100px!important;}
+	.shrd{float:left!important;
+	width:160px!important;
+	margin-left:10px!important;}
+	.singa
+	{
+	 margin-right: 70px !important;	
+	}
+	.douba {
+    margin-right: 50px !important;
+    }
+	.shara
+	{
+	width: 125px !important;	
+	}
+	#chatswood-content{ width:140px !important;}
+	#maroubra-content{ width:180px !important;}
+	#bfElemWrap664{ width:75px !important;}
+}
+
+@media screen and (min-width:480px) and (max-width:767px)
+{
+.singa
+	{
+	 margin-right: 55px !important;	
+	}
+	.douba {
+    margin-right: 50px !important;
+    }
+	.shara
+	{
+	width: 125px !important;	
+	}
+	.shrda{
+	width:160px!important;
+	margin-top:30px!important;}	
+	#chatswood-content{ width:140px !important;}
+}
+
+@media screen and (max-width:480px)
+{
+.shara
+	{
+	width: 130px !important;
+		
+	}
+.shrda	
+{
+	width: 140px !important;
+}
+#chatswood-content{ width:100px !important;}
+.singa
+	{
+	 margin-right: 30px !important;	
+	}
+	.douba {
+    margin-right: 35px !important;
+    }
+	#chats
+	{
+	margin:3px 0 0 2px !important;	
+	}
+	.smokeHome{ width:65px !important;}
+	#bfElemWrap664{ width:75px !important;}
+}
+

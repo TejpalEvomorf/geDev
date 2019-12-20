@@ -1,0 +1,526 @@
+/* CSS Document */
+
+#form_sa #sa_1 {
+    background: #f2f2f2 none repeat scroll 0 0;
+    padding: 30px;
+}
+
+#form_sa #sa_1 label {
+    font-size:14px;
+	color:#333;
+}
+
+#vfblock #sa_top_block {
+    background: #dddddd none repeat scroll 0 0;
+    border: 1px solid #cccccc;
+}
+
+#sa_top_left {
+    border-right: 1px solid #ccc;
+    float: left;
+    padding: 30px;
+    width: 50%;
+}
+
+#sa_top_block #sa_top_right {
+    float: left;
+    padding: 30px;
+    width: 50%;
+	position:relative;
+}
+
+.weeks {
+    font-size: 14px;
+    font-style: italic;
+    position: absolute;
+    right: 200px;
+    top: 64px;
+}
+
+.full_label {
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+#vfblock select {
+    border-radius: 0;
+}
+
+.sa_green_titles {
+    background: #90bd3b none repeat scroll 0 0;
+    clear: both;
+    color: #fff;
+    font-size: 16px;
+    font-weight: normal;
+    margin-bottom: 25px;
+    padding: 5px 0 5px 10px;
+    text-align: left;
+    text-transform: uppercase;
+    width: 220px;
+}
+
+#vfblock > fieldset {
+    margin-bottom: 40px;
+}
+#sa_per_left {
+    border-right: 1px solid #ccc;
+    float: left;
+    width: 50%;
+}
+#sa_per_right {
+    float: left;
+    margin-left: 30px;
+    width: 45%;
+}
+
+#sa_per_details {
+    float: left;
+    width: 100%;
+}
+.full_width_field{
+	float:left;
+	width:100%;
+	margin: 6px 0 3px;
+}
+
+.sa_app_half {
+    float: left;
+}
+.half_label {
+    margin-right: 20px;
+    width: 100px;
+}
+.half_input {
+    width: 100px;
+}
+.full_input {
+    width: 230px;
+}
+.sa_radio_input {
+    float: left;
+    margin-right: 5px !important;
+}
+.sa_radio_label {
+    float: left;
+    margin-right: 22px;
+    margin-top: 1px;
+}
+.hidden_label {
+    color: #666666 !important;
+}
+
+#sa_gen_left {
+    border-right: 1px solid #ccc;
+    float: left;
+    width: 50%;
+}
+#sa_gen_right {
+    float: left;
+    margin-left: 30px;
+    width: 45%;
+}
+.sa_check_input {
+    float: left;
+    margin-right: 5px !important;
+}
+.sa_check_label {
+    float: left;
+    margin-top: 1px !important;
+    width: 95%;
+}
+.sa_gen_special {
+    float: left;
+    margin-bottom: 6px;
+    margin-left: 18px;
+    width: 100%;
+}
+input[type="textarea"] {
+    background: #fff none repeat scroll 0 0 !important;
+    border: 1px solid #ccc;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    height: 180px;
+    width: 225px;
+}
+#sa_arr_left {
+    border-right: 1px solid #ccc;
+    float: left;
+    width: 50%;
+}
+#sa_arr_right {
+    float: left;
+    margin-left: 30px;
+    width: 45%;
+}
+
+#global_reffered_per_agnt
+{
+    float: left;
+    width: 50%;
+	border-right: 1px solid #ccc;
+	padding-bottom:60px;
+}
+
+.sa_app_sample {
+    float: left;
+    width: 45%;
+	margin-left:30px;
+}
+.btn-danger {
+    border-radius: 0;
+    float: right;
+    padding: 5px 40px;
+    text-shadow: none;
+}
+#school_enrolled {
+    float: left;
+    margin-bottom: 6px;
+    margin-left: 18px;
+    width: 100%;
+}
+
+
+/*----------------------------------------------------------------------------------------------------------*/
+#form_hfa .half_input {
+    width: 110px;
+}
+
+#form_hfa #hfa_1_main {
+    background: hsl(0, 0%, 95%) none repeat scroll 0 0;
+	overflow:hidden;
+}
+
+.title-head {
+    color: hsl(0, 0%, 40%);
+    font-size: 28px;
+    font-weight: normal;
+    margin: 0 0 5px;
+    text-transform: uppercase;
+}
+
+
+.tell-us {
+    margin: 0;
+	color: hsl(82, 100%, 41%);
+    font-family: "Kotta One",serif !important;
+    font-size: 15px;
+}
+
+.hfa-headings {
+    border-bottom: 1px solid hsl(0, 0%, 100%);
+    padding: 20px 30px;
+}
+
+.hfa1-fields
+{
+	padding:30px;
+}
+
+#hfa1_top_block {
+    background: hsl(0, 0%, 87%) none repeat scroll 0 0;
+    border: 1px solid hsl(0, 0%, 80%);
+}
+
+
+
+#hfa1_top_block #hfa1_top_left {
+    border-right: 1px solid hsl(0, 0%, 80%);
+    float: left;
+    padding: 20px 102px;
+    width: 50%;
+}
+
+#hfa1_top_block #hfa1_top_right {
+    float: left;
+    padding: 20px 102px;
+    position: relative;
+    width: 50%;
+}
+
+#form_hfa label {
+    color: hsl(0, 0%, 20%);
+    font-size: 14px;
+	margin-bottom:10px;
+}
+
+.hfa1_app_onefourth {
+    float: left;
+    width: 22%;
+}
+
+.hfa1_app_onethird {
+    float: left;
+    margin-right: 4px;
+    width: 33.5%;
+}
+
+.onefourth_input {
+    width: 100%;
+}
+
+.hfa1_app_onefourth {
+    float: left;
+    margin-right: 4px;
+    width: 27%;
+}
+
+.onethird_input {
+    margin-right: 21px;
+    width: 100%;
+}
+
+
+.hfa1_title_fir_las_name.full_width_field {
+    float: left;
+    margin: 6px 0;
+    width: 100%;
+}
+
+#form_hfa  .full_width_field
+{
+	margin-bottom:10px;
+}
+
+#form_hfa .full_input {
+    width: 230px;
+}
+
+.hfa1-fields > fieldset {
+    margin-bottom: 40px;
+}
+
+.hfa_green_titles {
+    background: hsl(81, 52%, 49%) none repeat scroll 0 0;
+    clear: both;
+    color: hsl(0, 0%, 100%);
+    font-size: 16px;
+    font-weight: normal;
+    margin-bottom: 25px;
+    padding: 5px 0 5px 10px;
+    text-align: left;
+    text-transform: uppercase;
+    width: 230px;
+}
+
+#hfa1_home_details {
+    float: left;
+    width: 100%;
+}
+
+#hfa1_home_left {
+    border-right: 1px solid hsl(0, 0%, 80%);
+    float: left;
+    width: 50%;
+}
+
+
+#hfa1_home_right {
+    float: left;
+    margin-left: 30px;
+    width: 45%;
+}
+
+.hfa-distance-bus {
+    float: left;
+    width: 100%;
+}
+
+.hfa-distance-bus label {
+    float: left;
+    line-height: 14px;
+    margin-top: 7px;
+    width: 35px;
+	color:#666666 !important;
+}
+
+.hfa-distance-bus .input {
+    width: 185px ;
+}
+
+.hfa1_app_half {
+    float: left;
+}
+
+#form_hfa select
+{
+	border-radius:0px;
+}
+
+.hfa_bedrooms {
+    float: left;
+    margin-right: 20px;
+}
+
+.hfa_bedroom_details h2 {
+    float: left;
+    font-weight: normal;
+    margin-top: 20px;
+    width: 100%;
+}
+
+#hfa1_bedroom_details_block {
+    background: hsl(0, 0%, 87%) none repeat scroll 0 0;
+    border: 1px solid hsl(0, 0%, 80%);
+    float: left;
+    width: 100%;
+}
+
+.hfa1_bedroom_details_block_left {
+    border-right: 1px solid hsl(0, 0%, 80%);
+    float: left;
+    padding: 30px;
+    width: 50%;
+}
+
+.hfa1_bedroom_details_block_right{
+    float: left;
+    padding: 30px;
+    position: relative;
+    width: 50%;
+}
+
+.hfa_radio_input {
+    float: left;
+    margin-right: 5px !important;
+}
+
+.hfa_radio_label {
+    float: left;
+    margin-right: 22px;
+    margin-top: 1px;
+}
+
+.margin {
+    margin-top: -8px;
+}
+
+.left_margin
+{
+	margin-left:20px;
+	float:left;
+}
+
+
+#hfa1_bathroom_facilities {
+    float: left;
+    width: 100%;
+}
+
+
+#hfa1_bathroom_facilities_left{
+    float: left;
+    width: 50%;
+}
+
+#hfa1_bathroom_facilities_right {
+    float: left;
+    margin-left: 30px;
+    width: 45%;
+}
+
+.hfa_checkbox_input {
+    float: left;
+    margin-right: 10px !important;
+}
+
+
+#form_hfa #hfa_2_main, #form_hfa #hfa_3_main {
+    background: hsl(0, 0%, 95%) none repeat scroll 0 0;
+	overflow:hidden;
+}
+
+.hfa2-fields, .hfa3-fields {
+    padding: 30px;
+}
+
+.hfa_family_members_details h2 {
+    float: left;
+    font-weight: normal;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.hfa1_app_full {
+    float: left;
+    width: 100%;
+}
+
+.mem_lang_details h4
+{
+	font-size:14px;
+	font-weight:600;
+	margin-top:0px;
+}
+
+
+.hfa1_app_third_fourth_language {
+    float: left;
+    width: 100%;
+}
+
+.hfa1_app_third_fourth_language .half_label {
+    float: left;
+    margin-bottom: 0;
+    margin-right: 14px;
+    width: 60px;
+	margin-top:5px;
+}
+
+.hfa1_app_third_fourth_language select {
+    margin-left: 0;
+    width: 155px;
+}
+
+.hfa1_app_third_fourth_children {
+    float: left;
+    width: 100%;
+}
+
+.mem_lang_details.margin {
+    margin-bottom: 10px;
+}
+
+.hfa1_app_third_fourth_children .half_label {
+    float: left;
+    margin-bottom: 0;
+    margin-right:0px;
+    width: 116px;
+	margin-top:5px;
+}
+
+.hfa1_app_third_fourth_children  select {
+    width: 113px;
+}
+
+.padding_bottom
+{
+	padding-bottom:112px;
+}
+
+.left_left_margin
+{
+	margin-left:42px;
+}
+
+
+#hfa_3_main .big_font {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+#hfa_3_main .accomodate_student
+{
+	margin-top:20px;
+}
+
+.hfa3-fields {
+    overflow: hidden;
+}
+
+#hfa_3_main .h3-label:before
+{
+	content:url(../img/parrot-dot.jpg);
+	color:#084d100;
+	margin:0 15px 0 -20px;
+}

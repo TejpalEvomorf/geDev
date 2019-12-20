@@ -1,0 +1,124 @@
+.order-id {
+    border: 1px solid hsla(0, 0%, 0%, 0.1);
+    border-collapse: separate;
+    border-radius: 5px;
+    margin: 0 -1px 24px 0;
+    padding: 10px 0;
+    text-align: left;
+    width: 100%;
+}
+.order-id p {
+
+    line-height: 18px;
+    margin-bottom: 0;
+    padding: 5px 12px;
+}
+#thanks-prices-right-button {
+    float: right;
+    font-size: 13px;
+    font-weight: normal;
+    padding: 4px 40px;
+    text-shadow: none;
+    margin-bottom: 8px;
+}
+
+#order_review {
+    margin: 0;
+}
+.woocommerce .checkout {
+    float: left;
+    width: 100%;
+}
+.woocommerce #customer_details {
+    border-radius: 0px;
+    float: left;
+    margin-bottom: 15px;
+    width: 100%;
+}
+.woocommerce #order_review {
+    margin: 0;
+}
+#customer_details .col-1 {
+    padding: 20px 0 20px 10px;
+    width: 90% !important;
+}
+#customer_details p {
+    float: left;
+    padding-left: 30px;
+}
+#customer_details .user-details {
+    margin-left: 12px;
+}
+.payment_methods input {
+    float: left;
+    margin-top: 4px !important;
+}
+.payment_methods.methods label {
+    float: left;
+}
+.payment_box.payment_method_bacs {
+    float: left;
+}
+.payment_methods.methods img {
+    float: right;
+}
+.payment_box.payment_method_paypal {
+    float: left;
+}
+.payment_methods.methods > li {
+    float: left;
+    width: 96%;
+	margin: 5px 0 !important;
+}
+#place_order {
+    margin-right: 20px !important;
+}
+abbr {
+    float: right;
+}
+#customer_details .input-text {
+    font-size: 12px !important;
+}
+.firstel-one {
+    float: left;
+    width: 40%;
+}
+
+.firstel {
+    float: left;
+    width: 100%;
+}
+.firstel-two {
+    float: left;
+    margin-top: -2px;
+}
+
+@media all and (max-width: 979px) and (min-width: 768px){
+.firstel-one {
+    float: left;
+    width: 46%;
+}
+}
+@media all and (max-width: 767px) and (min-width: 481px){
+.firstel-one {
+    float: left;
+    width: 75%;
+}
+}
+@media all and (max-width: 480px) {
+.firstel-one {
+    float: left;
+    width: 90%;
+}
+}
+
+@media all and (max-width: 767px) {
+#thanks-study-button > img {
+    margin-top: 5px;
+}
+}
+
+	
+#thanks-study-button > img {
+    margin-top: -6px;
+    }
