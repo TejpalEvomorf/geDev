@@ -20,11 +20,11 @@ class Admin extends CI_Controller {
 	 */
 	public function index()
 	{
-		if(checkLogin())
-			header("location:".site_url().'dashboard');
+		/*if(checkLogin())
+			header("location:".site_url().'dashboard');*/
 			
 		 ///checking cookie
-				 $this->load->model('admin_model');
+				/* $this->load->model('admin_model');
 				  if(isset($_COOKIE['email']) && isset($_COOKIE['userid']))
 				  {
 					  $cookie1=$_COOKIE['email'];
@@ -41,7 +41,7 @@ class Admin extends CI_Controller {
 								header("location:".site_url().'dashboard');
 							  }
 						  }
-				  }
+				  }*/
 		///checking cookie ends
 			
 			
