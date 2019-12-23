@@ -682,4 +682,15 @@ function student_homestay_application_three($link='', $popUp='')
 			header('location:'.site_url());
 	}
 	
+	function header_iframe($type)
+	{
+		$data['type']=$type;
+		$this->load->view('header_iframe',$data);
+	}
+	
+	function footer_iframe()
+	{
+		$this->load->view('footer_iframe');
+	}
+	
 }
