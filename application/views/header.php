@@ -37,7 +37,7 @@
 <link href="<?=str_replace('http:','https:',static_url())?>css/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"> 
 
 <link href="<?=str_replace('http:','https:',static_url())?>forms_styles/saap.css" rel="stylesheet" type="text/css"> 
-<link href="<?=str_replace('http:','https:',static_url())?>css/style.css" rel="stylesheet" type="text/css"> 
+<link href="<?=str_replace('http:','https:',static_url())?>css/style.css" rel="stylesheet" type="text/css">  
 <link href="<?=str_replace('http:','https:',static_url())?>style.css" rel="stylesheet" type="text/css"> 
 <script type="text/javascript" src="<?=str_replace('http:','https:',static_url())?>forms_styles/forms.js"></script>
 <script type="text/javascript" src="<?=str_replace('http:','https:',static_url())?>js/jquery-ui/jquery-ui.js"></script>
@@ -156,6 +156,28 @@ header {
 {
 	border:1px solid red !important;
 }
+
+iframe.iframe-header {
+    width: 100%;
+    border: 0;
+    height: 650px;
+}
+
+@media (max-width:767px) {
+iframe.iframe-header {
+    height: 560px;
+}
+}
+ 
+@media (max-width:600px) {
+iframe.iframe-header {
+    height: 390px;
+}
+
+}
+
+
+
 </style>
 <script type="text/javascript">
 function site_url()
@@ -181,77 +203,12 @@ $(this).stop().find('ul.subMenu').slideUp('fast');
 
 </head>
 
-	<body class="page page-id-2497 page-template-default logged-in">
+<body class="page page-id-2497 page-template-default logged-in">
+
+<div class="iframe-parent"><iframe class="iframe-header" src="<?=site_url().'form/header_iframe/'.$this->router->fetch_method()?>" id="iframe-header"></iframe>  </div>
 
 		<div class="site-wrapper container"> 
         <?php if($this->router->fetch_method()!='studentFeedbackView'){?>
-			<header class="row-fluid">
-				
-				<!--top color bar-->
-				<div class="row-fluid top-bar">
-					<div class="span5"></div>
-					<div class="span7">
-                    <span class="header-flags-span">
-                    <a href="https://www.globalexperience.com.au/host-families/home-japanese/"><img src="https://www.globalexperience.com.au/wp-content/themes/ge/img/japanese-flag.png"></a>
-                    <a href="https://www.globalexperience.com.au/host-families/home-chinese/"><img src="https://www.globalexperience.com.au/wp-content/themes/ge/img/chinese-flag.png"></a>
-                    <a href="https://www.globalexperience.com.au"><img src="https://www.globalexperience.com.au/wp-content/themes/ge/img/english-flag.png"></a>
-                    </span>
-                    </div>
-				</div>
-				
-				<div class="row-fluid">
-					<div class="span12">
-						<div class="row-fluid header-content">
-							
-							<div class="span5 logo-wrap">
-								<!--logo-->
-								<a class="logo" href="https://www.globalexperience.com.au" title="Home">
-									<img src="https://www.globalexperience.com.au/wp-content/uploads/2015/05/logo.jpg" alt="logo" />
-								</a>
-							</div>
-							
-							
-							<!--main navigation-->
-							<div class="span7 full-nav">
-								<div class="row-fluid">
-																		</div>
-								<div class="row-fluid">
-									<div class="inner-spacer-left">
-										<ul id="navigation" class="main-nav"><li id="menu-item-863" class="menu-item menu-item-type-custom menu-item-object-custom menu span3 menu-item-863"><a href="https://www.globalexperience.com.au/students/">STUDENTS</a></li>
-<li id="menu-item-6" class="menu-item menu-item-type-custom menu-item-object-custom menu span3 menu-item-6"><a href="https://www.globalexperience.com.au/host-families/">FAMILIES</a></li>
-<li id="menu-item-866" class="menu-item menu-item-type-post_type menu-item-object-page menu span3 menu-item-866"><a href="https://www.globalexperience.com.au/about/">ABOUT US</a></li>
-<li id="menu-item-405" class="menu-item menu-item-type-post_type menu-item-object-page menu span3 menu-item-405"><a href="https://www.globalexperience.com.au/praise/">PRAISE</a></li>
-<li id="menu-item-408" class="menu-item menu-item-type-post_type menu-item-object-page menu span3 menu-item-408"><a href="https://www.globalexperience.com.au/blog/">BLOG</a></li>
-<li id="menu-item-984" class="menu-item menu-item-type-post_type menu-item-object-page menu span3 menu-item-984"><a href="https://www.globalexperience.com.au/we-love/">WE LOVE</a></li>
-<li id="menu-item-563" class="menu-item menu-item-type-post_type menu-item-object-page menu span3 menu-item-563"><a href="https://www.globalexperience.com.au/gallery/">GALLERY</a></li>
-<li id="menu-item-2201" class="menu-item menu-item-type-post_type menu-item-object-page menu span3 menu-item-2201"><a href="https://www.globalexperience.com.au/new-contact/">CONTACT</a></li>
-</ul>									</div>
-								</div>
-								
-							</div>
-							
-							<!--drop navigation-->
-							<div id="dropdown-nav" class="span7 drop-nav" data-label="Menu...">
-							<select class="selectnav" id="selectnav1"><option value="">Menu...</option><option value="https://globalexperience.com.au/students/">STUDENTS</option><option value="https://globalexperience.com.au/host-families/">FAMILIES</option><option value="https://www.globalexperience.com.au/about/">ABOUT US</option><option value="https://www.globalexperience.com.au/praise/">PRAISE</option><option value="https://www.globalexperience.com.au/blog/">BLOG</option><option value="https://www.globalexperience.com.au/we-love/">WE LOVE</option><option value="https://www.globalexperience.com.au/gallery/">GALLERY</option><option value="https://www.globalexperience.com.au/new-contact/">CONTACT</option></select></div>
-							
-						</div>
-						
-						<section class="row-fluid connect">
-
 	
-
-	
-
-	   			
-
-</section>
-						
-					</div>
-					
-					
-					
-					
-				</div>
-				
-			</header>
             <?php } ?>
+			
