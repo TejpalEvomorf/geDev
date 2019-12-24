@@ -388,6 +388,6 @@ class Report_model extends CI_Model {
 		
 		//return $this->db->query("select * from `invoice_initial` where `application_id` IN(select `id` from `sha_one` where `arrival_date`>=? and `arrival_date`<=? and `client`=?) and `study_tour`=?",array($data['invoiceReport_fromDate'],$data['invoiceReport_toDate'],$data['invoiceReport_client'],'0'))->result_array();
 		
-		return $this->db->query("select * from `invoice_initial_items` where `invoice_id` IN (select `id` from `invoice_initial` where `application_id` IN(select `id` from `sha_one` where `arrival_date`>=? and `arrival_date`<=? and `client`=?) and `study_tour`=?) order by `invoice_id`, `id`",array($data['invoiceReport_fromDate'],$data['invoiceReport_toDate'],$data['invoiceReport_client'],'0'))->result_array();
+		return $this->db->query("select * from `invoice_initial_items` where `invoice_id` IN (select `id` from `invoice_initial` where `application_id` IN(select `id` from `sha_one` where `arrival_date`>=? and `arrival_date`<=? and `client`=?) and `study_tour`=?) order by `invoice_id`, `id`",array(normalToMysqlDate($data['invoiceReport_fromDate']),normalToMysqlDate($data['invoiceReport_toDate']),$data['invoiceReport_client'],'0'))->result_array();
 	}
 }

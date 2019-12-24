@@ -23,7 +23,7 @@ class Phpword extends Front_end {
 		$data['invoiceReport_toDate']='2019-05-01';
 		$data['invoiceReport_client']='1472';*/
 		$this->load->model('report_model');
-		$res['invoiceItems']=$this->report_model->invoiceReportResult($data);//echo $this->db->last_query();
+		$res['invoiceItems']=$this->report_model->invoiceReportResult($data);echo $this->db->last_query();
 		$res['client']=clientDetail($data['invoiceReport_client']);
 		
 		$phpWord = new \PhpOffice\PhpWord\PhpWord();
