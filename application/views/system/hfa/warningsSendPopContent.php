@@ -14,9 +14,9 @@ $sentByList=hfaWarningSentByOptionList();
                   {
                     ?>
                   <option value="<?=$emp['id']?>" <?php if(isset($warningDetails)){if($warningDetails['emp']==$emp['id']){echo 'selected';}}elseif($loggedInUser['user_type']=='2' && $loggedInUser['id']==$emp['id']){echo 'selected';}?>><?=$emp['fname'].' '.$emp['lname']?></option>
-                  <?
-                  }
-                  ?>
+                  <?php
+								  }
+								  ?>
        </select>
 	   <?php if($loggedInUser['user_type']=='2'){?>
         <input type="hidden" name="hfaWarningSend_emp" value="<?php if(isset($warningDetails)){ echo $warningDetails['emp'];}else{ echo $loggedInUser['id'];}?>" />

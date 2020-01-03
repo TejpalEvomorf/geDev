@@ -12,7 +12,7 @@ $loggedInUser=loggedInUser();
 								  {
 								  	?>
                                   <option value="<?=$emp['id']?>" <?php if(isset($checkup)){if($checkup['employee']==$emp['id']){echo 'selected';}}elseif($loggedInUser['user_type']=='2' && $loggedInUser['id']==$emp['id']){echo 'selected';}?>><?=$emp['fname'].' '.$emp['lname']?></option>
-                                  <?
+                                  <?php
 								  }
 								  ?>
                                </select>
@@ -35,7 +35,7 @@ $loggedInUser=loggedInUser();
 								  {
 								  	?>
                                   <option value="<?=$cmlK?>" <?php if(isset($checkup) && $checkup['method']==$cmlK){echo 'selected';}?>><?=$cml?></option>
-                                  <?
+                                  <?php
 								  }
 								  ?>
                                </select>

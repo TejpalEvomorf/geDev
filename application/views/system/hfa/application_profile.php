@@ -1332,7 +1332,7 @@ $employeeList=employeeList();
 								  {
 								  	?>
                                   <option value="<?=$emp['id']?>" ><?=$emp['fname'].' '.$emp['lname']?></option>
-                                  <?
+                                  <?php
 								  }
 								  ?>
                                </select>

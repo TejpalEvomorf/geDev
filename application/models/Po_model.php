@@ -444,7 +444,7 @@ class Po_model extends CI_Model{
 	}
 	
 	function deletePo($id)
-	
+	{
 		$this->db->query("delete from `purchase_orders_items` where `po_id`='".$id."'");
 		$this->db->query("delete from `purchase_orders` where `id`='".$id."'");
 		
