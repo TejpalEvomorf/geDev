@@ -1930,7 +1930,11 @@ function addNewHoliday($data)
 					$this->db->query($sql,array($data['bookHoliday_emp'],$startDate,$endDate,$data['bookHoliday_notes'],$data['bookingHoliday_id']));
 					
 			    	$data['holiday_id']=$data['bookingHoliday_id'];
-					$this->updateDiscountForHolidayInPo($data);
+					//$this->updateDiscountForHolidayInPo($data);
+					$this->load->model('holiday_model');
+					$this->holiday_model->deleteHolidayProcess($data['bookingHoliday_id']);
+					$this->holiday_model->addHolidayDiscountPO($data['bookingHoliday_bookingId']);
+					
 					$this->updateDiscountForHolidayInInvoice($data);
 				}
 			}
@@ -1948,13 +1952,16 @@ function addNewHoliday($data)
 					$this->db->query($sql,array($data['bookingHoliday_bookingId'],$shaId,$data['bookHoliday_emp'],$startDate,$endDate,$data['bookHoliday_notes'],date('Y-m-d H:i:s')));
 					
 					//$data['holiday_id']=$this->db->insert_id();
-					$this->addDiscountForHolidayInPo($data);
+					//$this->addDiscountForHolidayInPo($data);
+					$this->load->model('holiday_model');
+					$this->holiday_model->addHolidayDiscountPO($data['bookingHoliday_bookingId']);
 					$this->addDiscountForHolidayInInvoice($data);
 				}
 			}
 			$return['result']='done';
 	}
 	return $return;
+
 }
 
 function holidaysByBooking($id)
@@ -1967,12 +1974,14 @@ function bookingHoliday_delete($id)
 	$holiday=$this->db->query("select * from `booking_holidays` where `id`=?",array($id))->row_array();
 	if(!empty($holiday))
 	{
-	    $this->db->query("delete from `purchase_orders_items` where `po_id`=? and `id`=? and `type`=?",array($holiday['po_id'],$holiday['po_item_id'],'holidayDiscount'));
-		$this->db->query("delete from `purchase_orders_items` where `po_id`=? and `type`=?",array($holiday['po_id'],'holidayAdminFeeDiscount'));
+	    //$this->db->query("delete from `purchase_orders_items` where `po_id`=? and `id`=? and `type`=?",array($holiday['po_id'],$holiday['po_item_id'],'holidayDiscount'));
+		//$this->db->query("delete from `purchase_orders_items` where `po_id`=? and `type`=?",array($holiday['po_id'],'holidayAdminFeeDiscount'));
 		$this->db->query("delete from `invoice_ongoing_items` where `invoice_id`=? and `id`=? and `type`=?",array($holiday['invoice_id'],$holiday['invoice_item_id'],'holidayDiscount'));
 	    $this->db->query("delete from `booking_holidays` where `id`='".$id."'");
+		
+		$this->load->model('holiday_model');
+		$this->holiday_model->deleteHolidayProcess($id);
 	}
-	
 }
 
 function bookingHoliday_details($id)

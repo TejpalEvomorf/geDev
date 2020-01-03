@@ -58,7 +58,9 @@ class Po_model extends CI_Model{
 							$sqlItem="insert into `purchase_orders_items` (`po_id`,`desc`,`unit`,`qty_unit`,`qty`,`total`,`type`,`date`,`xero_code`) values(?,?,?,?,?,?,?,?,?)";
 							$this->db->query($sqlItem,array($po_id,$pV['desc'],$pV['unit'],$pV['qty_unit'],$pV['qty'],$pV['total'],$pV['type'],date('Y-m-d H:i:s'),$pV['xero_code']));
 						}
-						$this->addHolidayDiscountInPo($po_id);
+						//$this->addHolidayDiscountInPo($po_id);
+						$this->load->model('holiday_model');
+						$this->holiday_model->addHolidayDiscountPO($po['booking_id']);
 					}
 				}
 			}
@@ -217,7 +219,9 @@ class Po_model extends CI_Model{
 			$this->db->query($sql,array($po_id,$item['desc'],$item['unit'],$item['qty_unit'],$item['qty'],$item['total'],$item['type'],$item['xero_code']));
 		}
 			  
-		$this->addHolidayDiscountInPo($po_id);
+		//$this->addHolidayDiscountInPo($po_id);
+		$this->load->model('holiday_model');
+		$this->holiday_model->changeDurationPoProcess($po_id);
 	}
 	
 	function editPoItem($data)
@@ -440,9 +444,12 @@ class Po_model extends CI_Model{
 	}
 	
 	function deletePo($id)
-	{
+	
 		$this->db->query("delete from `purchase_orders_items` where `po_id`='".$id."'");
 		$this->db->query("delete from `purchase_orders` where `id`='".$id."'");
+		
+		$this->load->model('holiday_model');
+		$this->holiday_model->deletePoProcess($id);
 	}
 	
 	function addHolidayDiscountInPo($po_id)

@@ -1,0 +1,9 @@
+---
+deployment:
+      tasks:
+        - export DEPLOYPATH=/home/gediculture/public_html/ge
+        - /bin/cp index.php $DEPLOYPATH
+        - /bin/cp -R application $DEPLOYPATH
+        - /bin/cp -R static $DEPLOYPATH
+        - /bin/cp -R system $DEPLOYPATH
+
