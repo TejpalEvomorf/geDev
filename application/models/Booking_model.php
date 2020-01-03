@@ -719,23 +719,18 @@ if($_POST['activealboking']=='activealboking'){
 	
 	function globalsearch($type,$val){
 		$where="'1'='1'";
-		$this->db->select('bookings.*,clients.*');
+		$this->db->select('bookings.*');
 			$this->db->from($this->table);
 		
 		if($type=='booking'){
 					
 				if (is_numeric($val)) {
-				$this->db->join('hfa_one','hfa_one.id=bookings.host','LEFT');
-		$this->db->join('sha_one','bookings.student=sha_one.id','LEFT');
-		$this->db->join('clients','clients.id=sha_one.client','LEFT');
+				
 
-			//	$where .="  `bookings`.`id`='".$val."'";
-				$where .="  `bookings`.`id` LIKE '%".$val."%'";
-				// $where =" CONCAT (`bookings`.`id`,' ',`bookings`.`host`,' ',`bookings`.`student`) LIKE '%".$val."%'";
-				// $where .=" OR CONCAT(`hfa_one`.`email`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`) LIKE '%".$val."%'";
-				// $where .=" OR CONCAT(`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`) LIKE '%".$val."%'";
-				// $where .=" OR CONCAT(`clients`.`id`,' ',`clients`.`primary_email`,' ',`clients`.`primary_phone`,' ',`clients`.`sec_phone`) LIKE '%".$val."%'";
-		$where .=" CONCAT (`bookings`.`host`,' ',`bookings`.`student`,' ',`hfa_one`.`email`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`id`,' ',`clients`.`primary_email`,' ',`clients`.`primary_phone`,' ',`clients`.`sec_phone`) LIKE '%".$val."%'";
+				$where .="  `bookings`.`id`='".$val."'";
+				//$where .="  `bookings`.`id` LIKE '%".$val."%'";
+				 $where =" CONCAT (`bookings`.`id`,' ',`bookings`.`host`,' ',`bookings`.`student`) LIKE '%".$val."%'";
+				
 				$this->db->where($where);
 				$query = $this->db->get();
 		@$bookid= $query->row()->id;
@@ -752,8 +747,7 @@ if($_POST['activealboking']=='activealboking'){
 		return  "host=".$val."" ;
 		}else{
 		$this->db->join('sha_one', 'bookings.student = sha_one.id');
-		$this->db->join('clients','clients.id=sha_one.client','LEFT');
-		$where .=" and CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`,' ',`clients`.`primary_email`,' ',`sha_one`.`client`)  LIKE '%".$val."%'";
+		$where .=" and CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`client`)  LIKE '%".$val."%'";
 		return  "student=".$val."" ;
 		
 		}
@@ -817,14 +811,11 @@ function searchall($val){
 		$data=array();
 	if (is_numeric($val)) {
 		
-		$this->db->select('bookings.*,hfa_one.*,sha_one.*,clients.*');
+		$this->db->select('bookings.*');
 		
 		$this->db->from($this->table);
-		$this->db->join('hfa_one','hfa_one.id=bookings.host','LEFT');
-		$this->db->join('sha_one','sha_one.id=bookings.student','LEFT');
-		$this->db->join('clients','sha_one.client=clients.id','LEFT');
-			//	$where ="  `bookings`.`id`='".$val."'";
-				$where =" CONCAT  (`bookings`.`id`,' ',`bookings`.`host`,' ',`bookings`.`student`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`,`clients`.`id`) LIKE '%".$val."%'";
+				$where ="  `bookings`.`id`='".$val."'";
+				$where =" CONCAT  (`bookings`.`id`,' ',`bookings`.`host`,' ',`bookings`.`student`) LIKE '%".$val."%'";
 				$this->db->where($where);
 				$query = $this->db->get();
 		$datab= $query->result_array();
@@ -901,18 +892,18 @@ if(!empty($dataporder)){
 		$this->db->select('bookings.*,hfa_one.id as hostu');
 				$this->db->from($this->table);
 				$this->db->join('hfa_one', 'bookings.host = hfa_one.id');
-						$where =" CONCAT(`hfa_one`.`fname`,' ',`hfa_one`.`lname`,' ',`hfa_one`.`email`) LIKE '%".$val."%'";	
+						$where =" CONCAT(`hfa_one`.`fname`,' ',`hfa_one`.`lname`,' ',`hfa_one`.`email`,' ',`hfa_one`.`state`) LIKE '%".$val."%'";	
 						$this->db->where($where);
 				$query = $this->db->get();
 			@$bookinghost= $query->result_array();
 		 if(!empty($bookinghost)){
 		 $data['booking']=$bookinghost;
 		 }
-		 $this->db->select('bookings.*,sha_one.id as shau,clients.bname');
+		 $this->db->select('bookings.*,sha_one.id as shau');
 				$this->db->from($this->table);
-				$this->db->join('sha_one', 'bookings.student = sha_one.id','LEFT');
-				$this->db->join('clients', 'sha_one.client = clients.id','LEFT');
-		$where ="  CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`clients`.`bname`)  LIKE '%".$val."%'";
+				$this->db->join('sha_one', 'sha_one.id = bookings.student');
+				//$this->db->join('clients', 'sha_one.client = clients.id','LEFT');
+		$where ="  CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`)  LIKE '%".$val."%'";
 				$this->db->where($where);
 				$query = $this->db->get();
 				
