@@ -1332,7 +1332,7 @@ $employeeList=employeeList();
 								  {
 								  	?>
                                   <option value="<?=$emp['id']?>" ><?=$emp['fname'].' '.$emp['lname']?></option>
-                                  <?
+                                  <?php
 								  }
 								  ?>
                                </select>
@@ -1392,7 +1392,7 @@ $employeeList=employeeList();
 								  {
 								  	?>
                                   <option value="<?=$emp['id']?>" ><?=$emp['fname'].' '.$emp['lname']?></option>
-                                  <?
+                                  <?php
 								  }
 								  ?>
                                </select>
@@ -1471,7 +1471,7 @@ $employeeList=employeeList();
 								  {
 								  	?>
                                   <option value="<?=$emp['id']?>" ><?=$emp['fname'].' '.$emp['lname']?></option>
-                                  <?
+                                  <?php
 								  }
 								  ?>
                                </select>
