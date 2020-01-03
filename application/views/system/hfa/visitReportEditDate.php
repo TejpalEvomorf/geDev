@@ -28,7 +28,7 @@ $employeeList=employeeList();
 								  {
 								  	?>
                                   <option value="<?=$emp['id']?>" <?php if($visitReport['employee']==$emp['id']){?>selected<?php } ?>><?=$emp['fname'].' '.$emp['lname']?></option>
-                                  <?
+                                  <?php
 								  }
 								  ?>
                                </select>

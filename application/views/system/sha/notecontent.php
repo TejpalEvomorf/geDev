@@ -31,7 +31,7 @@ $loggedInUser=loggedInUser();
 								  {
 								  	?>
                                   <option value="<?=$emp['id']?>" <?php if(isset($not)){if($not['employee']==$emp['id']){echo 'selected';}}elseif($loggedInUser['user_type']=='2' && $loggedInUser['id']==$emp['id']){echo 'selected';}?>><?=$emp['fname'].' '.$emp['lname']?></option>
-                                  <?
+                                  <?php
 								  }
 								  ?>
                                </select>

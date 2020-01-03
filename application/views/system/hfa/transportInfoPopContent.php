@@ -12,7 +12,7 @@ $clientList=clientsList();
 									  	continue;
 								  	?>
                                   <option value="<?=$clg['id']?>" <?php if(isset($transportInfo) && !empty($transportInfo) && $transportInfo['college_id']==$clg['id']){echo "selected";}?>><?=$clg['bname']?></option>
-                                  <?
+                                  <?php
 								  }
 								  ?>
                                </select>

@@ -14,7 +14,7 @@ $loggedInUser=loggedInUser();
 								  {
 								  	?>
                                   <option value="<?=$emp['id']?>" <?php if(isset($incident)){if($incident['employee']==$emp['id']){echo 'selected';}}elseif($loggedInUser['user_type']=='2' && $loggedInUser['id']==$emp['id']){echo 'selected';}?>><?=$emp['fname'].' '.$emp['lname']?></option>
-                                  <?
+                                  <?php
 								  }
 								  ?>
                                </select>
@@ -40,7 +40,7 @@ $loggedInUser=loggedInUser();
 								  {
 								  	?>
                                   <option value="<?=$inStatusK?>" <?php if(isset($incident) && $incident['status']==$inStatusK){echo 'selected';}?>><?=$inStatus?></option>
-                                  <?
+                                  <?php
 								  }
 								  ?>
                                </select>
@@ -56,7 +56,7 @@ $loggedInUser=loggedInUser();
 								  {
 								  	?>
                                   <option value="<?=$inLevelK?>" <?php if(isset($incident) && $incident['level']==$inLevelK){echo 'selected';}?>><?=$inLevel?></option>
-                                  <?
+                                  <?php
 								  }
 								  ?>
                                </select>
