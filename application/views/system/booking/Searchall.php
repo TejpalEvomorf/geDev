@@ -171,6 +171,7 @@ $clientsList=clientsList();
 								<tr>
 									<td><?php echo 'Tel: '.$shaOne['mobile'].', '.$shaOne['home_phone'];?></td>
 								</tr>
+								<tr><td><?php echo 'Client Id:'.$shaOne['client']; ?></td></tr>
 											<tr>
 										<td><?php 
 							  foreach($clientsList as $cLK=>$cLV){
@@ -206,6 +207,7 @@ $clientsList=clientsList();
 								<tr>
 									<td><?php echo 'Tel: '.$val['mobile'].', '.$val['home_phone'];?></td>
 								</tr>
+								<tr><td><?php echo 'Client Id:'.$val['client']; ?></td></tr>
 								<tr>
 										<td><?php 
 							  foreach($clientsList as $cLK=>$cLV){
@@ -293,6 +295,7 @@ $clientsList=clientsList();
 								<tr>
 									<td><?php echo 'Tel: '.$shaOne['mobile'].', '.$shaOne['home_phone'];?></td>
 								</tr>
+								<tr><td><?php echo 'Client Id:'.$shaOne['client']; ?></td></tr>
 											<tr>
 										<td><?php 
 							  foreach($clientsList as $cLK=>$cLV){
