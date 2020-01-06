@@ -811,13 +811,13 @@ function searchall($val){
 		$data=array();
 	if (is_numeric($val)) {
 		
-		$this->db->select('bookings.*,hfa_one.*,sha_one.*');
+		$this->db->select('bookings.*,hfa_one.id as hostu,sha_one.id as shau');
 		
 		$this->db->from($this->table);
 		$this->db->join('hfa_one', 'bookings.host = hfa_one.id', 'LEFT');
 		$this->db->join('sha_one', 'bookings.student = sha_one.id', 'LEFT');
 				$where ="  `bookings`.`id`='".$val."'";
-				$where =" CONCAT  (`bookings`.`id`,' ',`bookings`.`host`,' ',`bookings`.`student`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`) LIKE '%".$val."%'";
+				$where =" CONCAT  (`bookings`.`host`,' ',`bookings`.`student`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`) LIKE '%".$val."%'";
 				$this->db->where($where);
 				$query = $this->db->get();
 		$datab= $query->result_array();
@@ -855,7 +855,7 @@ function searchall($val){
 		 if(!empty($datac)){
 		 $data['client']=$datac;
 		 }
-		 $this->db->select('invoice_initial.*,sha_one.*');
+		 $this->db->select('invoice_initial.*,sha_one.id as shau');
 				$this->db->from('invoice_initial');
 				$this->db->join('sha_one','invoice_initial.application_id = sha_one.id');
 				$where=" CONCAT (`invoice_initial`.`id`,' ',`invoice_initial`.`application_id`,' ',`invoice_initial`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`) LIKE '%".$val."%'";
@@ -865,7 +865,7 @@ function searchall($val){
 		 if(!empty($datainvoice)){
 		 $data['initial invoice']=$datainvoice;
 		 }
-		  $this->db->select('invoice_ongoing.*, sha_one.*');
+		  $this->db->select('invoice_ongoing.*, sha_one.id as shau');
 				$this->db->from('invoice_ongoing');
 				$this->db->join('sha_one','invoice_ongoing.application_id = sha_one.id');
 				$where=" CONCAT (`invoice_ongoing`.`id`,' ',`invoice_ongoing`.`application_id`,' ',`invoice_ongoing`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`) LIKE '%".$val."%'";

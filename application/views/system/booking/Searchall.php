@@ -114,7 +114,8 @@ $clientsList=clientsList();
                         	<?php
                             if($k=='booking')
                              {?>
-							<div><?php echo 'Booking id: '.$val['id'];?></div>
+							<div><?php //echo see($val);
+							echo 'Booking id: '.$val['id'];?></div>
                     <div>
                             <?php $hfaOne=getHfaOneAppDetails($val['host']);?>
                         <table>
