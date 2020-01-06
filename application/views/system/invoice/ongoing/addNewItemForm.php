@@ -10,7 +10,7 @@
                         <!--<option value="<?=$sV['price'].'-'.$sV['gst'].'-'.$sV['id'].'-'.$sV['xero_code']?>" ><?=$sV['name']?></option>-->
                     <?php } ?>
                     <option value="0-0-0-42100-custom" >Internet Fee</option>
-                    <option value="0-0-0-42100-custom" >Guardianship Fee</option>
+                    <option value="0-0-0-42100-custom" >Caregiving Service Fee</option>
                     <option value="custom" >Custom</option>
         </select>
 </div>

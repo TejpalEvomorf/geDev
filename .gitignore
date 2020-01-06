@@ -2,3 +2,4 @@
 application/config/config.php
 application/config/database.php
 static/wordFiles/generated/
+static/uploads/products/products.xls

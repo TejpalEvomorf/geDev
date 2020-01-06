@@ -43,7 +43,7 @@ foreach($products as $p)
             <option value="">Select one</option>
             <option value="<?=$product['cost'].'-'.$product['gst'].'-'.$accomodationItemNameDesc.'-accomodation'?>" ><?=$product['name'];?></option>
             <option value="custom-extra" >Family pickup service</option>
-            <option value="custom-extra" >Dropoff service</option>
+            <option value="custom-extra" >Family Drop-off Service</option>
             <option value="custom-extra" >Internet service</option>
 			<option value="custom" >Custom</option>
         </select>
