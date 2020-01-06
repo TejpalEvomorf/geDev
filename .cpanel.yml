@@ -1,7 +1,7 @@
 ---
 deployment:
       tasks:
-        - export DEPLOYPATH=/home/gediculture/public_html/ge
+        - export DEPLOYPATH=/home/globa583/public_html/cod_manager/dev
         - /bin/cp index.php $DEPLOYPATH
         - /bin/cp -R application $DEPLOYPATH
         - /bin/cp -R static $DEPLOYPATH
