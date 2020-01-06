@@ -114,8 +114,9 @@ $clientsList=clientsList();
                         	<?php
                             if($k=='booking')
                              {?>
-							<div><?php //echo see($val);
-							echo 'Booking id: '.$val['id'];?></div>
+							<div><?php 
+							echo 'Booking id: ';?><a href='<?php echo site_url().'booking/view/'.$val['id'] ?>' target="_blank"><?php echo $val['id'];?></a></div>
+						
                     <div>
                             <?php $hfaOne=getHfaOneAppDetails($val['host']);?>
                         <table>
@@ -193,9 +194,9 @@ $clientsList=clientsList();
 								<table>
 								<th><i class="material-icons"><?php echo $result_icon; ?></i>Student Details:</th>
 									<tbody>
-								<tr>
-									<td><?php echo 'Student Id: '.$val['id'];?></td>		
-								</tr>	
+										<tr>
+								<td><?php echo 'Student Id: ';?><a href='<?php echo site_url().'sha/application/'.$val['id'] ?>' target="_blank"><?php echo $val['id'];?></a></td>		
+								</a>	</tr>
 								<tr>
 									<td><?php echo 'Student college id/number: ';if($val['sha_student_no'] != ''){echo $val['sha_student_no'];}else{echo 'Not Available';}?></td>
 								</tr>
@@ -226,7 +227,7 @@ $clientsList=clientsList();
 								<table>
 								<th><i class="material-icons"><?php echo $result_icon; ?></i>Host Details</th>
 									<tr>
-							<td><?php echo 'Host id: '.$val['id'];?></td>
+							<td><?php echo 'Host id: ';?><a href='<?php echo site_url().'hfa/application/'.$val['id'] ?>' target="_blank"><?php echo $val['id'];?></a></td>
 							</tr>
 								<tr>
 									<td><?php echo $val['fname'].' '.$val['lname'];?></td>
@@ -253,7 +254,7 @@ $clientsList=clientsList();
 								<table>
 								<th><i class="material-icons"><?php echo $result_icon; ?></i>Client Details</th>
 									<tr>
-							<td><?php echo 'Client id: '.$val['id'];?></td>
+							<td><?php echo 'Client id: ';?><a href="<?php echo site_url().'client/edit/'.$val['id']; ?>" target="_blank"><?php echo $val['id'];?></a></td>
 							</tr>
 								<tr>
 									<td><?php echo 'Bname: '.$val['bname'];?></td>
@@ -279,8 +280,9 @@ $clientsList=clientsList();
 								<table>
 								<th><i class="material-icons"><?php echo $result_icon; ?></i>Details:</th>
 									<tbody>
-										<tr><td><?php echo 'Id: '.$val['id']; ?></td></tr>
+										<tr><td><?php echo 'Invoice Id: ';?><a href="<?php if($k=='initial invoice'){$invoice = 'view_initial';}else{$invoice = 'view_ongoing';}echo site_url().'invoice/'.$invoice.'/'.$val['id']; ?>" target="_blank"><?php echo $val['id']; ?></td></tr>
 										<tr><td><?php echo 'Invoice Number: '.$val['invoice_number']; ?></td></tr>
+										<tr><td><?php echo 'Xero Id: '.$val['xero_invoiceId']; ?></td></tr>
 								<tr>
 									<td><?php echo 'Student Id: '.$shaOne['id'];?></td>		
 								</tr>	
@@ -317,7 +319,7 @@ $clientsList=clientsList();
 							<th>Details: </th>
 							<tr>
 								<td>
-                            <?php  echo 'Purchase Order Id: '.$val['id'];?>
+                            <?php  echo 'Purchase Order Id: ';?><a href="<?php echo site_url().'purchase_orders/view/'.$val['id'] ?>" target="_blank"><?php echo $val['id'];?></a>
 								</td>
 							</tr>
 							<tr>

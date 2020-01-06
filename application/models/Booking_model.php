@@ -816,8 +816,8 @@ function searchall($val){
 		$this->db->from($this->table);
 		$this->db->join('hfa_one', 'bookings.host = hfa_one.id', 'LEFT');
 		$this->db->join('sha_one', 'bookings.student = sha_one.id', 'LEFT');
-				$where ="  `bookings`.`id`='".$val."'";
-				$where =" CONCAT  (`bookings`.`host`,' ',`bookings`.`student`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`) LIKE '%".$val."%'";
+				//$where ="  `bookings`.`id`='".$val."'";
+				$where =" CONCAT  (`bookings`.`id`,' ',`bookings`.`host`,' ',`bookings`.`student`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`) LIKE '%".$val."%'";
 				$this->db->where($where);
 				$query = $this->db->get();
 		$datab= $query->result_array();
