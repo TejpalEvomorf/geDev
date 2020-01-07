@@ -1,6 +1,5 @@
 <link href="https://fonts.googleapis.com/css?family=Barlow&display=swap" rel="stylesheet"> 
-
-<link href="https://www.gediculture.com/ge/static/system/fonts/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">  
+<link rel="stylesheet" href="https://astronautweb.co/wp-content/themes/astronaut-2014/css/font-awesome-4.7.0.css">
 
 <link rel="stylesheet" href="https://www.globalexperience.com.au/css/bootstrap.min.css">
 <link href="https://www.globalexperience.com.au/css/font-awesome.css" rel="stylesheet">
@@ -60,8 +59,8 @@ ul.head-social li:first-child {
                 <option>Vietnamese</option>
             </select>
           </li>
-          <li><a target="_parent" href="https://crm.globalexperience.com.au/form/host_family_application">Student Application Form</a></li>
-          <li><a target="_parent" href="https://crm.globalexperience.com.au/form/student_homestay_application">Host Application Form</a></li>
+          <li><a target="_parent" href="<?=site_url()?>form/student_homestay_application">Student Application Form</a></li>
+          <li><a target="_parent" href="<?=site_url()?>form/host_family_application">Host Application Form</a></li>
           <!--
           <li><a href="https://www.globalexperience.com.au/student-application">Student Application Form</a></li>
           <li><a href="https://www.globalexperience.com.au/host_family_application">Host Application Form</a></li>
@@ -287,15 +286,60 @@ ul.head-social li:first-child {
 
 <div class="inner-banner">
   <div class="innerpagebanner">
-    <h1>Student Homestay Application Form</h1>
+  <?php
+  	$hfaHeading='Host Family Application Form';
+	$shaHeading='Student Homestay Application Form';
+	
+	$pageH1ArrayForm=[
+	'host_family_application'=>$hfaHeading,
+	'host_family_application_two'=>$hfaHeading,
+	'host_family_application_three'=>$hfaHeading,
+	'host_family_application_four'=>$hfaHeading,
+	'host_family_application_complete'=>$hfaHeading,
+	'host_family_application_completed'=>$hfaHeading,
+	'student_homestay_application'=>$shaHeading,
+	'student_homestay_application_two'=>$shaHeading,
+	'student_homestay_application_three'=>$shaHeading,
+	'student_homestay_application_complete'=>$shaHeading,
+	'student_homestay_application_completed'=>$shaHeading
+	];
+	
+	$pageH1ArraySha=[
+	'application_edit_one'=>$shaHeading,
+	'application_edit_two'=>$shaHeading,
+	'application_edit_three'=>$shaHeading,
+	'application_create'=>$shaHeading
+	];
+	
+	$pageH1ArrayHfa=[
+	'application_edit_one'=>$hfaHeading,
+	'application_edit_two'=>$hfaHeading,
+	'application_edit_three'=>$hfaHeading,
+	'application_edit_four'=>$hfaHeading,
+	'application_create'=>$hfaHeading
+	];
+	
+	if($controller=='form')
+		$ControllerArray=$pageH1ArrayForm;
+	elseif($controller=='sha')
+		$ControllerArray=$pageH1ArraySha;
+	elseif($controller=='hfa')
+		$ControllerArray=$pageH1ArrayHfa;	
+	
+	if(isset($ControllerArray) && isset($ControllerArray[$function]))
+		$pageH1=$ControllerArray[$function];
+	else	
+		$pageH1=urldecode($pageTitle);
+?>
+    <h1><?=$pageH1?></h1>
   </div>
   <div class="banner-bottomdiv">
     <div class="container">
       <div class="row">
         <div class="col-md-12 col-sm-12 col-lg-12 col-12">
           <ul class="bannerbottomlist">
-            <li><a target="_parent" href="https://crm.globalexperience.com.au/form/student_homestay_application">Families</a></li>
-            <li><a target="_parent" href="https://crm.globalexperience.com.au/form/host_family_application">Students</a></li>
+            <li><a target="_parent" href="<?=site_url()?>form/host_family_application">Families</a></li>
+            <li><a target="_parent" href="<?=site_url()?>form/student_homestay_application">Students</a></li>
           </ul>
         </div>
       </div>

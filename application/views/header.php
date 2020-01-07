@@ -205,7 +205,7 @@ $(this).stop().find('ul.subMenu').slideUp('fast');
 
 <body class="page page-id-2497 page-template-default logged-in">
 
-<div class="iframe-parent"><iframe class="iframe-header" src="<?=site_url().'form/header_iframe/'.$this->router->fetch_method()?>" id="iframe-header"></iframe>  </div>
+<div class="iframe-parent"><iframe class="iframe-header" src="<?=site_url().'form/header_iframe/'.$this->router->fetch_class().'/'.$this->router->fetch_method().'/'.$pageTitle?>" id="iframe-header"></iframe>  </div>
 
 		<div class="site-wrapper container"> 
         <?php if($this->router->fetch_method()!='studentFeedbackView'){?>
