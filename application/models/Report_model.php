@@ -25,7 +25,7 @@ class Report_model extends CI_Model {
 		{
 			if(in_array('clients',$data['reportSelectClientClg']))
 			{
-				$res['client']['option']=$data['CaR_college_option'];	
+				$res['client']=['option'=>$data['CaR_college_option']];	
 				if($data['CaR_college_option']!='all')
 				{
 					if($data['CaR_college_option']=='client_group')
