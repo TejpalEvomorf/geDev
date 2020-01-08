@@ -116,7 +116,7 @@ class Report_model extends CI_Model {
 		
 		$sql .="order by `bookings`.`id`";	
 		$query=$this->db->query($sql);//echo $this->db->last_query();
-		$bookings=$query->result_array();
+		$bookings=$query->result_array();//return $this->db->query("select * from `bookings` where `student`='24922'")->result_array();
 		return $bookings;
 	}
 	

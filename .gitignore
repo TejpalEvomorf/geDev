@@ -3,3 +3,6 @@ application/config/config.php
 application/config/database.php
 static/wordFiles/generated/
 static/uploads/products/products.xls
+static/report/Bookings.xls
+static/report/incidents.xls
+static/report/wwcc_report.xls

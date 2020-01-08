@@ -1009,7 +1009,7 @@ class Reports extends CI_Controller {
 		$x=$x_start+1;
 		
 	$this->load->model('report_model');
-	$bookings=$this->report_model->bookingListForAuditingReport($data);
+	$bookings=$this->report_model->bookingListForAuditingReport($data);//see($bookings);
 	
 	$stateList=stateList();
 	$genderList=genderList();
@@ -1108,6 +1108,164 @@ class Reports extends CI_Controller {
 			}
 			elseif($v=='apu_flight_number')
 				$value=$shaTwo['airport_flightno'];
+			elseif($v=='sha_pets')
+			{
+				  if($shaTwo['live_with_pets']=="0")
+					  $value .="No";
+				  elseif($shaTwo['live_with_pets']=="1")
+					  $value .="Yes";
+				  else
+					  $value .="n/a";
+				  
+				  if($shaTwo['live_with_pets']==1)
+				  {
+						$pets=array();
+						if($shaTwo['pet_dog']==1)
+							$pets[]='Dog';
+						if($shaTwo['pet_cat']==1)
+							$pets[]='Cat';
+						if($shaTwo['pet_bird']==1)
+							$pets[]='Bird';
+						if($shaTwo['pet_other']==1 && $shaTwo['pet_other_val']!='')
+							$pets[]=ucfirst ($shaTwo['pet_other_val']);	
+						
+						if(!empty($pets))
+							$value .=' - '.implode(', ',$pets);
+						
+						if($shaTwo['pet_live_inside']==1)
+							$value .= ", can live with pets inside the house";
+						elseif($shaTwo['pet_live_inside']=="0")
+							$value .= ", cannot live with pets inside the house";	
+					}
+			}
+			elseif($v=='sha_kids')
+			{
+				$value .='0-11 years old: ';
+				if($shaThree['live_with_child11']==1)
+					$value .="Yes";
+				elseif($shaThree['live_with_child11']=="0")	
+					$value .="No";
+				else
+					$value .='n/a';	
+				$value .=', ';
+				
+				$value .='12-20 years old: ';
+				if($shaThree['live_with_child20']==1)
+					$value .= "Yes";
+				elseif($shaThree['live_with_child20']=="0")	
+					$value .= "No";
+				else
+					$value .= 'n/a';
+				$value .='';	
+				
+				if(trim($shaThree['live_with_child_reason'])!='')
+					$value .= ', Reason: '.ucfirst ($shaThree['live_with_child_reason']);
+			}
+			elseif($v=='sha_allergy')
+			{
+					if($shaThree['allergy_req']=='0')
+						$value .="No";
+					elseif($shaThree['allergy_req']=='1')
+						$value .="Yes ";
+					else
+						$value .='n/a';
+						
+					if($shaThree['allergy_req']=='1')
+						{
+							$allergy=array();
+							if($shaThree['allergy_hay_fever']==1)
+								$allergy[]='Hay Fever';
+							if($shaThree['allergy_asthma']==1)
+								$allergy[]='Asthma';
+							if($shaThree['allergy_lactose']==1)
+								$allergy[]='Lactose Intolerance';
+							if($shaThree['allergy_gluten']==1)
+								$allergy[]='Gluten Intolerance';	
+							if($shaThree['allergy_peanut']==1)
+								$allergy[]='Peanut Allergies';	
+							if($shaThree['allergy_dust']==1)
+								$allergy[]='Dust Allergies';	
+							if($shaThree['allergy_other']==1 && $shaThree['allergy_other_val']!='')
+								$allergy[]=ucfirst ($shaThree['allergy_other_val']);		
+							
+							if(!empty($allergy))
+								$value .='- '.implode(', ',$allergy);
+						}	
+			}
+			elseif($v=='sha_dietry_requirement')
+			{
+					if($shaThree['diet_req']=='0')
+					  $value .= "No";
+				  elseif($shaThree['diet_req']=='1')
+					  $value .= "Yes ";
+				  else
+					   $value .= 'n/a';
+					  
+				  if($shaThree['diet_req']=='1')
+					  {
+						  $dietReq=array();
+						  if($shaThree['diet_veg']==1)
+							  $dietReq[]='Vegetarian';
+						  if($shaThree['diet_gluten']==1)
+							  $diet[]='Gluten/Lactose Free';
+						  if($shaThree['diet_pork']==1)
+							  $dietReq[]='No Pork';
+						  if($shaThree['diet_food_allergy']==1)
+							  $dietReq[]='Food Allergies';	
+						  if($shaThree['diet_other']==1 && $shaThree['diet_other_val']!='')
+							  $dietReq[]=ucfirst ($shaThree['diet_other_val']);		
+						  
+						  if(!empty($dietReq))
+							  $value .='- '.implode(', ',$dietReq);
+					  }
+			}
+			elseif($v=='sha_medication')
+			{
+				  if($shaThree['medication']=='1')
+					  $value .= 'Yes';
+				  elseif($shaThree['medication']=='0')
+					  $value .= "No";
+				  else 
+					  $value .= 'n/a';	
+					  
+				  if($shaThree['medication']=='1')
+					  $value .='- '.$shaThree['medication_desc'];
+			}
+			elseif($v=='sha_disabilty')
+			{
+				  if($shaThree['disabilities']=='1')
+					  $value .= 'Yes';
+				  elseif($shaThree['disabilities']=='0')
+					  $value .= "No";
+				  else 
+					  $value .= 'n/a';	
+					  
+				  if($shaThree['disabilities']=='1')
+					  $value .='- '.$shaThree['disabilities_desc'];
+			}
+			elseif($v=='sha_smoke')
+			{
+				  $smokingHabbits=smokingHabbits();
+				  if($shaThree['smoker']!='')
+					  $value .= str_replace('&amp;','&',$smokingHabbits[$shaThree['smoker']]);
+				  else
+					  $value .= 'n/a';	
+			}
+			elseif($v=='sha_smoker_inside')
+			{
+				  $smokingHabbits=smokingHabbits();
+				  if($shaThree['family_include_smoker']!='')
+					  $value .= str_replace('&amp;','&',$smokingHabbits[$shaThree['family_include_smoker']]);
+				  else
+					  $value .= 'n/a';	
+			}
+			elseif($v=='sha_other_family_pref')
+			{
+				  if($shaThree['family_pref']!='')
+					  $value .= $shaThree['family_pref'];
+				  else
+					  $value .= 'n/a';
+			}
 			
 			$this->excel->getActiveSheet()->setCellValue($k.$x, $value);	
 		}
