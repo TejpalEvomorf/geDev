@@ -274,6 +274,7 @@ else
 	            <li><a  class="withripple" href="<?=site_url()?>reports/parent_nominated_homestay"><span>Parents nominated homestay</span></a></li>
 	            <li><a  class="withripple" href="<?=site_url()?>reports/caregiving_service"><span>Caregiving service report</span></a></li>
 	            <li><a  class="withripple" href="<?=site_url()?>reports/invoice"><span>Invoice</span></a></li>
+	            <li><a  class="withripple" href="<?=site_url()?>reports/booking_regularCheckups"><span>Booking regular checkups</span></a></li>
 			</ul>
     </li>
     

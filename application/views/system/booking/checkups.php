@@ -16,6 +16,9 @@ if(!empty($checkups))
                         <div class="timeline-body">
                             <div class="timeline-header">
                                 <span  class="author tyuedit" onclick="bookingCheckupPopContent(<?=$log['id']?>,'<?=$log['type']?>','edit');" style="cursor:pointer;"><?=$bookingCheckupTypeList[$log['type']]?></span>
+                                 <?php if($log['type']=='3' && userAuthorisations('bookingCheckup_delete')){ ?>
+                                	<span onClick="bookingCheckup_delete(<?=$log['id'].','.$log['booking']?>);" class="bookingCheckup_delete">×</span>
+                                <?php } ?>
                                 <span class="date">on <?=date('d M Y',strtotime($log['checkup_date']));?> by <?=$empName?></span>
                             </div>
                         </div>

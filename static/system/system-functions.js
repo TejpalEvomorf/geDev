@@ -2535,11 +2535,23 @@ function editInvoiceDataPopContent(id)
 								title='Edit ';
 							
 							if(method==1)
+							{
 								title +='arrival';
+								$('#bookCheckup_notesDiv').hide();
+								$('#bookCheckup_notes').prop('disabled', true);
+							}
 							else if(method==2)
+							{
 								title +='reminder';
+								$('#bookCheckup_notesDiv').hide();
+								$('#bookCheckup_notes').prop('disabled', true);
+							}
 							else if(method==3)
-								title +='regular';	
+							{
+								title +='regular';
+								$('#bookCheckup_notesDiv').show();
+								$('#bookCheckup_notes').prop('disabled', false);
+							}
 							
 							$('#model_bookingCheckup_titlePart').text(title);
 							initializeToolTip();
@@ -2933,3 +2945,34 @@ function hfaWarningSendPopContent(id,type)
 					}
 			});
 	}	
+	
+	function bookingCheckup_delete(id,bookId)
+	{
+		bootbox.dialog({
+	
+					message: "Are you sure you wish to delete this checkup?",
+					title: "Delete",
+					buttons: {
+					danger: {
+					label: "Delete",
+					className: "btn-danger",
+					callback: function() 
+							{
+									$.ajax({
+												url:site_url+'booking/bookingCheckup_delete/'+id+'/'+bookId,
+												success:function(data)
+													{
+														if(data=='LO')
+																redirectToLogin();
+														else
+														  {
+																$('#checkups').html(data);
+																notiPop('success','Checkup deleted successfully',"");
+														  }
+													}
+										});
+							}
+					}
+					}
+			});
+	}

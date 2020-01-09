@@ -1813,7 +1813,11 @@ function checkupsByBooking($id)
 }
 	
 function addNewCheckup($data)
-{
+{	
+	$bookCheckup_notes='';
+	if(isset($data['bookCheckup_notes']))
+		$bookCheckup_notes=$data['bookCheckup_notes'];
+	
 	if(isset($data['bookingCheckup_id']))
 	{
 		$checkup=$this->bookingCheckup_details($data['bookingCheckup_id']);
@@ -1822,16 +1826,16 @@ function addNewCheckup($data)
 			
 			$checkupDate=normalToMysqlDate($data['bookCheckup_date']);
 			
-			$sql="update `booking_checkups` set `employee`=?,`checkup_date`=?,`method`=? where `id`=?";
-			$this->db->query($sql,array($data['bookCheckup_emp'],$checkupDate,$data['bookCheckup_method'],$data['bookingCheckup_id']));
+			$sql="update `booking_checkups` set `employee`=?,`checkup_date`=?,`method`=?,`notes`=? where `id`=?";
+			$this->db->query($sql,array($data['bookCheckup_emp'],$checkupDate,$data['bookCheckup_method'],$bookCheckup_notes,$data['bookingCheckup_id']));
 		}
 	}
 	else
 	{
 			$checkupDate=normalToMysqlDate($data['bookCheckup_date']);
 			
-			$sql="INSERT INTO `booking_checkups`(`booking`, `type`, `employee`, `checkup_date`, `method`, `date`) VALUES (?,?,?,?,?,?)";
-			$this->db->query($sql,array($data['bookingCheckup_bookingId'],$data['bookingCheckup_type'],$data['bookCheckup_emp'],$checkupDate,$data['bookCheckup_method'],date('Y-m-d H:i:s')));
+			$sql="INSERT INTO `booking_checkups`(`booking`, `type`, `employee`, `checkup_date`, `method`, `notes`, `date`) VALUES (?,?,?,?,?,?,?)";
+			$this->db->query($sql,array($data['bookingCheckup_bookingId'],$data['bookingCheckup_type'],$data['bookCheckup_emp'],$checkupDate,$data['bookCheckup_method'],$bookCheckup_notes,date('Y-m-d H:i:s')));
 	}
 }
 
@@ -1843,6 +1847,11 @@ function bookingCheckup_details($id)
 function getArrivalCheckupInfoByBookingId($id)
 {
 	return $this->db->query("select * from `booking_checkups` where `booking`='".$id."' and `type`='1'")->row_array();
+}
+
+function bookingCheckup_delete($id)
+{
+	$this->db->query("delete from `booking_checkups` where `id`='".$id."'");
 }
 
 function addNewHolidayValidation($data)

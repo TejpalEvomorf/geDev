@@ -40,7 +40,11 @@ $loggedInUser=loggedInUser();
 								  ?>
                                </select>
                       </div>
-                        
+                      
+                       <div class="m-n form-group" style="clear:both;" id="bookCheckup_notesDiv">
+                        <label class="control-label">Notes</label>
+                        <textarea  rows="4" class="form-control" id="bookCheckup_notes" name="bookCheckup_notes"><?php if(isset($checkup)){echo $checkup['notes'];}?></textarea>
+                      </div> 
                          
 					<?php if(isset($checkup)){?>
                         <input type="hidden" name="bookingCheckup_id" id="bookingCheckup_id" value="<?=$checkup['id']?>" />

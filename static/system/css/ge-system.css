@@ -1282,13 +1282,13 @@ top: -13px;
     position: relative;
 }
 
-.note-delete, .hfa_callLog_delete, .hfa_visitReport_delete, .cApprovalDel, .bookingIncident_delete, .bookingFeedback_delete, .timelineListDel {
+.note-delete, .hfa_callLog_delete, .hfa_visitReport_delete, .cApprovalDel, .bookingIncident_delete, .bookingFeedback_delete, .timelineListDel, .bookingCheckup_delete {
     float: right;
     font-size: 24px;
     margin-top: -28px;
 }
 
-.note-delete:hover, .hfa_callLog_delete:hover, .hfa_visitReport_delete:hover, .cApprovalDel:hover, .bookingIncident_delete:hover, .bookingFeedback_delete:hover, .timelineListDel:hover
+.note-delete:hover, .hfa_callLog_delete:hover, .hfa_visitReport_delete:hover, .cApprovalDel:hover, .bookingIncident_delete:hover, .bookingFeedback_delete:hover, .timelineListDel:hover, .bookingCheckup_delete:hover
 {
 	color: #e72e35;
 	cursor:pointer;

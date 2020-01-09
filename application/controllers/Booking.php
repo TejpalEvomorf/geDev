@@ -1827,6 +1827,21 @@ class Booking extends CI_Controller {
 		else
 			echo "LO";
 	}
+		
+	function bookingCheckup_delete($id,$bookingId)
+	{
+		if(checkLogin())
+			{
+				if(userAuthorisations('bookingCheckup_delete'))
+				{
+					$this->booking_model->bookingCheckup_delete($id);
+					$res['checkups']=$this->booking_model->checkupsByBooking($bookingId);
+					$this->load->view('system/booking/checkups',$res);
+				}
+			}
+		else
+			echo "LO";
+	}
 	
 	function bookingHolidayPopContent($id,$type)
 	{

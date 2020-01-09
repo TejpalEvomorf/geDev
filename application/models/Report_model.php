@@ -390,4 +390,62 @@ class Report_model extends CI_Model {
 		
 		return $this->db->query("select * from `invoice_initial_items` where `invoice_id` IN (select `id` from `invoice_initial` where `application_id` IN(select `id` from `sha_one` where `arrival_date`>=? and `arrival_date`<=? and `client`=?) and `study_tour`=?) order by `invoice_id`, `id`",array(normalToMysqlDate($data['invoiceReport_fromDate']),normalToMysqlDate($data['invoiceReport_toDate']),$data['invoiceReport_client'],'0'))->result_array();
 	}
+	
+	function bookingListForBookingCheckupReport($data)
+	{
+		if(!isset($data['CaR_status']))
+			return array();
+		
+		$clgUniOption=$this->clgUniOptionSelected($data);//see($clgUniOption);
+		
+		$sql="select `bookings`.*, `booking_checkups`.`checkup_date` as `checkup_date`, `booking_checkups`.`notes` as `checkup_notes` from `bookings` JOIN `booking_checkups` ON(`bookings`.`id`=`booking_checkups`.`booking`)  where `serviceOnlyBooking`='0' and `status` IN('".implode("','",$data['CaR_status'])."') ";
+		if(isset($data['CaR_fromDate']) && isset($data['CaR_toDate']))
+		{
+			$fromDate=normalToMysqlDate($data['CaR_fromDate']);
+			$toDate=normalToMysqlDate($data['CaR_toDate']);
+			$sql .=" and  `booking_from`>='".$fromDate."' and `booking_from`<='".$toDate."'";
+		}
+		
+		if(isset($data['CaR_activeFromDate']) && isset($data['CaR_activeToDate']))
+		{
+			$fromDate=normalToMysqlDate($data['CaR_activeFromDate']);
+			$toDate=normalToMysqlDate($data['CaR_activeToDate']);
+			
+			$sql .=" and  (";
+			$sql .=" (`booking_from`>='".$fromDate."' and `booking_from`<='".$toDate."')";//start date b/w range
+			$sql .=" OR ( `booking_to`>='".$fromDate."' and `booking_to`<='".$toDate."')";//end date b/w range
+			$sql .=" OR ( `booking_from`<='".$fromDate."' and `booking_to`>='".$toDate."')";// range is b/w the start and end date
+			$sql .=" OR ( `booking_to`='0000-00-00' and `booking_from`<='".$toDate."')";//when booking end date is not set and booking is active in the date range
+			$sql .=" )";
+		}
+		
+		if(!empty($clgUniOption['client']) && $clgUniOption['client']['option']!='all')
+		{
+			if(isset($clgUniOption['client']['clients']))
+			{
+				$shaClientSet="'".implode("','",$clgUniOption['client']['clients'])."'";	
+				$sqlClient=" where `client` IN(".$shaClientSet.")";
+				$sql .=" and `student` IN(select `id` from `sha_one` ".$sqlClient.") ";
+			}
+			else
+				return 	array();
+		}
+		
+		if(!empty($clgUniOption['college']) && $clgUniOption['college']['option']!='all')
+		{
+			$shaClgSet="'".implode("','",$clgUniOption['college']['optionVal'])."'";
+			if($clgUniOption['college']['option']=='clgUni_group')
+				$sqlColg=" where `college_group` IN(".$shaClgSet.")";
+			elseif($clgUniOption['college']['option']=='selective')
+				$sqlColg=" where `college` IN(".$shaClgSet.")";
+				
+			$sql .=" and `student` IN(select `id` from `sha_three` ".$sqlColg.") ";
+		}
+		
+		$sql .=" and `booking_checkups`.`type`='3' ";
+		$sql .="order by `bookings`.`id`";	
+		$query=$this->db->query($sql);//echo $this->db->last_query();
+		$bookings=$query->result_array();
+		return $bookings;
+	}
 }

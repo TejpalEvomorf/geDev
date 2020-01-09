@@ -58,7 +58,8 @@ function userTasks()
 				'bookingCGDocSent_unsend'=>$adminAccounts,
 				'booking_duration_report'=>$adminAccounts,
 				'triple_share_booking'=>$adminAccounts,
-				'bookingHoldPayment_delete'=>$adminAccounts
+				'bookingHoldPayment_delete'=>$adminAccounts,
+				'bookingCheckup_delete'=>$adminAccounts
 			);
 }
 
@@ -1475,6 +1476,22 @@ function booking_duration_report_fields()
 	);
 	$reportFields['nominated_regular']='Nominated/Regular';
 	$reportFields['duration']='Duration';
+	return $reportFields;
+}
+
+function bookingsRegularCheckups_report_fields()
+{
+	$reportFields=array(
+	'sha_name'=>'Student Name',
+	'student_college_id'=>'Student college id',
+	'college_name'=>'College Name',
+	'hfa_name'=>'Host Family Name',
+	'booking_number'=>'Booking Number',
+	'booking_start_date'=>'Booking Start Date',
+	'booking_end_date'=>'Booking End Date',
+	'booking_checkupDate'=>'Checkup date',
+	'booking_checkupNotes'=>'Notes'
+	);
 	return $reportFields;
 }
 
