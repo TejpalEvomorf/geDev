@@ -2397,7 +2397,7 @@ class Reports extends CI_Controller {
 	{
 			if(checkLogin())
 			{
-				recentActionsAddData('report','bookings','view');
+				recentActionsAddData('report','booking_regularCheckup','view');
 				$data['page']='reports-bookings';
 				$this->load->view('system/header',$data);
 				$this->load->view('system/reports/bookings_regularCheckups');

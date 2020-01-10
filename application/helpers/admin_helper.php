@@ -1650,6 +1650,7 @@ function recentActivityIconList()
 {
 	return array(
 		'booking'=>'domain',
+		'booking_regularCheckup'=>'domain',
 		'hfa'=>'home',
 		'sha'=>'face',
 		'tour'=>'stars',
@@ -1669,6 +1670,7 @@ function recentActivityTitleList()
 {
 	return array(
 		'booking'=>'Bookings',
+		'booking_regularCheckup'=>'Booking regular checkups',
 		'hfa'=>'Host families',
 		'sha'=>'Students',
 		'tour'=>'Tour groups',
@@ -2050,6 +2052,7 @@ function shaActivityDesc($activity)
 			'revisits'=>'Revisit'.$reportText,
 			'incidents'=>'Incident'.$reportText,
 			'bookings'=>'Booking'.$reportText,
+			'booking_regularCheckup'=>'Booking regular checkup'.$reportText,
 			'wwcc'=>'WWCC'.$reportText,
 			'insurance'=>'Insurance'.$reportText,
 			'feedback'=>'Feedback'.$reportText,
