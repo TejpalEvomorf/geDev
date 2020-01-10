@@ -118,6 +118,16 @@ function floorTypeList()
                 "5"=>"Others"
 				);
 }
+function floorsList()
+{
+				return array(
+				"1"=>"1 Floor",
+                "2"=>"2 Floors",
+                "3"=>"3 Floors",
+                "4"=>"4 Floors",
+                "5"=>"5 Floors"
+				);
+}
 
 function roomTypeList()
 {
