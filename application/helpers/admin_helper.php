@@ -1670,7 +1670,7 @@ function recentActivityTitleList()
 {
 	return array(
 		'booking'=>'Bookings',
-		'booking_regularCheckup'=>'Booking regular checkups',
+		'booking_regularCheckup'=>'Regular checkups',
 		'hfa'=>'Host families',
 		'sha'=>'Students',
 		'tour'=>'Tour groups',

@@ -259,22 +259,26 @@ else
     
     <li><a  class="withripple" href="javascript:;"><span class="icon"><i class="material-icons">insert_drive_file</i></span><span>Reports</span></a>
         	<ul class="acc-menu">
-	            <li><a  class="withripple" href="<?=site_url()?>reports/hfa"><span>Host family</span></a></li>
-                <li><a  class="withripple" href="<?=site_url()?>reports/college_auditing"><span>College audit</span></a></li>
-                <li><a  class="withripple" href="<?=site_url()?>reports/tour_groups"><span>Tour groups</span></a></li>
-                <li><a  class="withripple" href="<?=site_url()?>reports/revisits"><span>Revisits</span></a></li>
-                <li><a  class="withripple" href="<?=site_url()?>reports/incidents"><span>Incidents</span></a></li>
-                <li><a  class="withripple" href="<?=site_url()?>reports/bookings"><span>Bookings</span></a></li>
-                <li><a  class="withripple" href="<?=site_url()?>reports/wwcc"><span>WWCC</span></a></li>
-                <li><a  class="withripple" href="<?=site_url()?>reports/insurance"><span>Insurance</span></a></li>
-                <li><a  class="withripple" href="<?=site_url()?>reports/feedback"><span>Feedback</span></a></li>
+                 <li><a  class="withripple" href="<?=site_url()?>reports/bookings"><span>Bookings</span></a></li>
                 <?php if(userAuthorisations('booking_duration_report')){?>
-	                <li><a  class="withripple" href="<?=site_url()?>reports/booking_duration"><span>Booking duration</span></a></li>
+                    <li><a  class="withripple" href="<?=site_url()?>reports/booking_duration"><span>Booking duration</span></a></li>
                 <?php } ?>
-	            <li><a  class="withripple" href="<?=site_url()?>reports/parent_nominated_homestay"><span>Parents nominated homestay</span></a></li>
-	            <li><a  class="withripple" href="<?=site_url()?>reports/caregiving_service"><span>Caregiving service report</span></a></li>
+                  <li><a  class="withripple" href="<?=site_url()?>reports/caregiving_service"><span>Caregiving service report</span></a></li>
+                 <li><a  class="withripple" href="<?=site_url()?>reports/college_auditing"><span>College audit</span></a></li>
+                   <li><a  class="withripple" href="<?=site_url()?>reports/feedback"><span>Feedback</span></a></li>   <li><a  class="withripple" href="<?=site_url()?>reports/hfa"><span>Host family</span></a></li>
+                <li><a  class="withripple" href="<?=site_url()?>reports/incidents"><span>Incidents</span></a></li>
+                <li><a  class="withripple" href="<?=site_url()?>reports/insurance"><span>Insurance</span></a></li>
 	            <li><a  class="withripple" href="<?=site_url()?>reports/invoice"><span>Invoice</span></a></li>
-	            <li><a  class="withripple" href="<?=site_url()?>reports/booking_regularCheckups"><span>Booking regular checkups</span></a></li>
+	            <li><a  class="withripple" href="<?=site_url()?>reports/parent_nominated_homestay"><span>Parents nominated homestay</span></a></li>
+	            <li><a  class="withripple" href="<?=site_url()?>reports/booking_regularCheckups"><span>Regular checkups</span></a></li>
+                <li><a  class="withripple" href="<?=site_url()?>reports/revisits"><span>Revisits</span></a></li>
+                
+                <li><a  class="withripple" href="<?=site_url()?>reports/tour_groups"><span>Tour groups</span></a></li>
+               
+                <li><a  class="withripple" href="<?=site_url()?>reports/wwcc"><span>WWCC</span></a></li>
+               
+                
+	           
 			</ul>
     </li>
     
