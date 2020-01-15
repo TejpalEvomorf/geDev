@@ -272,14 +272,9 @@ else
 	            <li><a  class="withripple" href="<?=site_url()?>reports/parent_nominated_homestay"><span>Parents nominated homestay</span></a></li>
 	            <li><a  class="withripple" href="<?=site_url()?>reports/booking_regularCheckups"><span>Regular checkups</span></a></li>
                 <li><a  class="withripple" href="<?=site_url()?>reports/revisits"><span>Revisits</span></a></li>
-                
                 <li><a  class="withripple" href="<?=site_url()?>reports/tour_groups"><span>Tour groups</span></a></li>
-               
-                <li><a  class="withripple" href="<?=site_url()?>reports/wwcc"><span>WWCC</span></a></li>
-               
-                
-	           
-			</ul>
+               <li><a  class="withripple" href="<?=site_url()?>reports/wwcc"><span>WWCC</span></a></li>
+            </ul>
     </li>
     
     </ul>
