@@ -1699,9 +1699,10 @@ function changeStatus($data)
 			unset($insertData['bedrooms']);
 			$insertData['date_visited']=$dateCalled;
 			$insertData['employee']=$data['hfaCopyVisitReport_emp'];
-			$insertData['date']=date('Y-m-d H:i:s');
-			$sql="INSERT INTO `hfa_visitReport`(`hfa_id`, `date_visited`, `revisit`, `employee`, `exterior`, `exterior_commnets`, `interior`, `interior_comments`, `homeliness`, `homeliness_comments`, `cleanliness`, `cleanliness_comments`, `family_warmth`, `family_warmth_comments`, `floor_type`, `no_of_bedrooms`, `no_of_bedrooms_used`, `no_of_bathrooms`, `no_of_bathrooms_used`, `smoke_alarm`, `smoke_alarm_info`, `floor_type_SF`, `no_of_bedrooms_SF`, `no_of_bedrooms_used_SF`, `no_of_bathrooms_SF`, `no_of_bathrooms_used_SF`, `smoke_alarm_SF`, `smoke_alarm_info_SF`, `sa_living`, `sa_living_comments`, `sa_dining`, `sa_dining_comments`, `sa_kitchen`, `sa_kitchen_comments`, `sa_laundry`, `sa_laundry_comments`, `sa_backyard`, `sa_backyard_comments`, `sa_internet`, `sa_internet_comments`, `sa_key`, `sa_key_comments`, `granny_flat`, `granny_flat_comments`, `sep_entrance`, `sep_entrance_comments`, `pool`, `pool_comments`, `anything`, `anything_comments`, `camera`, `camera_comments`, `host_exp`, `multicultural`, `interest`, `religious`, `here_referral`, `here_adv_media`, `here_fb`, `someone_at_home`, `someone_at_home_comments`, `single_parent`, `single_parent_comments`, `2parents`, `2parents_comments`, `strength`, `weakness`, `comments`, `date`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-			$this->db->query($sql,$insertData);
+			$insertData['date']=date('Y-m-d H:i:s');//see($insertData);
+			//$sql="INSERT INTO `hfa_visitReport`(`hfa_id`, `date_visited`, `revisit`, `employee`, `exterior`, `exterior_commnets`, `interior`, `interior_comments`, `homeliness`, `homeliness_comments`, `cleanliness`, `cleanliness_comments`, `family_warmth`, `family_warmth_comments`, `floor_type`, `no_of_bedrooms`, `no_of_bedrooms_used`, `no_of_bathrooms`, `no_of_bathrooms_used`, `smoke_alarm`, `smoke_alarm_info`, `floor_type_SF`, `no_of_bedrooms_SF`, `no_of_bedrooms_used_SF`, `no_of_bathrooms_SF`, `no_of_bathrooms_used_SF`, `smoke_alarm_SF`, `smoke_alarm_info_SF`, `sa_living`, `sa_living_comments`, `sa_dining`, `sa_dining_comments`, `sa_kitchen`, `sa_kitchen_comments`, `sa_laundry`, `sa_laundry_comments`, `sa_backyard`, `sa_backyard_comments`, `sa_internet`, `sa_internet_comments`, `sa_key`, `sa_key_comments`, `granny_flat`, `granny_flat_comments`, `sep_entrance`, `sep_entrance_comments`, `pool`, `pool_comments`, `anything`, `anything_comments`, `camera`, `camera_comments`, `host_exp`, `multicultural`, `interest`, `religious`, `here_referral`, `here_adv_media`, `here_fb`, `someone_at_home`, `someone_at_home_comments`, `single_parent`, `single_parent_comments`, `2parents`, `2parents_comments`, `strength`, `weakness`, `comments`, `date`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			//$this->db->query($sql,$insertData);echo $this->db->last_query();
+			$this->db->insert('hfa_visitReport', $insertData);
 			$reportId=$this->db->insert_id();
 			
 			if(!empty($visitReport['bedrooms']))
@@ -1712,8 +1713,9 @@ function changeStatus($data)
 					unset($bedData['id']);
 					$bedData['report_id']=$reportId;
 					
-					$sqlBed="INSERT INTO `hfa_visitReport_beds`(`report_id`, `bed_id`, `bed`, `bed_comments`, `wardrobe`, `wardrobe_comments`, `window`, `window_comments`, `desk_chair`, `desk_chair_comments`, `bedroom_size`, `bedroom_size_comments`, `door_lock`, `door_lock_comments`, `private_bathroom`, `private_bathroom_comments`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-					$this->db->query($sqlBed, $bedData);
+					//$sqlBed="INSERT INTO `hfa_visitReport_beds`(`report_id`, `bed_id`, `bed`, `bed_comments`, `wardrobe`, `wardrobe_comments`, `window`, `window_comments`, `desk_chair`, `desk_chair_comments`, `bedroom_size`, `bedroom_size_comments`, `door_lock`, `door_lock_comments`, `private_bathroom`, `private_bathroom_comments`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					//$this->db->query($sqlBed, $bedData);
+					$this->db->insert('hfa_visitReport_beds', $bedData);
 				}
 			}
 		}
