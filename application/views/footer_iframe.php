@@ -1,9 +1,7 @@
-<link href="https://fonts.googleapis.com/css?family=Barlow:300,400,700&display=swap" rel="stylesheet"> 
-
-<link href="https://www.gediculture.com/ge/static/system/fonts/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">  
+<link href="<?=str_replace('http:','https:',static_url())?>system/fonts/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Barlow:300,400,700&display=swap" rel="stylesheet">  
 
 <link rel="stylesheet" href="https://www.globalexperience.com.au/css/bootstrap.min.css">
-<link href="https://www.globalexperience.com.au/css/font-awesome.css" rel="stylesheet">
 <link rel="stylesheet" href="https://www.globalexperience.com.au/css/tempusdominus-bootstrap-4.min.css">
 <link rel="stylesheet" href="https://www.globalexperience.com.au/css/style.css">
 <script src="https://www.globalexperience.com.au/js/jquery-3.3.1.min.js"></script>
