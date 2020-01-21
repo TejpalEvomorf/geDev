@@ -39,21 +39,24 @@ $floorsList=floorsList();
 		
 <div class=" full_width_field" id="flooring_select">
 			<span class="hfa1_app_full">
-			<label for="hfa1_floors" class="full_label">How many floors</label>
+			<label for="hfa1_floors" class="full_label">How many floors <span class="reqField">*</span></label>
 				<select class="full_input" id="hfa_floors" name="hfa_floors">
                 <option value="">Select one</option>
                 <?php foreach($floorsList as $flK=>$flV){?>
-	               	 <option class="floors" value="<?=$flK?>" <?php //if($formTwo['flooring']==$flK){echo 'selected="selected"';}?>><?=$flV?></option>
-                 <?php } ?>
+	               	 <option class="floors" value="<?=$flK?>" <?php if($formTwo['floors']==$flK){echo 'selected="selected"';}?>><?=$flV?></option>
+	               	                  <?php } ?>
+	            <option class="" value="0" <?php if($formTwo['floors']=='0'){echo 'selected="selected"';} ?>>Not Mentioned</option>
+   	                  
                 </select>
 			</span>
 			<div class=" full_width_field">
 			<span class="hfa1_app_full"> 
-			<label for="hfa1_granny_flat" class="full_label">Do you have a Granny Flat</label>
+			<label for="hfa1_granny_flat" class="full_label">Do you have a Granny Flat <span class="reqField">*</span></label>
 				<select class="full_input" name="granny_flat" id="granny_flat">
                 <option value="">Select one</option>
-                <option class="" value="0"  <?php //if($formTwo['s_detector']=="0"){echo 'selected="selected"';}?>>No</option>
-                <option class="" value="1"  <?php //if($formTwo['s_detector']=="1"){echo 'selected="selected"';}?>>Yes</option>
+                <option class="select_granny_flat" value="2"  <?php if($formTwo['granny_flat']=="2"){echo 'selected="selected"';}?>>No</option>
+                <option class="select_granny_flat" value="1"  <?php if($formTwo['granny_flat']=="1"){echo 'selected="selected"';}?>>Yes</option>
+                <option class="" value="0" <?php if($formTwo['granny_flat']=="0"){echo 'selected="selected"';}?>>Not Mentioned</option>
                 </select>
 			</span>
 </div>
@@ -268,16 +271,20 @@ if($formTwo['bedrooms_avail']>=$x && canDeactivateRoom($formTwo['bedroomDetails'
 
 <div class=" half_width_field">
 			<span class="hfa1_app_half margin_10">
-			<label for="hfa1_room_location" class="full_label">Room location</label>
-				<select class="half_input" id="hfa_room_location" name="hfa_room_location">
+			<label for="hfa1_room_location" class="full_label">Room location <span class="reqField">*</span></label>
+				<select class="half_input hfa_room_location student_room_location" name="bedroom-<?=$x?>[student_room]" id="student_room-<?=$x;?>" >
                 <option value="" class="">Select one</option>
                   <?php foreach($floorsList as $flK=>$flV){?>
-	               	 <option class="sha_location" style="display: none;" value="<?=$flK?>" <?php //if($formTwo['flooring']==$flK){echo 'selected="selected"';}?>><?=$flV?></option>
+	               	 <option class="sha_location" style="display: none;" value="<?=$flK?>" <?php if(count($formTwo['bedroomDetails']) >= $x){
+	               	 	if($formTwo['bedroomDetails'][$x-1]['floor']==$flK){echo 'selected="selected"';}
+	               	 } ?>><?=$flV?></option>
                  <?php } ?>
                
                 
-                <option class="location_granny_flat" value="" style="display:none;">Granny Flat</option>
-
+                <option class="location_granny_flat"  style="display:none;" value="g"  <?php if(count($formTwo['bedroomDetails']) >= $x){
+	               	 	if($formTwo['bedroomDetails'][$x-1]['floor']=='g'){echo 'selected="selected"';}
+	               	 } ?>>Granny Flat</option>
+	             <option class='' value='0' <?php if(count($formTwo['bedroomDetails'])>=$x){if($formTwo['bedroomDetails'][$x-1]['floor']=='0')echo 'selected="selected"';{}} ?>>Not Mentioned</option>
                 </select>
 			</span>
 			<span class="hfa1_app_half ">
@@ -290,7 +297,6 @@ if($formTwo['bedrooms_avail']>=$x && canDeactivateRoom($formTwo['bedroomDetails'
 			</span>
 			
 </div>
-
 <div class=" full_width_field left_margin" id="access_room_outside_<?php echo $x;?>" <?php if($formTwo['bedrooms_avail']>=$x){if($formTwo['bedroomDetails'][$x-1]['access']!=1){?>style="display:none;"<?php }}else{?>style="display:none;"<?php } ?>>
 			<span class="hfa1_app_full">
 			<label for="hfa1_grany_flat" class="full_label hidden_label">Is it a granny flat? <span class="reqField">*</span></label>
@@ -299,8 +305,7 @@ if($formTwo['bedrooms_avail']>=$x && canDeactivateRoom($formTwo['bedroomDetails'
             <input type="radio" style="float:left; width:20px !important; margin-right:5px;" name="bedroom-<?=$x?>[flat_grany]" value="0" <?php if($formTwo['bedrooms_avail']>=$x){if($formTwo['bedroomDetails'][$x-1]['granny_flat']=="0"){?>checked="checked"<?php }} ?>> 
             <label style="float:left; margin-right:35px; margin-bottom:13px; " for="" class="selttwo">No</label>
 			</span>
-</div>
-		
+</div>	
       
 <div class=" full_width_field">
 			<span class="hfa1_app_full">
@@ -394,49 +399,32 @@ if($formTwo['bedrooms_avail']>=$x && canDeactivateRoom($formTwo['bedroomDetails'
 
 <!--Add Host Bedroom -->
 
-<?php
+<?php //see($formTwo['hostbedroomDetails']);
 for($x=1;$x<=9;$x++)
 {
-?>
-<input type="hidden" name="bedroom-<?=$x?>[bed_id]" value="<?php if($formTwo['bedrooms_avail']>=$x){echo $formTwo['bedroomDetails'][$x-1]['id'];}?>">
-
+?> 
+<?php if(!empty($formTwo['hostbedroomDetails'])){ ?>
+<input type="hidden" name="hbedroom-<?php echo $x;?>[hbed_id]" value="<?php if(($formTwo['bedrooms']-$formTwo['bedrooms_avail'])>=$x){if($formTwo['hostbedroomDetails']!=''){echo $formTwo['hostbedroomDetails'][$x-1]['id'];}}?>">
+<?php } ?>
+ 
 <fieldset class="hfa1_top_block_bedrooms  hfa_bedroom_location" <?php if(($formTwo['bedrooms']-$formTwo['bedrooms_avail'])<$x){?>style="display:none; "<?php } ?> id="hfa_bedroom_location_<?php echo $x;?>">
 	<div style="margin-left: 45px;margin-right: 45px;">
 <div class="hfa-member-heading-cont" >
-<h2>HOST BEDROOM <?php echo $x;?> </h2> 
-<?php  $bookbed= booking_bedroom( @$formTwo['bedroomDetails'][$x-1]['id']) ?>
-<?php  
-//if($bookbed!=0){
-if(count(@$formTwo['bedroomDetails'])>1){?>
-	<span class="famember-delete">
-    <i class="font16 material-icons">delete</i>
-    <input type="button" data-id="<?= @$formTwo['bedroomDetails'][$x-1]['id']  ?>" value="Delete" onclick="deletehfadetail(<?= @$formTwo['bedroomDetails'][$x-1]['id']  ?>,'bedroom',<?= @$formTwo['bedroomDetails'][$x-1]['application_id']  ?>,<?= @count(@$formTwo['bedroomDetails'])?>);"   class="hfabedroom ">
-    </span>    
-<?php }// }
-
-
-if($formTwo['bedrooms_avail']>=$x && canDeactivateRoom($formTwo['bedroomDetails'][$x-1]['id']))
-{
-?>
-	<span class="hfaRoomDeactivate">
-    	<i class="font16 material-icons">delete_forever</i>
-    	<input type="button" data-id="<?= @$formTwo['bedroomDetails'][$x-1]['id']  ?>" value="Deactivate" onclick="hfaRoomDeactivate(<?= @$formTwo['bedroomDetails'][$x-1]['id']  ?>,<?= @$formTwo['bedroomDetails'][$x-1]['application_id']  ?>);"   class="hfabedroom ">
-    </span> 
-<?php } ?>
+<h2>HOST BEDROOM <?php echo $x;?> </h2>
 </div>
     <div class="hfa1_home_left">
 <div class=" full_width_field">
 			<span class="hfa1_app_half margin_10">
-			<label for="hfa1_room_location" class="full_label">Room location</label>
-				<select class="full_input" id="hfa_room_location" name="hfa_room_location">
+			<label for="hfa1_room_location" class="full_label">Room location <span class="reqField">*</span></label>
+				<select class="full_input hfa_room_location host_room_location" name="hbedroom-<?php echo $x;?>[host_room]" id="host_room-<?php echo $x;?>" >
                 <option value="" class="">Select one</option>
                   <?php foreach($floorsList as $flK=>$flV){?>
-	               	 <option class="sha_location" style="display: none;" value="<?=$flK?>" <?php //if($formTwo['flooring']==$flK){echo 'selected="selected"';}?>><?=$flV?></option>
+	               	 <option class="sha_location" style="display: none;" value="<?=$flK?>" <?php if(count($formTwo['hostbedroomDetails'])>=$x){if(!empty($formTwo['hostbedroomDetails'])){if($formTwo['hostbedroomDetails'][$x-1]['floor']==$flK){echo 'selected="selected"';}}}?>><?=$flV?></option>
                  <?php } ?>
                
                 
-                <option class="location_granny_flat" value="" style="display:none;">Granny Flat</option>
-
+                <option class="location_granny_flat" style="display:none;" value="g"  <?php if(count($formTwo['hostbedroomDetails'])>=$x){if(!empty($formTwo['hostbedroomDetails'])){if($formTwo['hostbedroomDetails'][$x-1]['floor']=='g'){echo 'selected="selected"';}}} ?>>Granny Flat</option>
+                <option class="" value="0"  <?php if(count($formTwo['hostbedroomDetails'])==''){echo 'selected="selected"';}else if(count($formTwo['hostbedroomDetails'])>=$x){if(!empty($formTwo['hostbedroomDetails'])){if($formTwo['hostbedroomDetails'][$x-1]['floor']=='0'){echo 'selected="selected"';}}} ?>>Not Mentioned</option>
                 </select>
 			</span>
 			
@@ -452,7 +440,6 @@ if($formTwo['bedrooms_avail']>=$x && canDeactivateRoom($formTwo['bedroomDetails'
 </fieldset>
 
 </fieldset>
-
 
 
 <fieldset class="section column" id="tfa_6">
@@ -506,14 +493,16 @@ if($formTwo['bedrooms_avail']>=$x && canDeactivateRoom($formTwo['bedroomDetails'
   <div class=" full_width_field">
 			<span class="hfa1_app_full">
 			<label for="hfa_bathroom_avail-<?=$x?>" class="full_label">Bathroom Location <span class="reqField">*</span></label>
-				<select class="full_input" id="hfa_room_location" name="hfa_room_location">
+				<select class="full_input hfa_room_location bathroom_location" id="bathroom_floor-<?=$x;?>" name="bathroom-<?=$x?>[bathroom_floor]">
                 <option value="">Select one</option>
                 <?php foreach($floorsList as $flK=>$flV){?>
-	               	 <option class="sha_location" style="display: none;" value="<?=$flK?>" <?php //if($formTwo['floors']==$flK){echo 'selected="selected"';}?>><?=$flV?></option>
+	               	 <option class="sha_location" style="display: none;" value="<?=$flK?>" <?php if(count($formTwo['bathroomDetails']) >= $x){
+	               	 	if($formTwo['bathroomDetails'][$x-1]['floor']==$flK){echo 'selected="selected"';}
+	               	 } ?>><?=$flV?></option>
                  <?php } ?>
                 
-                <option class="location_granny_flat" value="" style="display:none;">Granny Flat</option>
-
+                <option class="location_granny_flat" style="display:none;" value="g"  <?php if(count($formTwo['bathroomDetails'])>=$x){if($formTwo['bathroomDetails'][$x-1]['floor']=='g'){echo 'selected="selected"';}}?>>Granny Flat</option>
+                <option class="" value="0" <?php if(count($formTwo['bathroomDetails'])>=$x){if($formTwo['bathroomDetails'][$x-1]['floor']=='0'){echo 'selected="selected"';}}?>>Not Mentioned</option>
                 </select>
 			</span>
 </div>  
@@ -728,11 +717,13 @@ function hfaRoomDeactivate(roomId,hfaId)
 
 $(document).ready(function(){
 
-$('#hfa_floors').change(function(){
-	var selected_floors = $(this).children("option:selected").val();
+
+$(window).on('load',function(){
+	var selected_floors = $('#hfa_floors').val();
 	
 	$(".sha_location").each(function(){
 		if($(this).attr("value") <= selected_floors){
+
 			$(this).show();
 		}
 		else{
@@ -740,20 +731,41 @@ $('#hfa_floors').change(function(){
 		}
 	});
 	
+	var granny_flat= $("#granny_flat").val();
+	if(granny_flat == '1'){
+		$(".location_granny_flat").show();
+		}
 
+	else{
+			$('.location_granny_flat').hide();		
+	}
 
 	});
 
-$("#granny_flat").change(function(){
-	var granny_flat= $(this).children("option:selected").val();
-	if(granny_flat == '1'){
-		$(".location_granny_flat").show();
+$('#hfa_floors').on('change', function(){
+	var selected_floors=$(this).val();
+	$('.sha_location').each(function(){
+		if($(this).val()<=selected_floors){
+			$(this).prop('selected',false);
+			$(this).show();
+			}
+		else{
+			$(this).prop('selected',false);
+			$(this).hide();
+		}
+	})
+});
+
+$('#granny_flat').on('change', function(){
+	var granny_flat = $(this).val();
+	$('.hfa_room_location option').prop('selected', false);
+	if(granny_flat==1){
+		$('.location_granny_flat').show();
 	}
 	else{
-		$(".location_granny_flat").hide();
-		
+		$('.location_granny_flat').hide();
 	}
-})
+});
 
 
 $('.hfa_room_avail_from, .hfa_room_avail_to, .hfa_room_date_leaving').datepicker({
@@ -805,7 +817,7 @@ $('.hfa_room_avail_from, .hfa_room_avail_to, .hfa_room_date_leaving').datepicker
 
 				});
 				
-			$('#hfa_bathroom_input')	.change(function(){
+			$('#hfa_bathroom_input').change(function(){
 					$('.hfa_bathroom_details').hide();
 					var bathroom=$('#hfa_bathroom_input').val();
 					if(bathroom!='')
@@ -829,6 +841,8 @@ $('.hfa_room_avail_from, .hfa_room_avail_to, .hfa_room_date_leaving').datepicker
 						var $hfa_bedroom_input=$('#hfa_bedroom_input');
 						var $hfa_bedroom_avail=$('#hfa_bedroom_avail');
 						var $hfa_bathroom_input=$('#hfa_bathroom_input');
+						var $hfa_floors=$('#hfa_floors');
+						var $granny_flat=$('#granny_flat');
 						var $hfa1_laundry_available=$('#hfa1_laundry_available');
 						var $hfa_flooring_select=$('#hfa_flooring_select');
 						var $hfa_flooring_other=$('#hfa_flooring_other');
@@ -838,6 +852,8 @@ $('.hfa_room_avail_from, .hfa_room_avail_to, .hfa_room_date_leaving').datepicker
 						var hfa_bedroom_input=$hfa_bedroom_input.val();
 						var hfa_bedroom_avail=$hfa_bedroom_avail.val();
 						var hfa_bathroom_input=$hfa_bathroom_input.val();
+						var hfa_floors=$hfa_floors.val();
+						var granny_flat=$granny_flat.val();
 						var hfa1_laundry_available=$hfa1_laundry_available.val();
 						var hfa_flooring_select=$hfa_flooring_select.val();
 						var hfa_flooring_other=$hfa_flooring_other.val();
@@ -847,6 +863,8 @@ $('.hfa_room_avail_from, .hfa_room_avail_to, .hfa_room_date_leaving').datepicker
 						removeFieldError($hfa_bedroom_input);
 						removeFieldError($hfa_bedroom_avail);
 						removeFieldError($hfa_bathroom_input);
+						removeFieldError($hfa_floors);
+						removeFieldError($granny_flat);
 						removeFieldError($hfa1_laundry_available);
 						removeFieldError($hfa_flooring_other);
 						removeFieldError($hfa_facility_other_val);
@@ -855,7 +873,10 @@ $('.hfa_room_avail_from, .hfa_room_avail_to, .hfa_room_date_leaving').datepicker
 						var hfa_bed_flooring_other_val=true;
 						var room_type_select=true;
 						var room_flooring_select=true;
+						var student_room_location=true;
+						var host_room_location=true;
 						var hfa_room_availability=true;
+						var bathroom_location=true;
 						
 						$('.hfa_bed_flooring_other_val').each(function(){
 								var bedId=$(this).parents('div').attr('id').split('_')[2];
@@ -880,7 +901,30 @@ $('.hfa_room_avail_from, .hfa_room_avail_to, .hfa_room_date_leaving').datepicker
 								else	
 									removeFieldError($(this));
 							});
-							
+
+							$('.student_room_location').each(function(){
+								var bedId=$(this).attr('id').split('-')[1];
+
+								if($("#hfa_bedroom_avail_details_"+bedId).is(":visible") && $(this).val()=='')
+								{
+									addFieldError($(this));
+									student_room_location=false;
+								}
+								else	
+									removeFieldError($(this));
+						});
+
+						$('.host_room_location').each(function(){
+								var bedId=$(this).attr('id').split('-')[1];
+
+								if($("#hfa_bedroom_location_"+bedId).is(":visible") && $(this).val()=='')
+								{
+									addFieldError($(this));
+									host_room_location=false;
+								}
+								else	
+									removeFieldError($(this));
+						});							
 							$('.room_flooring_select').each(function(){
 								var bedId=$(this).attr('id').split('-')[1];
 								
@@ -905,13 +949,24 @@ $('.hfa_room_avail_from, .hfa_room_avail_to, .hfa_room_date_leaving').datepicker
 									removeFieldError($(this));
 							});
 
-						
+							$('.bathroom_location').each(function(){
+								var bathId=$(this).attr('id').split('-')[1];
+
+								if($("#hfa_bathroom_avail_details_"+bathId).is(":visible") && $(this).val()=='')
+								{
+									addFieldError($(this));
+									bathroom_location=false;
+								}
+								else	
+									removeFieldError($(this));
+						});
+
 						var hfa_room_avail_from=true;
 						var hfa_bathroom_avail=true;
 						hfa_room_avail_from=multipleFieldValidation('hfa_room_avail_from');
 						hfa_bathroom_avail=multipleFieldValidation('hfa_bathroom_avail');
 						
-						if(hfa_bedroom_input=='' || hfa_bathroom_input=='' || hfa1_laundry_available==''  || (hfa_flooring_select==5 && hfa_flooring_other=='') || ($facility_others.is(':checked') && hfa_facility_other_val=='') || ($('#hfa_bedroom_avail').is(':visible') && hfa_bedroom_avail=='') || !hfa_bed_flooring_other_val || !room_type_select || !room_flooring_select || !hfa_room_availability || !hfa_room_avail_from || !hfa_bathroom_avail)
+						if(hfa_bedroom_input=='' || hfa_bathroom_input=='' || hfa_floors=='' || granny_flat=='' || hfa1_laundry_available==''  || (hfa_flooring_select==5 && hfa_flooring_other=='') || ($facility_others.is(':checked') && hfa_facility_other_val=='') || ($('#hfa_bedroom_avail').is(':visible') && hfa_bedroom_avail=='') || !hfa_bed_flooring_other_val || !room_type_select || !student_room_location || !host_room_location || !room_flooring_select || !hfa_room_availability || !hfa_room_avail_from || !hfa_bathroom_avail || !bathroom_location)
 						{
 								if(hfa_bedroom_input=='')
 									addFieldError($hfa_bedroom_input);
@@ -922,7 +977,16 @@ $('.hfa_room_avail_from, .hfa_room_avail_to, .hfa_room_date_leaving').datepicker
 									addFieldError($hfa_bathroom_input);
 								else	
 									removeFieldError($hfa_bathroom_input);
-									
+								if(hfa_floors=='')
+									addFieldError($hfa_floors);
+								else
+									removeFieldError($hfa_floors);
+								
+								if(granny_flat=='')
+									addFieldError($granny_flat);
+								else
+									removeFieldError($granny_flat);
+
 								if(hfa1_laundry_available=='')	
 									addFieldError($hfa1_laundry_available);
 								else	

@@ -106,7 +106,7 @@ $datePickerDobSettings=datePickerDobSettings();
 <div class=" full_width_field">
 			<span class="hfa1_app_full">
 			<label class="full_label" for="hfa_lname_family-<?=$x?>">Last name <span class="reqField">*</span></label>
-			<input type="text" class="full_input hfa_lname_family errorOnBlur" name="hfa_family-<?=$x?>[lname]" value="<? if($x==1){echo $fmLname;}?>" id="hfa_lname_family-<?=$x?>">
+			<input type="text" class="full_input hfa_lname_family errorOnBlur" name="hfa_family-<?=$x?>[lname]" value="<?php if($x==1){echo $fmLname;}?>" id="hfa_lname_family-<?=$x?>">
 			</span>
 </div>
 
@@ -128,7 +128,7 @@ $datePickerDobSettings=datePickerDobSettings();
 <div class=" full_width_field">
 			<span class="hfa1_app_full">
 			<label class="full_label" for="hfa_contact_number_family-<?=$x?>">Contact number <span class="reqField">*</span></label>
-			<input type="text" class="full_input" name="hfa_family-<?=$x?>[contact_number]" value="<? if($x==1){echo $fmMobile;}?>" id="hfa_contact_number_family-<?=$x?>">
+			<input type="text" class="full_input" name="hfa_family-<?=$x?>[contact_number]" value="<?php if($x==1){echo $fmMobile;}?>" id="hfa_contact_number_family-<?=$x?>">
 			</span>
 </div>
 

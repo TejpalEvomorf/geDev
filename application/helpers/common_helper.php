@@ -329,6 +329,7 @@ function getHfaTwoAppDetails($id)
 		$res['facilities']=$obj->hfa_model->getHfaTwoAppDetailsFacilities($id);
 		$res['bedroomDetails']=$obj->hfa_model->getHfaTwoAppDetailsBedrooms($id);
 		$res['bathroomDetails']=$obj->hfa_model->getHfaTwoAppDetailsBathrooms($id);
+		$res['hostbedroomDetails']=$obj->hfa_model->getHfaTwoAppDetailsHostBedroom($id);
 	}
 	return $res;
 }

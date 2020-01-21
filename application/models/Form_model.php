@@ -105,8 +105,8 @@ class Form_model extends CI_Model {
 		/*$sqlUpdate="update `hfa_two` set `d_type`='".$data['hfa_dwellingType']."', `flooring`='".$data['hfa_flooring_select']."', `flooring_other`='".$data['hfa_flooring_other']."', `internet`='".$data['hfa_internet_to_students']."', `internet_type`='".$data['hfa_internet_to_students_type']."', `s_detector`='".$data['smoke_detector']."', `bedrooms`='".$data['hfa_bedroom']."', `bedrooms_avail`='".$data['hfa_bedroom_avail']."', `bathrooms`='".$data['hfa_bathroom_input']."', `laundry`='".$data['hfa_laundry_avail']."', `laundry_outside`='".$data['hfa_laundry_avail_outside']."', `home_desc`='".$data['hfa_home_desc']."'  where `id`='".$data['id']."'";
 		$this->db->query($sqlUpdate);*/
 		
-		$sqlUpdate="update `hfa_two` set `d_type`=?, `flooring`=?, `flooring_other`=?, `internet`=?, `internet_type`=?, `s_detector`=?, `bedrooms`=?, `bedrooms_avail`=?, `bathrooms`=?, `laundry`=?, `laundry_outside`=?, `home_desc`=?  where `id`=?";
-		$this->db->query($sqlUpdate,array($data['hfa_dwellingType'],$data['hfa_flooring_select'],$data['hfa_flooring_other'],$data['hfa_internet_to_students'],$data['hfa_internet_to_students_type'],$data['smoke_detector'],$data['hfa_bedroom'],$data['hfa_bedroom_avail'],$data['hfa_bathroom_input'],$data['hfa_laundry_avail'],$data['hfa_laundry_avail_outside'],$data['hfa_home_desc'],$data['id']));
+		$sqlUpdate="update `hfa_two` set `d_type`=?, `floors`=?, `granny_flat`=?, `flooring`=?, `flooring_other`=?, `internet`=?, `internet_type`=?, `s_detector`=?, `bedrooms`=?, `bedrooms_avail`=?, `bathrooms`=?, `laundry`=?, `laundry_outside`=?, `home_desc`=?  where `id`=?";
+		$this->db->query($sqlUpdate,array($data['hfa_dwellingType'],$data['hfa_floors'],$data['granny_flat'],$data['hfa_flooring_select'],$data['hfa_flooring_other'],$data['hfa_internet_to_students'],$data['hfa_internet_to_students_type'],$data['smoke_detector'],$data['hfa_bedroom'],$data['hfa_bedroom_avail'],$data['hfa_bathroom_input'],$data['hfa_laundry_avail'],$data['hfa_laundry_avail_outside'],$data['hfa_home_desc'],$data['id']));
 		
 		$sqlUpdateStep="update `hfa_one` set `step`='3'  where `id`='".$data['id']."'";
 		$this->db->query($sqlUpdateStep);
@@ -180,10 +180,25 @@ class Form_model extends CI_Model {
 				if($data['bedroom-'.$x]['room_flooring_select']!=5)
 					$data['bedroom-'.$x]['hfa_bed_flooring_other_val']='';
 				
-				$sql="insert into `hfa_bedrooms` (`application_id`,`type`,`flooring`,`flooring_other`,`access`,`granny_flat`,`internal_ensuit`,`avail`,`avail_from`,`avail_to`,`currently_hosting`,`date_leaving`,`age`,`gender`,`nation`)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-				$this->db->query($sql,array($data['id'],$data['bedroom-'.$x]['room_select'],$data['bedroom-'.$x]['room_flooring_select'],$data['bedroom-'.$x]['hfa_bed_flooring_other_val'],$data['bedroom-'.$x]['hfa_access_room'],$data['bedroom-'.$x]['flat_grany'],$data['bedroom-'.$x]['internal_ensuite'],$data['bedroom-'.$x]['hfa_room_availability'],$data['bedroom-'.$x]['hfa_room_avail_from'],$data['bedroom-'.$x]['hfa_room_avail_to'],$data['bedroom-'.$x]['hfa_hosting_student'],$data['bedroom-'.$x]['hfa_room_date_leaving'],$data['bedroom-'.$x]['student_age'],$data['bedroom-'.$x]['student_gender'],$data['bedroom-'.$x]['student_nation']));
+				$sql="insert into `hfa_bedrooms` (`application_id`,`type`,`flooring`,`flooring_other`,`floor`,`access`,`granny_flat`,`internal_ensuit`,`avail`,`avail_from`,`avail_to`,`currently_hosting`,`date_leaving`,`age`,`gender`,`nation`)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				$this->db->query($sql,array($data['id'],$data['bedroom-'.$x]['room_select'],$data['bedroom-'.$x]['room_flooring_select'],$data['bedroom-'.$x]['hfa_bed_flooring_other_val'],$data['bedroom-'.$x]['student_room'],$data['bedroom-'.$x]['hfa_access_room'],$data['bedroom-'.$x]['flat_grany'],$data['bedroom-'.$x]['internal_ensuite'],$data['bedroom-'.$x]['hfa_room_availability'],$data['bedroom-'.$x]['hfa_room_avail_from'],$data['bedroom-'.$x]['hfa_room_avail_to'],$data['bedroom-'.$x]['hfa_hosting_student'],$data['bedroom-'.$x]['hfa_room_date_leaving'],$data['bedroom-'.$x]['student_age'],$data['bedroom-'.$x]['student_gender'],$data['bedroom-'.$x]['student_nation']));
 			}
 		//Bedrooms table #ENDS
+		//Host Bedrooom table #STARTS
+
+			for($x=1;$x<=($data['hfa_bedroom'] - $data['hfa_bedroom_avail']); $x++){
+				if($data['hbedroom-'.$x]['hbed_id']!="")
+				{
+					$sql="update `hfa_bedrooms_hostfamily` set `application_id`=?,`floor`=? where `id`='".$data['hbedroom-'.$x]['hbed_id']."'";
+					$this->db->query($sql,array($data['id'],$data['hbedroom-'.$x],$data['hbedroom-'.$x]['host_room']));
+				}
+				else
+				{
+					$sql="insert into `hfa_bedrooms_hostfamily` (`application_id`,`floor`)values(?,?)";
+					$this->db->query($sql,array($data['id'],$data['hbedroom-'.$x]['host_room']));
+				}
+			}
+		//Host Bedroom table #End
 		
 		//Bathrooms table #STARTS
 			$sqlDelBed="delete from `hfa_bathrooms` where `application_id`='".$data['id']."'";
@@ -201,8 +216,8 @@ class Form_model extends CI_Model {
 				if($data['bathroom-'.$x]['hfa_room_ensuite']!=0)
 					$data['bathroom-'.$x]['flat_grany_bathroom']=1;
 										
-				$sql="insert into `hfa_bathrooms` (`application_id`,`avail_to_student`,`toilet`,`shower`,`bath`,`ensuit`,`in_out`)values(?,?,?,?,?,?,?)";
-				$this->db->query($sql,array($data['id'],$data['bathroom-'.$x]['hfa_bathroom_avail'],$data['bathroom-'.$x]['bathroomHas_toilet'],$data['bathroom-'.$x]['bathroomHas_shower'],$data['bathroom-'.$x]['bathroomHas_bath'],$data['bathroom-'.$x]['hfa_room_ensuite'],$data['bathroom-'.$x]['flat_grany_bathroom']));
+				$sql="insert into `hfa_bathrooms` (`application_id`,`avail_to_student`,`floor`,`toilet`,`shower`,`bath`,`ensuit`,`in_out`)values(?,?,?,?,?,?,?,?)";
+				$this->db->query($sql,array($data['id'],$data['bathroom-'.$x]['hfa_bathroom_avail'],$data['bathroom-'.$x]['bathroom_floor'],$data['bathroom-'.$x]['bathroomHas_toilet'],$data['bathroom-'.$x]['bathroomHas_shower'],$data['bathroom-'.$x]['bathroomHas_bath'],$data['bathroom-'.$x]['hfa_room_ensuite'],$data['bathroom-'.$x]['flat_grany_bathroom']));
 				//echo $this->db->last_query()."<br>";
 			}
 		//Bathrooms table #ENDS

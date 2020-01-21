@@ -406,7 +406,20 @@ $employeeList=employeeList();
                                                                               <a data-toggle="collapse" data-parent="#bedroomAccordion" href="#collapseBedroomAccordion-<?=$bdK+1?>">
                                                                               <div class="panel-heading">
                                                                               <h5 class="media-heading">STUDENT BEDROOM <?=$bdK+1?>
+                                                                                <strong >
+                                                                                    	Room Location:
+                                                                                </strong>    	
+                                                                                    	<?php 
+                                                                                    	if($bdV['floor']=='0'){echo 'Not Mentioned';}
+                                                                                    	elseif ($bdV['floor']=='g'){echo 'Granny Flat';}
+                                                                                    	else{echo $bdV['floor'].' Floor';}
+                                                                                    	 
+                                                                                    	?>
+                                                                                    	
+                                                                                    	
+                                                                                 
                                                                               </h5>
+                                                                                                                                                                 	</p>
                                                                               </div>
                                                                               </a>
                                                                       </div>
@@ -418,6 +431,17 @@ $employeeList=employeeList();
                                                                                     <tr>
                                                                                         <th>Room type</th>
                                                                                         <td><?=$roomTypeList[$bdV['type']]?></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                    	<th>Room Location</th>
+                                                                                    	<td><?php 
+                                                                                    	if($bdV['floor']=='0'){echo 'Not Mentioned';}
+                                                                                    	elseif ($bdV['floor']=='g'){echo 'Granny Flat';}
+                                                                                    	else{echo $bdV['floor'].' Floor';}
+                                                                                    	 
+                                                                                    	?></td>
+                                                                                    	
+                                                                                    	
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <th>Flooring type</th>
@@ -518,9 +542,68 @@ $employeeList=employeeList();
                                                                       </div>
                                                                 </div> 											
                                                      <?php }?>
+
+<!-- host bedroom starts -->
+<?php foreach($formTwo['hostbedroomDetails'] as $hbdK=>$hbdV){?>
+                                                                <div class="panel panel-default">
+                                                                      <div class="media-body pb-md">
+                                                                              <a data-toggle="collapse" data-parent="#hbedroomAccordion" href="#collapseHBedroomAccordion-<?=$hbdK+1?>">
+                                                                              <div class="panel-heading">
+                                                                              <h5 class="media-heading">HOST BEDROOM <?=$hbdK+1?>
+                                                                              <strong>Room Location: </strong>
+                                                                                    	<?php 
+                                                                                    	if($hbdV['floor']=='0'){echo 'Not Mentioned';}
+                                                                                    	elseif ($hbdV['floor']=='g'){echo 'Granny Flat';}
+                                                                                    	else{echo $hbdV['floor'].' Floor';}
+                                                                                    	 
+                                                                                    	?>
+                                                                                    	
+                                                                              </h5>
+                                                                              </div>
+                                                                              </a>
+                                                                      </div>
+                                                                         
+                                                                      <div id="collapseHBedroomAccordion-<?=$hbdK+1?>" class="collapse">
+                                                                      <div class="panel-body">
+                                                                          <table class="table about-table">
+                                                                              <tbody>
+
+                                                                                    <tr>
+                                                                                    	<th>Room Location</th>
+                                                                                    	<td><?php 
+                                                                                    	if($hbdV['floor']=='0'){echo 'Not Mentioned';}
+                                                                                    	elseif ($hbdV['floor']=='g'){echo 'Granny Flat';}
+                                                                                    	else{echo $hbdV['floor'].' Floor';}
+                                                                                    	 
+                                                                                    	?></td>
+                                                                                    	
+                                                                                    	
+                                                                                    </tr>
+ 
+                                                                                 
+                                                                                    <?php
+                                                                                              if($bdV['avail']!="1" && strtotime($bdV['avail_from'])>strtotime(date('Y-m-d'))){?>
+                                                                                    <tr>
+                                                                                        <th>Student currently living in this room</th>
+                                                                                        <td>
+                                                                                         
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <?php } ?>
+                                                                              </tbody>
+                                                                          </table>
+                                                                      
+                                                                      </div>
+                                                                      </div>
+                                                                </div> 											
+                                                     <?php }?>
+
+
+                                                   <!-- Host bedroom ends -->  
                                                 </div>
                                             </div>
                                   </div>
+                               
                   	</div>
                     </div>
                             
@@ -539,7 +622,15 @@ $employeeList=employeeList();
                                                         		
                                                                 <div class="panel panel-default">
                                                                       <div class="media-body pb-md">
-                                                                              <a data-toggle="collapse" data-parent="#bathroomAccordion" href="#collapseBathroomAccordion-<?=$btK+1?>"><div class="panel-heading"><h5 class="media-heading">BATHROOM <?=$btK+1?></h5></div></a>
+                                                                              <a data-toggle="collapse" data-parent="#bathroomAccordion" href="#collapseBathroomAccordion-<?=$btK+1?>"><div class="panel-heading"><h5 class="media-heading">BATHROOM <?=$btK+1?>
+                                                                              	<strong>Bathroom Location:</strong>
+                                                                                    	<?php 
+                                                                                    	if($btV['floor']=='0'){echo 'Not Mentioned';}
+                                                                                    	elseif ($btV['floor']=='g'){echo 'Granny Flat';}
+                                                                                    	else{echo $btV['floor'].' Floor';}
+                                                                                    	 
+                                                                                    	?>
+                                                                              </h5></div></a>
                                                                       </div>
                                                                       
                                                                       <div id="collapseBathroomAccordion-<?=$btK+1?>" class="collapse">
@@ -557,6 +648,19 @@ $employeeList=employeeList();
                                                                                             ?>
                                                                                           </td>
                                                                                       </tr>
+
+                                                                                    <tr>
+                                                                                    	<th>Bathroom Location</th>
+                                                                                    	<td><?php 
+                                                                                    	if($btV['floor']=='0'){echo 'Not Mentioned';}
+                                                                                    	elseif ($btV['floor']=='g'){echo 'Granny Flat';}
+                                                                                    	else{echo $btV['floor'].' Floor';}
+                                                                                    	 
+                                                                                    	?></td>
+                                                                                    	
+                                                                                    	
+                                                                                    </tr>
+ 
                                                                                       <tr>
                                                                                           <th>Bathroom includes</th>
                                                                                           <td>

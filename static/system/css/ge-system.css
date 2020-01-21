@@ -244,7 +244,7 @@
 /*	color:hsl(88, 50%, 53%);*/
 }
 
-#bedroomAccordion .media-body.pb-md, #bedroomAccordionOU .media-body.pb-md,#bathroomAccordion .media-body.pb-md, #familyMemberAccordion .media-body.pb-md, #familyMemberAccordionPop .media-body.pb-md, #incidentFollowUpAccordionPop .media-body.pb-md {
+#bedroomAccordion .media-body.pb-md, #hbedroomAccordion .media-body.pb-md, #bedroomAccordionOU .media-body.pb-md,#bathroomAccordion .media-body.pb-md, #familyMemberAccordion .media-body.pb-md, #familyMemberAccordionPop .media-body.pb-md, #incidentFollowUpAccordionPop .media-body.pb-md {
     display: block;
     height: 100%;
     padding: 0 !important;
@@ -252,7 +252,7 @@
 
 
 
-#bedroomAccordion .panel-heading, #bedroomAccordionOU .panel-heading, #bathroomAccordion .panel-heading,  #familyMemberAccordion .panel-heading,  #familyMemberAccordionPop .panel-heading,  #incidentFollowUpAccordionPop .panel-heading {
+#bedroomAccordion .panel-heading, #hbedroomAccordion .panel-heading, #bedroomAccordionOU .panel-heading, #bathroomAccordion .panel-heading,  #familyMemberAccordion .panel-heading,  #familyMemberAccordionPop .panel-heading,  #incidentFollowUpAccordionPop .panel-heading {
     padding: 17px 16px 11px !important;
 }
 
