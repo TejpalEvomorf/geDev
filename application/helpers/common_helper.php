@@ -480,7 +480,7 @@ function languageList()
                 '20'=>'Kurdish (Kurmanji)',
                 '21'=>'Kurdish (Sorani)',
                 '22'=>'Macedonian',
-                '23'=>'Malaysian',
+                '23'=>'Malay',
 				'40'=>'Nepali ',
                 '24'=>'None',
                 '25'=>'Other',
