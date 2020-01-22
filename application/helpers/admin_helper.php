@@ -1372,7 +1372,12 @@ function bookings_report_fields()
 	'apu_company'=>'APU Company',
 	'apu_arrival_date'=>'Arrival Date',
 	'apu_arrival_time'=>'Arrival Time',
-	'apu_flight_number'=>'Flight Number'
+	'apu_flight_number'=>'Flight Number',
+	'course_name' => 'Course Details',
+	'cg_company'=>'Caregiver company',
+	'cg_name'=>'Caregiver name',
+	'cg_mobile'=>'Caregiver mobile',
+	'cg_email'=>'Caregiver email'
 	);
 	return $reportFields;
 }
