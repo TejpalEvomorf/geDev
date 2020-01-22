@@ -1021,6 +1021,8 @@ class Reports extends CI_Controller {
 		$shaTwo=getShaTwoAppDetails($booking['student']);
 		$shaThree=getShaThreeAppDetails($booking['student']);
 		$hfaOne=getHfaOneAppDetails($booking['host']);
+		$caregiver=getCaregiverDetail($shaTwo['guardian_assigned']);
+		$caregiverCompany=getCaregiverCompanyDetail($caregiver['company']);
 		foreach($fields as $k=>$v)
 		{
 			$value='';
@@ -1266,6 +1268,33 @@ class Reports extends CI_Controller {
 				  else
 					  $value .= 'n/a';
 			}
+			elseif($v=='course_name')
+			{
+				if($shaThree['course_name'] && $shaThree['course_start_date'])
+				{
+				$value = 'Course: '.$shaThree['course_name'].' | Start date: '.date('d M Y',strtotime($shaThree['course_start_date']));
+				}
+				elseif($shaThree['course_start_date']=='0000-00-00' && !$shaThree['course_name'])
+				{
+				$value = 'Course not available | Start date not available';
+				}
+				elseif(!$shaThree['course_name'] && $shaThree['course_start_date'])
+				{
+				$value = 'Course not available'.' | Start Date: '.date('d M Y',strtotime($shaThree['course_start_date']));
+				}
+				if($shaThree['course_start_date']=='0000-00-00' && $shaThree['course_name'])
+				{
+				$value = 'Course: '.$shaThree['course_name'].' | Start date not available';
+				}
+			}
+			elseif($v=='cg_company')
+				$value=$caregiverCompany['name'];
+			elseif($v=='cg_name')
+				$value=$caregiver['fname'].' '.$caregiver['lname'];
+			elseif($v=='cg_mobile')
+				$value=$caregiver['phone'];
+			elseif($v=='cg_email')
+				$value=$caregiver['email'];
 			
 			$this->excel->getActiveSheet()->setCellValue($k.$x, $value);	
 		}
