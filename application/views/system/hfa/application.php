@@ -1,5 +1,6 @@
  <?php
 $hfaStatusList=hfaStatusList();
+	
 ?>
 
 <div class="container-fluid">
@@ -17,7 +18,16 @@ $hfaStatusList=hfaStatusList();
 					<h4 class="colorDarkgrey media-heading"><?=ucfirst($formOne['lname'])?> Family</h4>
 					Host Family Application Details<br /><br />
                     <a href="mailto:<?=$formOne['email']?>" class="mr-lg colorTeal icon"><i class="material-icons">email</i></a>
-                    <a href="callto:<?=$formOne['mobile']?>" class="mr-lg colorTeal icon"><i class="material-icons">call</i></a>
+                   <!--  <a href="callto:<?=$formOne['mobile']?>" class="mr-lg colorTeal icon"><i class="material-icons">call</i></a> -->
+                   <?php if($formOne['hfa_bookmark']=='0'){
+	$matchStatusShortlistedClass='matchStatusGrey';
+			$matchStatusShortlistedToolTip='Click to bookmark';
+			
+			}else{
+				$matchStatusShortlistedClass='matchStatusGreen';
+			$matchStatusShortlistedToolTip='Click to unmark';
+}?>
+                   <i class="fa fa-bookmark  mr-lg <?=$matchStatusShortlistedClass;?>" data-placement="bottom"  data-toggle="tooltip"  data-original-title="<?=$matchStatusShortlistedToolTip;?>" onclick="hostfamilybookmark($(this),<?=$formOne['id'] ;?>);"></i>
                     <?php
 if(ucfirst(@$formOne['hfa_registered_status'] )=='Online'){
 echo '<span class="label label-success offline-online">Online submission</span>';}else if(ucfirst(@$formOne['hfa_registered_status'] )=='Offline'){
