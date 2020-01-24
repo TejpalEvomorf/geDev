@@ -164,6 +164,21 @@ $duplicateShaFirst=getDuplicateShaFirst($formOne['id'])
                      	if($formTwo['guardianship_endDate']!='0000-00-00')
 					 		$guardianship_endDate=$formTwo['guardianship_endDate'];	
 					?>
+
+<!--care giver details start-->
+					<div  class="table-responsive">
+						
+						<table class="table about-table" style="margin:0 !important;">
+							<tbody id="careGiverDiv" >
+							<tr><td><b>Primary Contact: </b><?=$caregiverDetails['phone'];?></td></tr>
+							<tr><td><b>Primary Email: </b><?=$caregiverDetails['email'];?></td></tr>
+								
+								
+							</tbody>
+						</table>
+					</div>
+<!--caregiver details end-->
+
                        <div class="m-n form-group">
 						  	  <label for="guardianship_startDate" class="control-label">Caregiving start date</label>
 							  <input type="text" class="form-control" id="officeUse-guardianship_startDate" name="guardianship_startDate" value="<?php if($guardianship_startDate!=''){echo date('d/m/Y',strtotime($guardianship_startDate));}?>">
@@ -578,6 +593,28 @@ function allnote(id){
 				  });
 }
 $(document).ready(function(){
+
+	$("#officeUse-CGC").change(function(){
+		$("#careGiverDiv").html('');
+	})
+
+
+	$('#officeUse-guardian_assigned').on('change', function(){
+	$.ajax({
+	url: site_url+'caregiver/getCGDetailsDiv/'+$(this).val(),
+	success:function(data){
+	$("#careGiverDiv").fadeOut(function(){
+			$("#careGiverDiv").fadeIn(function(){
+			$("#careGiverDiv").html(data);
+	});
+	});
+
+	}
+	});
+});
+
+
+
 	$("input#shaBooking_day").TouchSpin({
 		  verticalbuttons: true,
 		  min: 0,

@@ -174,5 +174,13 @@ class Caregiver extends CI_Controller {
 			$return['cgList']=$options;
 			echo json_encode($return);
 		}
+
+		function getCGDetailsDiv($id)
+		{
+			$details=$this->caregiver_model->caregiverDetail($id);
+
+			echo "<tr><td><b>Primary Contact: </b>".$details['phone']."</td></tr> <tr><td><b>Primary Email: </b>".$details['email']."</td></tr>";
+
+		}
 		
 }
