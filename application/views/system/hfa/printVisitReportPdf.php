@@ -77,14 +77,16 @@ $styleTextLeftAlignWhite=' style="text-align:left;color:#fff;font-family: barlow
                                   <th <?=$styleTextLeftAlignWhite?>>Phone: <span style="font-weight:normal;"><?=$host['mobile']?></span></th>
                               </tr>
                       
-                              <!--<tr>
-                                  <th <?=$styleTextLeftAlignWhite?>>Date of visit/revisit: <span style="font-weight:normal;"><?=date('d M Y, h:i A',strtotime($visitReport['date_visited']))?></span></th>
-                              </tr>-->
+                              
                       
                               <tr>
                                   <th <?=$styleTextLeftAlignWhite?>>Interviewer: <span style="font-weight:normal;"><?=$empName?></span></th>
                               </tr>
-                      
+                              
+                              <tr>
+                                  <th <?=$styleTextLeftAlignWhite?>>Date of visit/revisit: <span style="font-weight:normal;"><?=date('d M Y, h:i A',strtotime($visitReport['date_visited']))?></span></th>
+                              </tr>
+
                            </tbody>
                       </table>
                   

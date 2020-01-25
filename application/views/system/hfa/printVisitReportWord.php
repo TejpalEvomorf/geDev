@@ -75,14 +75,16 @@ $nbsb="&nbsp;&nbsp;";
                                   <th <?=$styleTextLeftAlignWhite?>><?=$nbsb?>Phone: <span style="font-weight:normal;"><?=$host['mobile']?></span></th>
                               </tr>
                       
-                              <!--<tr>
-                                  <th <?=$styleTextLeftAlignWhite?>><?=$nbsb?>Date of visit/revisit: <span style="font-weight:normal;"><?=date('d M Y, h:i A',strtotime($visitReport['date_visited']))?></span></th>
-                              </tr>-->
-                      
+                              
                               <tr>
                                   <th <?=$styleTextLeftAlignWhite?>><?=$nbsb?>Interviewer: <span style="font-weight:normal;"><?=$empName?></span></th>
                               </tr>
+                            
+                              <tr>
+                                  <th <?=$styleTextLeftAlignWhite?>><?=$nbsb?>Date of visit/revisit: <span style="font-weight:normal;"><?=date('d M Y, h:i A',strtotime($visitReport['date_visited']))?></span></th>
+                              </tr>
                       
+
                            </tbody>
                       </table>
                   
