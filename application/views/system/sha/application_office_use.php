@@ -166,19 +166,11 @@ $duplicateShaFirst=getDuplicateShaFirst($formOne['id'])
 					?>
 
 <!--care giver details start-->
-					<div  class="table-responsive <?php if(!empty($caregiverDetails)){echo 'style="display:none;"';} ?>" >
+					<div  class="table-responsive" >
 						
 						<table class="table about-table" style="margin:0 !important;">
 							<tbody id="careGiverDiv" class="CGDetails">
-								<?php if(!empty($caregiverDetails)){
-									if($caregiverDetails['phone'] != 'N\A'){
-										$phone = $caregiverDetails['phone'];
-									}
-									else{
-										$phone = "Not Available";
-									}
-							echo "<tr><td><b>Primary Contact: </b>".$phone."</td></tr> <tr><td><b>Primary Email: </b>".$caregiverDetails['email']."</td></tr>";
-								 }?>
+								
 								
 							</tbody>
 						</table>
@@ -600,6 +592,16 @@ function allnote(id){
 }
 $(document).ready(function(){
 
+	$.ajax({
+		url: site_url+'caregiver/getCGDetailsDiv/'+$('#officeUse-guardian_assigned').val(),
+		success: function(data){
+			$("#careGiverDiv").fadeOut(function(){
+				$(this).fadeIn();
+				$(this).html(data);
+			})
+		}
+	});
+
 	$('.CGCclass').change(function(){
 		$('#careGiverDiv').hide()	
 
@@ -611,6 +613,9 @@ $(document).ready(function(){
 		$('#careGiverDiv').hide();
 	}
 	else{
+
+	
+		
 	$.ajax({
 		url: site_url+'caregiver/getCGDetailsDiv/'+$(this).val(),
 		success: function(data){
