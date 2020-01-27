@@ -1377,7 +1377,9 @@ function bookings_report_fields()
 	'cg_company'=>'Caregiver company',
 	'cg_name'=>'Caregiver name',
 	'cg_mobile'=>'Caregiver mobile',
-	'cg_email'=>'Caregiver email'
+	'cg_email'=>'Caregiver email',
+	'holidays_latest'=>'Latest holiday',
+	'holidays'=>'All holidays'
 	);
 	return $reportFields;
 }

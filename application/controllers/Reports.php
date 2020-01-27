@@ -1011,6 +1011,8 @@ class Reports extends CI_Controller {
 	$this->load->model('report_model');
 	$bookings=$this->report_model->bookingListForAuditingReport($data);//see($bookings);
 	
+	$this->load->model('booking_model');
+	
 	$stateList=stateList();
 	$genderList=genderList();
 	$bookingStatusList=bookingStatusList();
@@ -1295,6 +1297,24 @@ class Reports extends CI_Controller {
 				$value=$caregiver['phone'];
 			elseif($v=='cg_email')
 				$value=$caregiver['email'];
+			elseif($v=='holidays_latest' || $v=='holidays')
+			{
+				$bookingHolidays=$this->booking_model->holidaysByBooking($booking['id']);
+				if(empty($bookingHolidays))
+					$value='N/A';
+				else	
+				{
+					if($v=='holidays_latest')
+							$value=dateFormat($bookingHolidays[0]['start']).' - '.dateFormat($bookingHolidays[0]['end']);
+					elseif($v=='holidays')
+					{
+						$holidayArray=array();
+						foreach($bookingHolidays as $holiday)
+							$holidayArray[]=dateFormat($holiday['start']).' - '.dateFormat($holiday['end']);
+						$value=implode(' | ',$holidayArray);	
+					}
+				}
+			}
 			
 			$this->excel->getActiveSheet()->setCellValue($k.$x, $value);	
 		}
