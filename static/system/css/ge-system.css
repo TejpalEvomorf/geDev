@@ -1751,3 +1751,7 @@ cursor: not-allowed;
 .checkbox label {
     display: inline-flex;
 }
+
+.fa.fa-bookmark.mr-lg.dark-gray.matchStatusGrey {
+    color: #9e9e9e;
+}

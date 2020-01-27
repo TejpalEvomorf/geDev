@@ -17,7 +17,7 @@ $hfaStatusList=hfaStatusList();
 				<div class="colorLightgrey media-body pl-xl">
 					<h4 class="colorDarkgrey media-heading"><?=ucfirst($formOne['lname'])?> Family</h4>
 					Host Family Application Details<br /><br />
-                    <a href="mailto:<?=$formOne['email']?>" class="mr-lg colorTeal icon"><i class="material-icons">email</i></a>
+                    <a style="float:left;" href="mailto:<?=$formOne['email']?>" class="mr-lg colorTeal icon"><i class="material-icons">email</i></a>
                    <!--  <a href="callto:<?=$formOne['mobile']?>" class="mr-lg colorTeal icon"><i class="material-icons">call</i></a> -->
                    <?php if($formOne['hfa_bookmark']=='0'){
 	$matchStatusShortlistedClass='matchStatusGrey';
@@ -27,11 +27,11 @@ $hfaStatusList=hfaStatusList();
 				$matchStatusShortlistedClass='matchStatusGreen';
 			$matchStatusShortlistedToolTip='Click to unmark';
 }?>
-                   <i class="fa fa-bookmark  mr-lg <?=$matchStatusShortlistedClass;?>" data-placement="bottom"  data-toggle="tooltip"  data-original-title="<?=$matchStatusShortlistedToolTip;?>" onclick="hostfamilybookmark($(this),<?=$formOne['id'] ;?>);"></i>
+                   <i style="float:left; margin-top:3px;" class="fa fa-bookmark  mr-lg <?=$matchStatusShortlistedClass;?> dark-gray" data-placement="bottom"  data-toggle="tooltip"  data-original-title="<?=$matchStatusShortlistedToolTip;?>" onclick="hostfamilybookmark($(this),<?=$formOne['id'] ;?>);"></i>
                     <?php
 if(ucfirst(@$formOne['hfa_registered_status'] )=='Online'){
-echo '<span class="label label-success offline-online">Online submission</span>';}else if(ucfirst(@$formOne['hfa_registered_status'] )=='Offline'){
-	echo '<span class="label label-darkgreen offline-online">Admin submission</span>';
+echo '<span style="float:left; margin-top:4px;"  class="label label-success offline-online">Online submission</span>';}else if(ucfirst(@$formOne['hfa_registered_status'] )=='Offline'){
+	echo '<span style="float:left; margin-top:4px;"  class="label label-darkgreen offline-online">Admin submission</span>';
 }?>
 				</div>
 			</div>	
