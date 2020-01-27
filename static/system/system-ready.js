@@ -2682,14 +2682,13 @@ $('#clientList').on('click','.clientDelete',function(){
 									{
 										notiPop("success","Caregiver assigned successfully","");
 										$.ajax({
-			url: site_url+'caregiver/getCGDetailsDiv/',
-			type:'POST',
-			data:formdata,
-			success: function(data2){
-				$("#careGiverDiv").html(data2).show();
-				
-			}
-		})
+													url: site_url+'caregiver/getCGDetailsDiv/',
+													type:'POST',
+													data:formdata,
+													success: function(data2){
+														$("#careGiverDiv").html(data2).show();
+													}
+												});
 									}
 							   }
 							}
