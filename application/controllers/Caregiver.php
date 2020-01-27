@@ -175,16 +175,11 @@ class Caregiver extends CI_Controller {
 			echo json_encode($return);
 		}
 
-		function getCGDetailsDiv($id)
+		function getCGDetailsDiv()
 		{
-			$details=$this->caregiver_model->caregiverDetail($id);
-			if($details['phone']!='N\A'){
-				$phone = $details['phone'];
-			}else{
-				$phone = 'Not Available';
-			}
-
-			echo "<tr><td><b>Primary Contact: </b>".$phone."</td></tr> <tr><td><b>Primary Email: </b>".$details['email']."</td></tr>";
+			$data=$_POST;
+			$formTwo=getShaTwoAppDetails($data['id']);
+			$this->load->view('system/sha/CgDetailsDiv',$formTwo);
 		}
 
 }

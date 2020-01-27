@@ -2679,7 +2679,18 @@ $('#clientList').on('click','.clientDelete',function(){
 								   if(field=='guardianship')
 										notiPop("success","Caregiving setting updated","");
 									else if(field=='guardian_assigned')
+									{
 										notiPop("success","Caregiver assigned successfully","");
+										$.ajax({
+			url: site_url+'caregiver/getCGDetailsDiv/',
+			type:'POST',
+			data:formdata,
+			success: function(data2){
+				$("#careGiverDiv").html(data2).show();
+				
+			}
+		})
+									}
 							   }
 							}
 						});

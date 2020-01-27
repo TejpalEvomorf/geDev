@@ -165,17 +165,9 @@ $duplicateShaFirst=getDuplicateShaFirst($formOne['id'])
 					 		$guardianship_endDate=$formTwo['guardianship_endDate'];	
 					?>
 
-<!--care giver details start-->
-					<div  class="table-responsive" >
-						
-						<table class="table about-table" style="margin:0 !important;">
-							<tbody id="careGiverDiv" class="CGDetails">
-								
-								
-							</tbody>
-						</table>
-					</div>
-<!--caregiver details end-->
+					<?php 
+                        $this->load->view('system/sha/CgDetailsDiv',$formTwo);
+                    ?>
 
                        <div class="m-n form-group">
 						  	  <label for="guardianship_startDate" class="control-label">Caregiving start date</label>
@@ -592,42 +584,9 @@ function allnote(id){
 }
 $(document).ready(function(){
 
-	$.ajax({
-		url: site_url+'caregiver/getCGDetailsDiv/'+$('#officeUse-guardian_assigned').val(),
-		success: function(data){
-			$("#careGiverDiv").fadeOut(function(){
-				$(this).fadeIn();
-				$(this).html(data);
-			})
-		}
-	});
-
 	$('.CGCclass').change(function(){
 		$('#careGiverDiv').hide()	
-
-		});
-
-	$('#officeUse-guardian_assigned').on('change', function(){
-	var ag = $(this).val();
-	if(ag == ''){
-		$('#careGiverDiv').hide();
-	}
-	else{
-
-	
-		
-	$.ajax({
-		url: site_url+'caregiver/getCGDetailsDiv/'+$(this).val(),
-		success: function(data){
-			$("#careGiverDiv").fadeOut(function(){
-				$(this).fadeIn();
-				$(this).html(data);
-			})
-		}
-	})
-	}
 	});
-
 
 
 	$("input#shaBooking_day").TouchSpin({
