@@ -136,7 +136,7 @@ $duplicateShaFirst=getDuplicateShaFirst($formOne['id'])
                 <div style="clear: both;"> </div>
 				<div class="m-n form-group" id="officeUse-guardian_assignedDiv" <?php if($formTwo['guardianship']!='1'){echo 'style="display:none;"';}?>>
                 <label class="control-label">Caregiver company</label>
-					<select class="form-control" id="officeUse-CGC" onchange="getCGListShaOfficeusePage(this.value);">
+					<select class="form-control CGCclass" id="officeUse-CGC" onchange="getCGListShaOfficeusePage(this.value);">
                         <option value="">Select caregiver company</option>
                         <?php foreach($getCaregiverCompanyList as $cgc){
 								$cg=getCaregiversByCompany($cgc['id']);
@@ -146,7 +146,7 @@ $duplicateShaFirst=getDuplicateShaFirst($formOne['id'])
                               <option value="<?=$cgc['id']?>" <?php if($formTwo['guardian_assigned']!=0 && $caregiverDetails['company']==$cgc['id']){echo 'selected="selected"';}?>><?=$cgc['name']?></option>
                         <?php } ?>
 					</select>
-                    
+                   
                 <label class="control-label">Assign caregiver</label>
 					<select class="form-control" id="officeUse-guardian_assigned" name="guardian_assigned">
                         <option value="">Select caregiver</option>
@@ -166,13 +166,19 @@ $duplicateShaFirst=getDuplicateShaFirst($formOne['id'])
 					?>
 
 <!--care giver details start-->
-					<div  class="table-responsive">
+					<div  class="table-responsive <?php if(!empty($caregiverDetails)){echo 'style="display:none;"';} ?>" >
 						
 						<table class="table about-table" style="margin:0 !important;">
-							<tbody id="careGiverDiv" >
-							<tr><td><b>Primary Contact: </b><?=$caregiverDetails['phone'];?></td></tr>
-							<tr><td><b>Primary Email: </b><?=$caregiverDetails['email'];?></td></tr>
-								
+							<tbody id="careGiverDiv" class="CGDetails">
+								<?php if(!empty($caregiverDetails)){
+									if($caregiverDetails['phone'] != 'N\A'){
+										$phone = $caregiverDetails['phone'];
+									}
+									else{
+										$phone = "Not Available";
+									}
+							echo "<tr><td><b>Primary Contact: </b>".$phone."</td></tr> <tr><td><b>Primary Email: </b>".$caregiverDetails['email']."</td></tr>";
+								 }?>
 								
 							</tbody>
 						</table>
@@ -594,24 +600,28 @@ function allnote(id){
 }
 $(document).ready(function(){
 
-	$("#officeUse-CGC").change(function(){
-		$("#careGiverDiv").html('');
-	})
+	$('.CGCclass').change(function(){
+		$('#careGiverDiv').hide()	
 
+		});
 
 	$('#officeUse-guardian_assigned').on('change', function(){
+	var ag = $(this).val();
+	if(ag == ''){
+		$('#careGiverDiv').hide();
+	}
+	else{
 	$.ajax({
-	url: site_url+'caregiver/getCGDetailsDiv/'+$(this).val(),
-	success:function(data){
-	$("#careGiverDiv").fadeOut(function(){
-			$("#careGiverDiv").fadeIn(function(){
-			$("#careGiverDiv").html(data);
-	});
-	});
-
+		url: site_url+'caregiver/getCGDetailsDiv/'+$(this).val(),
+		success: function(data){
+			$("#careGiverDiv").fadeOut(function(){
+				$(this).fadeIn();
+				$(this).html(data);
+			})
+		}
+	})
 	}
 	});
-});
 
 
 

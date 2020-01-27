@@ -178,9 +178,13 @@ class Caregiver extends CI_Controller {
 		function getCGDetailsDiv($id)
 		{
 			$details=$this->caregiver_model->caregiverDetail($id);
+			if($details['phone']!='N\A'){
+				$phone = $details['phone'];
+			}else{
+				$phone = 'Not Available';
+			}
 
-			echo "<tr><td><b>Primary Contact: </b>".$details['phone']."</td></tr> <tr><td><b>Primary Email: </b>".$details['email']."</td></tr>";
-
+			echo "<tr><td><b>Primary Contact: </b>".$phone."</td></tr> <tr><td><b>Primary Email: </b>".$details['email']."</td></tr>";
 		}
-		
+
 }
