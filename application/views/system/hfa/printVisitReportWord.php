@@ -81,7 +81,7 @@ $nbsb="&nbsp;&nbsp;";
                               </tr>
                             
                               <tr>
-                                  <th <?=$styleTextLeftAlignWhite?>><?=$nbsb?>Date of visit/revisit: <span style="font-weight:normal;"><?=date('d M Y, h:i A',strtotime($visitReport['date_visited']))?></span></th>
+                                  <th <?=$styleTextLeftAlignWhite?>><?=$nbsb?>Date of visit: <span style="font-weight:normal;"><?=date('d M Y, h:i A',strtotime($visitReport['date_visited']))?></span></th>
                               </tr>
                       
 

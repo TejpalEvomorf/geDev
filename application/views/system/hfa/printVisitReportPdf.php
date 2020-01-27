@@ -84,7 +84,7 @@ $styleTextLeftAlignWhite=' style="text-align:left;color:#fff;font-family: barlow
                               </tr>
                               
                               <tr>
-                                  <th <?=$styleTextLeftAlignWhite?>>Date of visit/revisit: <span style="font-weight:normal;"><?=date('d M Y, h:i A',strtotime($visitReport['date_visited']))?></span></th>
+                                  <th <?=$styleTextLeftAlignWhite?>>Date of visit: <span style="font-weight:normal;"><?=date('d M Y, h:i A',strtotime($visitReport['date_visited']))?></span></th>
                               </tr>
 
                            </tbody>
