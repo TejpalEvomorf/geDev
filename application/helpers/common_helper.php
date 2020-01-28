@@ -129,6 +129,17 @@ function floorsList()
 				);
 }
 
+function roomLocation()
+{
+				return array(
+				"1"=>"Floor 1",
+                "2"=>"Floor 2",
+                "3"=>"Floor 3",
+                "4"=>"Floor 4",
+                "5"=>"Floor 5"
+				);
+}
+
 function roomTypeList()
 {
 				return array(

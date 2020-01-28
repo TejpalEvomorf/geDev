@@ -412,7 +412,7 @@ $employeeList=employeeList();
                                                                                     	<?php 
                                                                                     	if($bdV['floor']=='0'){echo 'Not Mentioned';}
                                                                                     	elseif ($bdV['floor']=='g'){echo 'Granny Flat';}
-                                                                                    	else{echo $bdV['floor'].' Floor';}
+                                                                                    	else{echo 'Floor '.$bdV['floor'];}
                                                                                     	 
                                                                                     	?>
                                                                                     	
@@ -437,7 +437,7 @@ $employeeList=employeeList();
                                                                                     	<td><?php 
                                                                                     	if($bdV['floor']=='0'){echo 'Not Mentioned';}
                                                                                     	elseif ($bdV['floor']=='g'){echo 'Granny Flat';}
-                                                                                    	else{echo $bdV['floor'].' Floor';}
+                                                                                    	else{echo 'Floor '.$bdV['floor'];}
                                                                                     	 
                                                                                     	?></td>
                                                                                     	
@@ -554,7 +554,7 @@ $employeeList=employeeList();
                                                                                     	<?php 
                                                                                     	if($hbdV['floor']=='0'){echo 'Not Mentioned';}
                                                                                     	elseif ($hbdV['floor']=='g'){echo 'Granny Flat';}
-                                                                                    	else{echo $hbdV['floor'].' Floor';}
+                                                                                    	else{echo ' Floor '.$hbdV['floor'];}
                                                                                     	 
                                                                                     	?>
                                                                                     	
@@ -573,7 +573,7 @@ $employeeList=employeeList();
                                                                                     	<td><?php 
                                                                                     	if($hbdV['floor']=='0'){echo 'Not Mentioned';}
                                                                                     	elseif ($hbdV['floor']=='g'){echo 'Granny Flat';}
-                                                                                    	else{echo $hbdV['floor'].' Floor';}
+                                                                                    	else{echo 'Floor '.$hbdV['floor'];}
                                                                                     	 
                                                                                     	?></td>
                                                                                     	
@@ -627,7 +627,7 @@ $employeeList=employeeList();
                                                                                     	<?php 
                                                                                     	if($btV['floor']=='0'){echo 'Not Mentioned';}
                                                                                     	elseif ($btV['floor']=='g'){echo 'Granny Flat';}
-                                                                                    	else{echo $btV['floor'].' Floor';}
+                                                                                    	else{echo 'Floor '.$btV['floor'];}
                                                                                     	 
                                                                                     	?>
                                                                               </h5></div></a>
@@ -654,7 +654,7 @@ $employeeList=employeeList();
                                                                                     	<td><?php 
                                                                                     	if($btV['floor']=='0'){echo 'Not Mentioned';}
                                                                                     	elseif ($btV['floor']=='g'){echo 'Granny Flat';}
-                                                                                    	else{echo $btV['floor'].' Floor';}
+                                                                                    	else{echo 'Floor '.$btV['floor'];}
                                                                                     	 
                                                                                     	?></td>
                                                                                     	

@@ -6,6 +6,7 @@ $roomTypeList=roomTypeList();
 $genderList=genderList();
 $nationList=nationList();
 $floorsList=floorsList();
+$roomLocation=roomLocation();
 ?>
 
 <div class="wFormContainer new_forms add-hostfamily-application dd-hostfamily-applicatio2" id="add-hostfamily-application-2">
@@ -274,17 +275,17 @@ if($formTwo['bedrooms_avail']>=$x && canDeactivateRoom($formTwo['bedroomDetails'
 			<label for="hfa1_room_location" class="full_label">Room location <span class="reqField">*</span></label>
 				<select class="half_input hfa_room_location student_room_location" name="bedroom-<?=$x?>[student_room]" id="student_room-<?=$x;?>" >
                 <option value="" class="">Select one</option>
-                  <?php foreach($floorsList as $flK=>$flV){?>
-	               	 <option class="sha_location" style="display: none;" value="<?=$flK?>" <?php if(count($formTwo['bedroomDetails']) >= $x){
+                  <?php foreach($roomLocation as $flK=>$flV){?>
+	               	 <option class="sha_location" style="display: none;" value="<?=$flK?>" <?php if(!empty($formTwo['bedroomDetails'])){if(count($formTwo['bedroomDetails']) >= $x){
 	               	 	if($formTwo['bedroomDetails'][$x-1]['floor']==$flK){echo 'selected="selected"';}
-	               	 } ?>><?=$flV?></option>
+	               	 }} ?>><?=$flV?></option>
                  <?php } ?>
                
                 
-                <option class="location_granny_flat"  style="display:none;" value="g"  <?php if(count($formTwo['bedroomDetails']) >= $x){
+                <option class="location_granny_flat"  style="display:none;" value="g"  <?php if(!empty($formTwo['bedroomDetails'])){if(count($formTwo['bedroomDetails']) >= $x){
 	               	 	if($formTwo['bedroomDetails'][$x-1]['floor']=='g'){echo 'selected="selected"';}
-	               	 } ?>>Granny Flat</option>
-	             <option class='' value='0' <?php if(count($formTwo['bedroomDetails'])>=$x){if($formTwo['bedroomDetails'][$x-1]['floor']=='0')echo 'selected="selected"';{}} ?>>Not Mentioned</option>
+	               	 } }?>>Granny Flat</option>
+	             <option class='' value='0' <?php if(!empty($formTwo['bedroomDetails'])){if(count($formTwo['bedroomDetails'])>=$x){if($formTwo['bedroomDetails'][$x-1]['floor']=='0')echo 'selected="selected"';{}} }?>>Not Mentioned</option>
                 </select>
 			</span>
 			<span class="hfa1_app_half ">
@@ -418,13 +419,13 @@ for($x=1;$x<=9;$x++)
 			<label for="hfa1_room_location" class="full_label">Room location <span class="reqField">*</span></label>
 				<select class="full_input hfa_room_location host_room_location" name="hbedroom-<?php echo $x;?>[host_room]" id="host_room-<?php echo $x;?>" >
                 <option value="" class="">Select one</option>
-                  <?php foreach($floorsList as $flK=>$flV){?>
-	               	 <option class="sha_location" style="display: none;" value="<?=$flK?>" <?php if(count($formTwo['hostbedroomDetails'])>=$x){if(!empty($formTwo['hostbedroomDetails'])){if($formTwo['hostbedroomDetails'][$x-1]['floor']==$flK){echo 'selected="selected"';}}}?>><?=$flV?></option>
+                  <?php foreach($roomLocation as $flK=>$flV){?>
+	               	 <option class="sha_location" style="display: none;" value="<?=$flK?>" <?php if(!empty($formTwo['hostbedroomDetails'])){if(count($formTwo['hostbedroomDetails'])>=$x){if(!empty($formTwo['hostbedroomDetails'])){if($formTwo['hostbedroomDetails'][$x-1]['floor']==$flK){echo 'selected="selected"';}}}}?>><?=$flV?></option>
                  <?php } ?>
                
                 
-                <option class="location_granny_flat" style="display:none;" value="g"  <?php if(count($formTwo['hostbedroomDetails'])>=$x){if(!empty($formTwo['hostbedroomDetails'])){if($formTwo['hostbedroomDetails'][$x-1]['floor']=='g'){echo 'selected="selected"';}}} ?>>Granny Flat</option>
-                <option class="" value="0"  <?php if(count($formTwo['hostbedroomDetails'])==''){echo 'selected="selected"';}else if(count($formTwo['hostbedroomDetails'])>=$x){if(!empty($formTwo['hostbedroomDetails'])){if($formTwo['hostbedroomDetails'][$x-1]['floor']=='0'){echo 'selected="selected"';}}} ?>>Not Mentioned</option>
+                <option class="location_granny_flat" style="display:none;" value="g"  <?php if(!empty($formTwo['hostbedroomDetails'])){if(count($formTwo['hostbedroomDetails'])>=$x){if(!empty($formTwo['hostbedroomDetails'])){if($formTwo['hostbedroomDetails'][$x-1]['floor']=='g'){echo 'selected="selected"';}}}} ?>>Granny Flat</option>
+                <option class="" value="0"  <?php if(empty($formTwo['hostbedroomDetails'])){echo 'selected="selected"';}else if(count($formTwo['hostbedroomDetails'])>=$x){if(!empty($formTwo['hostbedroomDetails'])){if($formTwo['hostbedroomDetails'][$x-1]['floor']=='0'){echo 'selected="selected"';}}} ?>>Not Mentioned</option>
                 </select>
 			</span>
 			
@@ -469,12 +470,12 @@ for($x=1;$x<=9;$x++)
 
 <div class="hfa-member-heading-cont">
 <h2>BATHROOM <?php echo $x;?></h2>
-<?php  if(count(@$formTwo['bathroomDetails'])>1){?>
+<?php // if(count(@$formTwo['bathroomDetails'])>1){?>
 <span class="famember-delete">
     <i class="font16 material-icons">delete</i>
 <input type="button" data-id="<?= @$formTwo['bathroomDetails'][$x-1]['id']  ?>" value="Delete" onclick="deletehfadetail(<?= @$formTwo['bathroomDetails'][$x-1]['id']  ?>,'bathroom',<?= @$formTwo['bathroomDetails'][$x-1]['application_id']  ?>,<?= @count($formTwo['bathroomDetails'])?>);"  class="hfabathroom">
 </span>
-<?php }?>
+<?php //}?>
 </div>
 
 <div class="hfa1_home_left">		
@@ -495,14 +496,14 @@ for($x=1;$x<=9;$x++)
 			<label for="hfa_bathroom_avail-<?=$x?>" class="full_label">Bathroom Location <span class="reqField">*</span></label>
 				<select class="full_input hfa_room_location bathroom_location" id="bathroom_floor-<?=$x;?>" name="bathroom-<?=$x?>[bathroom_floor]">
                 <option value="">Select one</option>
-                <?php foreach($floorsList as $flK=>$flV){?>
-	               	 <option class="sha_location" style="display: none;" value="<?=$flK?>" <?php if(count($formTwo['bathroomDetails']) >= $x){
+                <?php foreach($roomLocation as $flK=>$flV){?>
+	               	 <option class="sha_location" style="display: none;" value="<?=$flK?>" <?php if(!empty($formTwo['bathroomDetails'])){if(count($formTwo['bathroomDetails']) >= $x){
 	               	 	if($formTwo['bathroomDetails'][$x-1]['floor']==$flK){echo 'selected="selected"';}
-	               	 } ?>><?=$flV?></option>
+	               	 } }?>><?=$flV?></option>
                  <?php } ?>
                 
-                <option class="location_granny_flat" style="display:none;" value="g"  <?php if(count($formTwo['bathroomDetails'])>=$x){if($formTwo['bathroomDetails'][$x-1]['floor']=='g'){echo 'selected="selected"';}}?>>Granny Flat</option>
-                <option class="" value="0" <?php if(count($formTwo['bathroomDetails'])>=$x){if($formTwo['bathroomDetails'][$x-1]['floor']=='0'){echo 'selected="selected"';}}?>>Not Mentioned</option>
+                <option class="location_granny_flat" style="display:none;" value="g"  <?php if(!empty($formTwo['bathroomDetails'])){if(count($formTwo['bathroomDetails'])>=$x){if($formTwo['bathroomDetails'][$x-1]['floor']=='g'){echo 'selected="selected"';}}}?>>Granny Flat</option>
+                <option class="" value="0" <?php if(!empty($formTwo['bathroomDetails'])){if(count($formTwo['bathroomDetails'])>=$x){if($formTwo['bathroomDetails'][$x-1]['floor']=='0'){echo 'selected="selected"';}}}?>>Not Mentioned</option>
                 </select>
 			</span>
 </div>  
