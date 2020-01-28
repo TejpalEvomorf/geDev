@@ -66,22 +66,20 @@ class Report_model extends CI_Model {
 
 	function employeeOptionSelected($data){
 		$res=['employee'=>''];
-		if(!empty($data['reportSelectEmployee']))
+		//see($data);
+		if(!empty($data))
 		{
-			if(in_array('employees',$data['reportSelectEmployee']))
-			{
 				$res['employee']=['option'=>$data['CaR_employee_option']];	
+				//echo $data['CaR_employee_option'];
 				if($data['CaR_employee_option']!='all')
 				{
-					
-					if($data['CaR_college_option']=='selective')
-					{
+					if($data['CaR_employee_option']=='selective')
+					{	
 						$optionVal=array_filter($data['CaR_employee']);
 						$res['employee']['employees']=$optionVal;
 					}
 					$res['employee']['optionVal']=$optionVal;
-				}
-			}
+				}	
 			
 			
 		}
@@ -97,7 +95,6 @@ class Report_model extends CI_Model {
 			return array();
 		
 		$clgUniOption=$this->clgUniOptionSelected($data);//see($clgUniOption);
-		$empOption=$this->employeeOptionSelected($data);
 		
 		$sql="select * from `bookings` where `serviceOnlyBooking`='0' and `status` IN('".implode("','",$data['CaR_status'])."') ";
 		if(isset($data['CaR_fromDate']) && isset($data['CaR_toDate']))
@@ -119,18 +116,7 @@ class Report_model extends CI_Model {
 			$sql .=" OR ( `booking_to`='0000-00-00' and `booking_from`<='".$toDate."')";//when booking end date is not set and booking is active in the date range
 			$sql .=" )";
 		}
-		if(!empty($empOption['employee'])!='all')
-		{
-			if(isset($empOption['employee']['employees']))
-			{
-				$shaEmployeeSet="'".implode("','",$empOption['employee']['employees'])."'";
-				$sqlEmployee=" where `employee` IN(".$shaEmployeeSet.")";
-				$sql.=" and `student` IN(select `id` from `sha_one` ".$sqlEmployee.")";
-			}
-			else{
-				return array();
-			}
-		}
+		
 		if(!empty($clgUniOption['client']) && $clgUniOption['client']['option']!='all')
 		{
 			if(isset($clgUniOption['client']['clients']))
@@ -155,11 +141,49 @@ class Report_model extends CI_Model {
 		}
 		
 		$sql .="order by `bookings`.`id`";	
-		$query=$this->db->query($sql); echo $this->db->last_query();
+		$query=$this->db->query($sql); //echo $this->db->last_query();
 		$bookings=$query->result_array();//return $this->db->query("select * from `bookings` where `student`='24922'")->result_array();
 		return $bookings;
 	}
+	///employee booking report starts////
+
+	function bookingListForEmployeesReport($data)
+	{
+		if(!isset($data['CaR_status']))
+			return array();
+		
+		
+		$empOption=$this->employeeOptionSelected($data);//see($empOption['employee']);
+		
+		$sql="select * from `bookings` where `serviceOnlyBooking`='0' and `status` IN('".implode("','",$data['CaR_status'])."') ";
+		if(isset($data['CaR_fromDate']) && isset($data['CaR_toDate']))
+		{
+			$fromDate=normalToMysqlDate($data['CaR_fromDate']);
+			$toDate=normalToMysqlDate($data['CaR_toDate']);
+			$sql .=" and  `booking_from`>='".$fromDate."' and `booking_from`<='".$toDate."'";
+		}
 	
+		if(!empty($empOption['employee']) && $empOption['employee']['option']!='all')
+		{
+			if(isset($empOption['employee']['employees']))
+			{
+				$shaEmpSet="'".implode("','",$empOption['employee']['employees'])."'";	
+				$sqlEmp=" where `employee` IN(".$shaEmpSet.")";
+				$sql .=" and `student` IN(select `id` from `sha_one` ".$sqlEmp.") ";
+			}
+			else
+				return 	array();
+		}
+		
+
+		$sql .="order by `bookings`.`id`";	
+		$query=$this->db->query($sql); //echo $this->db->last_query();
+		$bookings=$query->result_array();//return $this->db->query("select * from `bookings` where `student`='24922'")->result_array();
+		return $bookings;
+	}
+
+
+	////empoyee booking report ends////	
 	function hfaLastVisitDate($hostId)
 	{
 			  $hfaOne=getHfaOneAppDetails($hostId);

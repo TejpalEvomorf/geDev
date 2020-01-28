@@ -9,12 +9,11 @@ $employeeList=employeeList();
       <h2>Select Employee</h2>
   </div>
   <div class="panel-body">
-		  <!-- <label  class="mt-n control-label filterItemLabel">Select whether you want to export for clients or colleges/universities or both</label> -->
-          <div class="checkbox">
+		  <div>
                               
                     <!--employee starts-->
                           <div id="reportEmployeeSelectDiv" >
-                          	 <p style="margin-top: 0;">Is this report for all employees or selective employees?</p>
+                          	 <p>Is this report for all employees or selective employees?</p>
                          
                           <div class="radio block">
                               <label>
@@ -109,7 +108,7 @@ function validateSelectedEmployee()
 			  $("select[name='CaR_employee[]']:first").focus();
 			  var employeeField = $("select[name='CaR_employee[]']:first").parsley();
 			  window.ParsleyUI.removeError(employeeField,'employeeFieldError');
-			  window.ParsleyUI.addError(employeeField, "employeeFieldError", 'Please select at least one employee');
+			  window.ParsleyUI.addError(employeeField, 'employeeFieldError', 'Please select at least one employee');
 		  
 			  //return false;
 			  result='notValid';

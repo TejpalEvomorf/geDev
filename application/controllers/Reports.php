@@ -1009,7 +1009,7 @@ class Reports extends CI_Controller {
 		$x=$x_start+1;
 		
 	$this->load->model('report_model');
-	$bookings=$this->report_model->bookingListForAuditingReport($data);//see($bookings);
+	$bookings=$this->report_model->bookingListForAuditingReport($data);//echo $this->db->last_query();see($bookings);die('dddd');
 	
 	$this->load->model('booking_model');
 	
@@ -1339,24 +1339,24 @@ class Reports extends CI_Controller {
 	}
 	
 	////New Booking ////////
-		function new_bookings()
+		function booking_allocation()
 	{
 			if(checkLogin())
 			{
 				recentActionsAddData('report','bookings','view');
 				$data['page']='reports-bookings';
 				$this->load->view('system/header',$data);
-				$this->load->view('system/reports/new_bookings_report');
+				$this->load->view('system/reports/booking_allocation_report');
 				$this->load->view('system/footer');
 			}
 			else
 				redirectToLogin();
 	}
 	
-	function new_bookings_submit()
+	function booking_allocation_submit()
 	{
 		$data=$_POST;
-		//see($data);die(1);
+		//see($data);die('1');
 		$this->load->library('excel');
 		$this->excel->setActiveSheetIndex(0);
 		$this->excel->getActiveSheet()->setTitle('test worksheet');
@@ -1395,7 +1395,7 @@ class Reports extends CI_Controller {
 		$x=$x_start+1;
 		
 	$this->load->model('report_model');
-	$bookings=$this->report_model->bookingListForAuditingReport($data);//see($bookings);
+	$bookings=$this->report_model->bookingListForEmployeesReport($data);//echo $this->db->last_query();see($bookings);//die('dddd');
 	
 	$stateList=stateList();
 	$genderList=genderList();
@@ -1412,8 +1412,10 @@ class Reports extends CI_Controller {
 		foreach($fields as $k=>$v)
 		{
 			$value='';
-			if($v=='sha_name')
-				$value=ucwords($shaOne['fname'].' '.$shaOne['lname']);
+			if($v=='sha_name'){
+				$employeeDetails=employee_details($shaOne['employee']);
+				$value=ucwords($shaOne['fname'].' '.$shaOne['lname'].', '.$employeeDetails['id']);
+			}
 			elseif($v=='student_college_id')
 				$value=$shaOne['sha_student_no'];
 			elseif($v=='sha_dob')
@@ -1689,7 +1691,7 @@ class Reports extends CI_Controller {
 	}
 
 	
-				$filename='Bookings.xls'; //save our workbook as this file name
+				$filename='Booking_allocation.xls'; //save our workbook as this file name
 				header('Content-Type: application/vnd.ms-excel'); //mime type
 				header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
 				header('Cache-Control: max-age=0'); //no cache
