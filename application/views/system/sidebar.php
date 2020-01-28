@@ -260,6 +260,7 @@ else
     <li><a  class="withripple" href="javascript:;"><span class="icon"><i class="material-icons">insert_drive_file</i></span><span>Reports</span></a>
         	<ul class="acc-menu">
                  <li><a  class="withripple" href="<?=site_url()?>reports/bookings"><span>Bookings</span></a></li>
+                  <li><a  class="withripple" href="<?=site_url()?>reports/new_bookings"><span>New Bookings</span></a></li>
                 <?php if(userAuthorisations('booking_duration_report')){?>
                     <li><a  class="withripple" href="<?=site_url()?>reports/booking_duration"><span>Booking duration</span></a></li>
                 <?php } ?>
