@@ -1343,8 +1343,8 @@ class Reports extends CI_Controller {
 	{
 			if(checkLogin())
 			{
-				recentActionsAddData('report','bookings','view');
-				$data['page']='reports-bookings';
+				recentActionsAddData('report','booking_allocation','view');
+				$data['page']='reports-booking_allocation';
 				$this->load->view('system/header',$data);
 				$this->load->view('system/reports/booking_allocation_report');
 				$this->load->view('system/footer');
@@ -1396,6 +1396,8 @@ class Reports extends CI_Controller {
 		
 	$this->load->model('report_model');
 	$bookings=$this->report_model->bookingListForEmployeesReport($data);//echo $this->db->last_query();see($bookings);//die('dddd');
+	
+	$this->load->model('booking_model');
 	
 	$stateList=stateList();
 	$genderList=genderList();
@@ -1683,6 +1685,24 @@ class Reports extends CI_Controller {
 				$value=$caregiver['phone'];
 			elseif($v=='cg_email')
 				$value=$caregiver['email'];
+			elseif($v=='holidays_latest' || $v=='holidays')
+			{
+				$bookingHolidays=$this->booking_model->holidaysByBooking($booking['id']);
+				if(empty($bookingHolidays))
+					$value='N/A';
+				else	
+				{
+					if($v=='holidays_latest')
+							$value=dateFormat($bookingHolidays[0]['start']).' - '.dateFormat($bookingHolidays[0]['end']);
+					elseif($v=='holidays')
+					{
+						$holidayArray=array();
+						foreach($bookingHolidays as $holiday)
+							$holidayArray[]=dateFormat($holiday['start']).' - '.dateFormat($holiday['end']);
+						$value=implode(' | ',$holidayArray);	
+					}
+				}
+			}
 			
 			$this->excel->getActiveSheet()->setCellValue($k.$x, $value);	
 		}

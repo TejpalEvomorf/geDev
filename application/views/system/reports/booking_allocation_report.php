@@ -5,7 +5,7 @@ $reportFields=bookings_report_fields();
 ?>
 
 <div class="page-heading report-page-heading">
-      <h1>Booking Allocation</h1>
+      <h1>Booking allocation report</h1>
 </div>
 
 

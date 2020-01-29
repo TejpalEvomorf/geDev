@@ -1699,7 +1699,7 @@ cursor: not-allowed;
 
 }
 
-#CaR_clientGroupSelect .help-block, #CaR_collegeSelect .help-block, #CaR_clgUniGroupSelect .help-block, #CaR_clgUniSelect .help-block {
+#CaR_clientGroupSelect .help-block, #CaR_collegeSelect .help-block, #CaR_clgUniGroupSelect .help-block, #CaR_clgUniSelect .help-block, #CaR_employeeSelect .help-block {
     position: unset;
 }
 .timeline > li .radio p.author {
