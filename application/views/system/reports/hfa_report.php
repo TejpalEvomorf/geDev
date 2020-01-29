@@ -82,7 +82,7 @@ $reportFields=array(
                                           <div class="panel-heading">
                                               <h2>Select Fields</h2>
                                           </div>
-                                          <div class="panel-body" style="text-align:left;">
+                                          <div class="panel-body margin-minus" style="text-align:left;">
                                               <input type="hidden" name="HR_field[]" value="id">
                                               <?php foreach($reportFields as $fieldK=>$fieldV){?>
                                                   <div class="checkbox width-float checkbox-width-float">
