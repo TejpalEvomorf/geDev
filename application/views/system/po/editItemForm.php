@@ -33,10 +33,10 @@ foreach($items as $item)
             <?php if($accomodationField){?>
 	            <option value="0"  <?php if($item['qty_unit']==0){echo 'selected="selected"';}?>>N/A</option>
             	<option value="1"  <?php if($item['qty_unit']==1){echo 'selected="selected"';}?>>Week</option>
-                <option value="2"  <?php if($item['qty_unit']==2){echo 'selected="selected"';}?>>Day</option>
+                <option value="2"  <?php if($item['qty_unit']==2){echo 'selected="selected"';}?>>Night</option>
              <?php }else{?>
 	             <?php if($item['qty_unit']==2){?>
-		            <option value="2"  <?php if($item['qty_unit']==2){echo 'selected="selected"';}?>>Day</option> 
+		            <option value="2"  <?php if($item['qty_unit']==2){echo 'selected="selected"';}?>>Night</option> 
                 <?php } else{?>
         	        <option value="3"  <?php if($item['qty_unit']==3){echo 'selected="selected"';}?>>Percent</option>
             	    <option value="4"  <?php if($item['qty_unit']==4){echo 'selected="selected"';}?>>Flat</option>

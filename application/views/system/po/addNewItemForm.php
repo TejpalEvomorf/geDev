@@ -64,7 +64,7 @@ foreach($products as $p)
     <select class="form-control" id="addNewItem_qty_unit" name="qty_unit" >
 			    <option value="0" >N/A</option>
                 <option value="1" >Weeks</option>
-                <option value="2" >Days</option>
+                <option value="2" >Nights</option>
         </select>
 </div>
 

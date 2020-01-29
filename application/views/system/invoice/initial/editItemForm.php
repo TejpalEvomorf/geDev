@@ -44,7 +44,7 @@ foreach($items as $item)
         	<select class="form-control" id="addNewItem_qty_unit" name="qty_unit" <?php if($accomodationField || $gaurdianshipField || $accomodationFieldStour){?>disabled="disabled"<?php } ?>>
 	            <option value="0"  <?php if($item['qty_unit']==0){echo 'selected="selected"';}?>>N/A</option>
             	<option value="1"  <?php if($item['qty_unit']==1){echo 'selected="selected"';}?>>Week</option>
-                <option value="2"  <?php if($item['qty_unit']==2){echo 'selected="selected"';}?>>Day</option>
+                <option value="2"  <?php if($item['qty_unit']==2){echo 'selected="selected"';}?>>Night</option>
         	</select>
             
             <?php if($accomodationField || $gaurdianshipField || $accomodationFieldStour){?>
@@ -72,7 +72,7 @@ foreach($items as $item)
       <div class="m-n form-group col-xs-4">
     		<label class="control-label">Quantity unit</label>
         	<select class="form-control" id="invoiceAddDaysQty_unit_disabled" name="invoiceAddDaysQty_unit_disabled" disabled="disabled">
-	            <option value="2">Day</option>
+	            <option value="2">Night</option>
         	</select>
             <input type="hidden" id="invoiceAddDaysQty_unit" name="invoiceAddDaysQty_unit" value="2" />
     </div>
@@ -99,7 +99,7 @@ elseif($gaurdianshipField){
 <?php } ?>
 
 <?php if($invoice['study_tour']=='1'){?>
-	<div class="alert alert-info_orange ui-pnotify-container" style="displaY:none;clear:both;" id="weekDayZeroAlert">Quantity for both weeks and days can't be zero.<br>If you want to delete this accomodation item, use delete button.</div>
+	<div class="alert alert-info_orange ui-pnotify-container" style="displaY:none;clear:both;" id="weekDayZeroAlert">Quantity for both weeks and nights can't be zero.<br>If you want to delete this accomodation item, use delete button.</div>
 <?php } ?>
 
 <script type="text/javascript">
