@@ -625,7 +625,7 @@ function sha_cancellationData($id)
 						  if(isset($getWeekNDays['week']))
 								$td4.=$getWeekNDays['week'].' week'.s($getWeekNDays['week']).' ';
 						  if(isset($getWeekNDays['day']))
-								$td4.=$getWeekNDays['day'].' day'.s($getWeekNDays['day']);
+								$td4.=$getWeekNDays['day'].' night'.s($getWeekNDays['day']);
 					}
 			}
 		else
