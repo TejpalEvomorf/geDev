@@ -44,7 +44,7 @@
     <select class="form-control" id="addNewItem_qty_unit" name="qty_unit" >
 			    <option value="0" >N/A</option>
             	<option value="1" >Week</option>
-                <option value="2" >Day</option>
+                <option value="2" >Night</option>
         </select>
 </div>
 

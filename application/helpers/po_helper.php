@@ -127,7 +127,7 @@ function po_structure2ndPartNew($po_from,$po_to,$accomodation_type,$bookingDetai
 			else
 			{
 				$itemAdminFee['qty']=dayDiff($po_from,$po_to);
-				$itemAdminFee['desc'] .=' ($2 per day)';
+				$itemAdminFee['desc'] .=' ($2 per night)';
 				$itemAdminFee['qty_unit']='4';//days
 				$itemAdminFee['unit']=2;
 				$itemAdminFee['total']=$itemAdminFee['unit']*$itemAdminFee['qty'];

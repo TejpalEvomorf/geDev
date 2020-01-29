@@ -91,7 +91,7 @@ $getWeekNDays=getWeekNDays($totalDays);
 										if(isset($getWeekNDays['week']))
 											echo $getWeekNDays['week'].' week'.s($getWeekNDays['week']).' ';
 										if(isset($getWeekNDays['day']))
-											echo $getWeekNDays['day'].' day'.s($getWeekNDays['day']).' ';
+											echo $getWeekNDays['day'].' night'.s($getWeekNDays['day']).' ';
 								?>
 								<?php
 								if($po['from']!='0000-00-00' && $po['to']!='0000-00-00')
@@ -203,7 +203,8 @@ $getWeekNDays=getWeekNDays($totalDays);
 													?>
                                                               <tr id="iI_<?=$item['id']?>">
                                                                   <td><?=$item['desc']?></td>
-                                                                  <td class="text-right"><?=$item['qty'].' '?><?php if($item['qty_unit']!='0'){if($item['qty_unit']=='1'){echo "week";}elseif($item['qty_unit']=='2'){echo "day";} if(in_array($item['type'],array('1','2','holidayDiscount'))){echo s($item['qty']);}}?></td>
+                                                                  <td class="text-right"><?=$item['qty'].' '?><?php if($item['qty_unit']!='0'){if($item['qty_unit']=='1'){echo "week";}elseif($item['qty_unit']=='2'){echo "night";} if($item['type']!='adminFee'){echo s($item['qty']);}}?></td>
+
                                                                   <td class="text-right"><?php if($item['qty_unit']!='3'){echo '$';}?><?=abs($item['unit']);?><?php if($item['type']=='adminFee' && $item['qty_unit']=='3'){echo '%';}?></td>
                                                                   <td class="text-right">$<?php if($adminFeeInPercent){echo add_decimal($getPoAdminFee);}else{echo abs($item['total']);}?></td>
                                                                   <td class="text-right"><?php if($item['gst']=='0'){echo 'Free';}else {echo "Inc.";}?></td>
@@ -295,7 +296,7 @@ $getWeekNDays=getWeekNDays($totalDays);
                       </div>
                                             
                       <div class="m-n form-group col-xs-6" style="padding-left:0;">
-                          <label class="control-label">days</label>
+                          <label class="control-label">nights</label>
                           <input id="days_changeDuration" value="<?php if(isset($getWeekNDays['day'])){echo $getWeekNDays['day'];}else{echo 0;}?>"  name="days" required data-parsley-type="number">
                       </div>
                      

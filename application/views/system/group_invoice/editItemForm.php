@@ -22,7 +22,7 @@ foreach($items as $item)
         	<select class="form-control" id="addNewItem_qty_unit" name="qty_unit" disabled="disabled">
 	            <option value="0" <?php if($item['qty_unit']=='0'){echo "selected";}?> disabled="disabled">N/A</option>
             	<option value="1" <?php if($item['qty_unit']=='1'){echo "selected";}?> disabled="disabled">Week</option>
-                <option value="2" <?php if($item['qty_unit']=='2'){echo "selected";}?> disabled="disabled">Day</option>
+                <option value="2" <?php if($item['qty_unit']=='2'){echo "selected";}?> disabled="disabled">Night</option>
         	</select>
     </div>
     

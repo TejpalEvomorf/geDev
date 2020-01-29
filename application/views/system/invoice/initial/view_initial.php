@@ -294,7 +294,7 @@ table td > a > i.material-icons {
                             if(isset($getWeekNDays['week']))
 								echo $getWeekNDays['week'].' week'.s($getWeekNDays['week']).' ';
 							if(isset($getWeekNDays['day']))
-								echo $getWeekNDays['day'].' day'.s($getWeekNDays['day']).' ';
+								echo $getWeekNDays['day'].' night'.s($getWeekNDays['day']).' ';
 							
 							if($invoice['booking_from']!='0000-00-00' && $invoice['booking_to']!='0000-00-00')
 								echo '('.date('d M Y',strtotime($invoice['booking_from'])).' to '.date('d M Y',strtotime($invoice['booking_to'])).')';
@@ -395,7 +395,7 @@ table td > a > i.material-icons {
 													?>
                                                               <tr id="iI_<?=$item['id']?>" class="<?=$accomodationWeekItem?>">
                                                                   <td><?=$item['desc']?></td>
-                                                                  <td class="text-right"><?=$item['qty'].' '?><?php if($item['qty_unit']!='0'){if($item['qty_unit']=='1'){echo "week";}elseif($item['qty_unit']=='2'){echo "day";} echo s($item['qty']);}?></td>
+                                                                  <td class="text-right"><?=$item['qty'].' '?><?php if($item['qty_unit']!='0'){if($item['qty_unit']=='1'){echo "week";}elseif($item['qty_unit']=='2'){echo "night";} echo s($item['qty']);}?></td>
                                                                   <td class="text-right">$<?=$item['unit']?></td>
                                                                   <td class="text-right">$<?=$item['total']?></td>
                                                                   <td class="text-right"><?php if($item['gst']=='0'){echo 'Free';}else {echo "Inc.";}?></td>
@@ -602,7 +602,7 @@ table td > a > i.material-icons {
                       </div>
                                             
                       <div class="m-n form-group col-xs-6" style="padding-left:0;">
-                          <label class="control-label">days</label>
+                          <label class="control-label">nights</label>
                           <input id="days_changeDuration" value="<?php if(isset($getWeekNDays['day'])){echo $getWeekNDays['day'];}else{echo 0;}?>"  name="days" required data-parsley-type="number">
                       </div>
                      

@@ -206,7 +206,7 @@
 													?>
                                                               <tr id="iI_<?=$item['id']?>">
                                                                   <td><?=$item['desc']?></td>
-                                                                  <td class="text-right"><?=$item['qty'].' '?><?php if($item['qty_unit']!='0'){if($item['qty_unit']=='1'){echo "week";}elseif($item['qty_unit']=='2'){echo "day";} echo s($item['qty']);}?></td>
+                                                                  <td class="text-right"><?=$item['qty'].' '?><?php if($item['qty_unit']!='0'){if($item['qty_unit']=='1'){echo "week";}elseif($item['qty_unit']=='2'){echo "night";} echo s($item['qty']);}?></td>
                                                                   <td class="text-right">$<?=$item['unit']?></td>
                                                                   <td class="text-right">$<?=$item['total']?></td>
                                                                   <td class="text-right"><?php if($item['gst']=='0'){echo 'Free';}else {echo "Inc.";}?></td>
