@@ -63,7 +63,6 @@ class Report_model extends CI_Model {
 		return $res;
 	}
 
-
 	function employeeOptionSelected($data){
 		$res=['employee'=>''];
 		//see($data);
@@ -80,14 +79,9 @@ class Report_model extends CI_Model {
 					}
 					$res['employee']['optionVal']=$optionVal;
 				}	
-			
-			
 		}
 		return $res;
-
-
 	}
-
 
 	function bookingListForAuditingReport($data)
 	{
@@ -145,7 +139,6 @@ class Report_model extends CI_Model {
 		$bookings=$query->result_array();//return $this->db->query("select * from `bookings` where `student`='24922'")->result_array();
 		return $bookings;
 	}
-	///employee booking report starts////
 
 	function bookingListForEmployeesReport($data)
 	{
@@ -182,8 +175,6 @@ class Report_model extends CI_Model {
 		return $bookings;
 	}
 
-
-	////empoyee booking report ends////	
 	function hfaLastVisitDate($hostId)
 	{
 			  $hfaOne=getHfaOneAppDetails($hostId);
