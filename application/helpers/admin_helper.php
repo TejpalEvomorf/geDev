@@ -1388,7 +1388,7 @@ function bookings_report_fields()
 function bookings_allocation_report_fields()
 {
 	$reportFields=array(
-	'employee'=>'Employee Name',	
+	'employee'=>'Employee',	
 	'sha_name'=>'Student Name',
 	'student_college_id'=>'Student college id',
 	'sha_dob'=>'Student DOB',
