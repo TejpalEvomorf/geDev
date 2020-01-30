@@ -1,7 +1,6 @@
 <?php
 $bookingStatusList=bookingStatusList();
-$reportFields=bookings_report_fields();
-//$clientList=clientsList();
+$reportFields=bookings_allocation_report_fields();
 ?>
 
 <div class="page-heading report-page-heading">

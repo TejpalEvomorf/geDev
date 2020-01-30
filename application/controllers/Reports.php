@@ -1338,7 +1338,7 @@ class Reports extends CI_Controller {
 		//header('location:'.site_url().'reports/hfa');
 	}
 	
-	////New Booking ////////
+	////Booking allocation #START ////////
 		function booking_allocation()
 	{
 			if(checkLogin())
@@ -1382,7 +1382,7 @@ class Reports extends CI_Controller {
 	   	$this->excel->getActiveSheet()->getColumnDimension($fieldK)->setAutosize(true);}
 	   
 	  $x_start=1;
-	  $reportFields=bookings_report_fields();
+	  $reportFields=bookings_allocation_report_fields();
 	  foreach($fields as $k=>$v)
 	  {
 		  $colHeading=$reportFields[$v];
@@ -1412,10 +1412,12 @@ class Reports extends CI_Controller {
 		foreach($fields as $k=>$v)
 		{
 			$value='';
-			if($v=='sha_name'){
+			if($v=='employee'){
 				$employeeDetails=employee_details($shaOne['employee']);
-				$value=ucwords($shaOne['fname'].' '.$shaOne['lname'].', '.$employeeDetails['id']);
+				$value=ucwords($employeeDetails['fname'].' '.$employeeDetails['lname']);
 			}
+			elseif($v=='sha_name')
+				$value=ucwords($shaOne['fname'].' '.$shaOne['lname']);
 			elseif($v=='student_college_id')
 				$value=$shaOne['sha_student_no'];
 			elseif($v=='sha_dob')
@@ -1706,7 +1708,7 @@ class Reports extends CI_Controller {
 		//header('location:'.site_url().'reports/hfa');
 	}
 	
-	/////end new booking ////
+	/////Booking allocation #ENDS////
 	function wwcc()
 	{
 			if(checkLogin())

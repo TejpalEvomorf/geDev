@@ -1384,6 +1384,53 @@ function bookings_report_fields()
 	return $reportFields;
 }
 
+function bookings_allocation_report_fields()
+{
+	$reportFields=array(
+	'employee'=>'Employee Name',	
+	'sha_name'=>'Student Name',
+	'student_college_id'=>'Student college id',
+	'sha_dob'=>'Student DOB',
+	'sha_gender'=>'Student Gender',
+	'sha_age'=>'Student Age',
+	'sha_email'=>'Student Email',
+	'sha_mobile'=>'Student Mobile',
+	'booking_number'=>'Booking Number',
+	'booking_status'=>'Booking Status',
+	'client_name'=>'Client Name',
+	'client_group'=>'Client Group',
+	'college_name'=>'College Name',
+	'booking_start_date'=>'Booking Start Date',
+	'booking_end_date'=>'Booking End Date',
+	'sha_pets'=>'Pets',
+	'sha_allergy'=>'Allergies',
+	'sha_kids'=>'Can you live with children',
+	'sha_dietry_requirement'=>'Special dietary requirements',
+	'sha_medication'=>'Any medication',
+	'sha_disabilty'=>'Any disability',
+	'sha_smoke'=>'Smoker',
+	'sha_smoker_inside'=>'Can stay with a family that includes a smoker?',
+	'sha_other_family_pref'=>'Other family preferences',
+	'hfa_name'=>'Host Family Name',
+	'hfa_address'=>'Host Family Address',
+	'hfa_mobile'=>'Host Family Mobile',
+	'hfa_email'=>'Host Family Email',
+	'apu'=>'Airport Pickup',
+	'apu_company'=>'APU Company',
+	'apu_arrival_date'=>'Arrival Date',
+	'apu_arrival_time'=>'Arrival Time',
+	'apu_flight_number'=>'Flight Number',
+	'course_name' => 'Course Details',
+	'cg_company'=>'Caregiver company',
+	'cg_name'=>'Caregiver name',
+	'cg_mobile'=>'Caregiver mobile',
+	'cg_email'=>'Caregiver email',
+	'holidays_latest'=>'Latest holiday',
+	'holidays'=>'All holidays'
+	);
+	return $reportFields;
+}
+
 function wwcc_report_fields()
 {
 	$reportFields=array(
