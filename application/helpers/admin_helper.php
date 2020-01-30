@@ -152,7 +152,8 @@ function pageTitleS($page='')
 		'reports-booking_duration'=>'Booking duration report',
 		'reports-parent_nominated_homestay'=>'Parents nominated homestay report',
 		'reports-caregiving_service'=>'Caregiving service report',
-		'reports-invoice'=>'Invoice report'
+		'reports-invoice'=>'Invoice report',
+		'reports-booking_allocation'=>'Booking allocation report'
 	);
 	
 	$pageTitle='';
@@ -2113,7 +2114,8 @@ function shaActivityDesc($activity)
 			'booking_duration'=>'Booking duration'.$reportText,
 			'parent_nominated_homestay'=>'Parent nominated homestay'.$reportText,
 			'caregiving_service'=>'Caregiving service'.$reportText,
-			'invoice'=>'Invoice'.$reportText
+			'invoice'=>'Invoice'.$reportText,
+			'booking_allocation'=>'Booking allocation'.$reportText,
 		);
 	
 		$desc=$report[$activity['action_on']];
