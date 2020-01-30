@@ -121,11 +121,11 @@ function floorTypeList()
 function floorsList()
 {
 				return array(
-				"1"=>"1 Floor",
-                "2"=>"2 Floors",
-                "3"=>"3 Floors",
-                "4"=>"4 Floors",
-                "5"=>"5 Floors"
+				"1"=>"1 floor",
+                "2"=>"2 floors",
+                "3"=>"3 floors",
+                "4"=>"4 floors",
+                "5"=>"5 floors"
 				);
 }
 

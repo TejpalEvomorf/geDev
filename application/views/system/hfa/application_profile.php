@@ -19,6 +19,8 @@ $wwccTypeList=wwccTypeList();
 $geRefList=geRefList();
 $smokingHabbits=smokingHabbits();
 $employeeList=employeeList();
+$gf = 'Granny flat';
+$nm = 'Not mentioned';
 ?>
             <div class="col-md-3">
                         <div class="panel panel-profile panel panel-bluegraylight">
@@ -410,8 +412,8 @@ $employeeList=employeeList();
                                                                                     	Room Location:
                                                                                 </strong>    	
                                                                                     	<?php 
-                                                                                    	if($bdV['floor']=='0'){echo 'Not Mentioned';}
-                                                                                    	elseif ($bdV['floor']=='g'){echo 'Granny Flat';}
+                                                                                    	if($bdV['floor']=='0'){echo $nm;}
+                                                                                    	elseif ($bdV['floor']=='g'){echo $gf;}
                                                                                     	else{echo 'Floor '.$bdV['floor'];}
                                                                                     	 
                                                                                     	?>
@@ -435,8 +437,8 @@ $employeeList=employeeList();
                                                                                     <tr>
                                                                                     	<th>Room Location</th>
                                                                                     	<td><?php 
-                                                                                    	if($bdV['floor']=='0'){echo 'Not Mentioned';}
-                                                                                    	elseif ($bdV['floor']=='g'){echo 'Granny Flat';}
+                                                                                    	if($bdV['floor']=='0'){echo $nm;}
+                                                                                    	elseif ($bdV['floor']=='g'){echo $gf;}
                                                                                     	else{echo 'Floor '.$bdV['floor'];}
                                                                                     	 
                                                                                     	?></td>
@@ -552,8 +554,8 @@ $employeeList=employeeList();
                                                                               <h5 class="media-heading">HOST BEDROOM <?=$hbdK+1?>
                                                                               <strong>Room Location: </strong>
                                                                                     	<?php 
-                                                                                    	if($hbdV['floor']=='0'){echo 'Not Mentioned';}
-                                                                                    	elseif ($hbdV['floor']=='g'){echo 'Granny Flat';}
+                                                                                    	if($hbdV['floor']=='0'){echo $nm;}
+                                                                                    	elseif ($hbdV['floor']=='g'){echo $gf;}
                                                                                     	else{echo ' Floor '.$hbdV['floor'];}
                                                                                     	 
                                                                                     	?>
@@ -571,8 +573,8 @@ $employeeList=employeeList();
                                                                                     <tr>
                                                                                     	<th>Room Location</th>
                                                                                     	<td><?php 
-                                                                                    	if($hbdV['floor']=='0'){echo 'Not Mentioned';}
-                                                                                    	elseif ($hbdV['floor']=='g'){echo 'Granny Flat';}
+                                                                                    	if($hbdV['floor']=='0'){echo $nm;}
+                                                                                    	elseif ($hbdV['floor']=='g'){echo $gf;}
                                                                                     	else{echo 'Floor '.$hbdV['floor'];}
                                                                                     	 
                                                                                     	?></td>
@@ -625,8 +627,8 @@ $employeeList=employeeList();
                                                                               <a data-toggle="collapse" data-parent="#bathroomAccordion" href="#collapseBathroomAccordion-<?=$btK+1?>"><div class="panel-heading"><h5 class="media-heading">BATHROOM <?=$btK+1?>
                                                                               	<strong>Bathroom Location:</strong>
                                                                                     	<?php 
-                                                                                    	if($btV['floor']=='0'){echo 'Not Mentioned';}
-                                                                                    	elseif ($btV['floor']=='g'){echo 'Granny Flat';}
+                                                                                    	if($btV['floor']=='0'){echo $nm;}
+                                                                                    	elseif ($btV['floor']=='g'){echo $gf;}
                                                                                     	else{echo 'Floor '.$btV['floor'];}
                                                                                     	 
                                                                                     	?>
@@ -652,8 +654,8 @@ $employeeList=employeeList();
                                                                                     <tr>
                                                                                     	<th>Bathroom Location</th>
                                                                                     	<td><?php 
-                                                                                    	if($btV['floor']=='0'){echo 'Not Mentioned';}
-                                                                                    	elseif ($btV['floor']=='g'){echo 'Granny Flat';}
+                                                                                    	if($btV['floor']=='0'){echo $nm;}
+                                                                                    	elseif ($btV['floor']=='g'){echo $gf;}
                                                                                     	else{echo 'Floor '.$btV['floor'];}
                                                                                     	 
                                                                                     	?></td>
