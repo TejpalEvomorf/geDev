@@ -97,7 +97,7 @@ $studyTourList=studyTourList();
             	<input type="radio" name="other" value="1" <?php if(isset($_POST['other']) && $_POST['other']=="1"){echo "checked";}?>>
                 <span class="circle"></span>
                 <span class="check"></span>
-                Tour group purchase orders
+                Tour group POs
             </label>
        </div>
        <div class="radio block">
@@ -105,7 +105,7 @@ $studyTourList=studyTourList();
             	<input type="radio" name="other" value="2" <?php if(isset($_POST['other']) && $_POST['other']=="2"){echo "checked";}?>>
                 <span class="circle"></span>
                 <span class="check"></span>
-                Non tour group purchase orders
+                Non tour group POs
             </label>
        </div>
 
@@ -114,7 +114,7 @@ $studyTourList=studyTourList();
             	<input type="radio" name="other" value="4" <?php if(isset($_POST['other']) && $_POST['other']=="4"){echo "checked";}?>>
                 <span class="circle"></span>
                 <span class="check"></span>
-                Purchase orders moved to xero
+                POs moved to xero
             </label>
        </div>
 
@@ -123,7 +123,7 @@ $studyTourList=studyTourList();
             	<input type="radio" name="other" value="5" <?php if(isset($_POST['other']) && $_POST['other']=="5"){echo "checked";}?>>
                 <span class="circle"></span>
                 <span class="check"></span>
-                Purchase orders not moved to xero
+                POs not moved to xero
             </label>
        </div>
 
