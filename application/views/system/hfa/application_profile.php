@@ -412,7 +412,7 @@ $nm = 'Not mentioned';
                                                                                     	Room Location:
                                                                                 </strong>    	
                                                                                     	<?php 
-                                                                                    	if($bdV['floor']=='0'){echo $nm;}
+                                                                                    	if($bdV['floor']=='0' || $bdV['floor'] == ''){echo $nm;}
                                                                                     	elseif ($bdV['floor']=='g'){echo $gf;}
                                                                                     	else{echo 'Floor '.$bdV['floor'];}
                                                                                     	 
@@ -437,7 +437,7 @@ $nm = 'Not mentioned';
                                                                                     <tr>
                                                                                     	<th>Room Location</th>
                                                                                     	<td><?php 
-                                                                                    	if($bdV['floor']=='0'){echo $nm;}
+                                                                                    	if($bdV['floor']=='0' || $bdV['floo'=='']){echo $nm;}
                                                                                     	elseif ($bdV['floor']=='g'){echo $gf;}
                                                                                     	else{echo 'Floor '.$bdV['floor'];}
                                                                                     	 
@@ -554,7 +554,7 @@ $nm = 'Not mentioned';
                                                                               <h5 class="media-heading">HOST BEDROOM <?=$hbdK+1?>
                                                                               <strong>Room Location: </strong>
                                                                                     	<?php 
-                                                                                    	if($hbdV['floor']=='0'){echo $nm;}
+                                                                                    	if($hbdV['floor']=='0' || $hbdV['floor']==''){echo $nm;}
                                                                                     	elseif ($hbdV['floor']=='g'){echo $gf;}
                                                                                     	else{echo ' Floor '.$hbdV['floor'];}
                                                                                     	 
@@ -573,7 +573,7 @@ $nm = 'Not mentioned';
                                                                                     <tr>
                                                                                     	<th>Room Location</th>
                                                                                     	<td><?php 
-                                                                                    	if($hbdV['floor']=='0'){echo $nm;}
+                                                                                    	if($hbdV['floor']=='0'|| $hbdV['floor']==''){echo $nm;}
                                                                                     	elseif ($hbdV['floor']=='g'){echo $gf;}
                                                                                     	else{echo 'Floor '.$hbdV['floor'];}
                                                                                     	 
@@ -627,7 +627,7 @@ $nm = 'Not mentioned';
                                                                               <a data-toggle="collapse" data-parent="#bathroomAccordion" href="#collapseBathroomAccordion-<?=$btK+1?>"><div class="panel-heading"><h5 class="media-heading">BATHROOM <?=$btK+1?>
                                                                               	<strong>Bathroom Location:</strong>
                                                                                     	<?php 
-                                                                                    	if($btV['floor']=='0'){echo $nm;}
+                                                                                    	if($btV['floor']=='0' || $btV['floor']==''){echo $nm;}
                                                                                     	elseif ($btV['floor']=='g'){echo $gf;}
                                                                                     	else{echo 'Floor '.$btV['floor'];}
                                                                                     	 
@@ -654,7 +654,7 @@ $nm = 'Not mentioned';
                                                                                     <tr>
                                                                                     	<th>Bathroom Location</th>
                                                                                     	<td><?php 
-                                                                                    	if($btV['floor']=='0'){echo $nm;}
+                                                                                    	if($btV['floor']=='0' || $btV['floor']==''){echo $nm;}
                                                                                     	elseif ($btV['floor']=='g'){echo $gf;}
                                                                                     	else{echo 'Floor '.$btV['floor'];}
                                                                                     	 

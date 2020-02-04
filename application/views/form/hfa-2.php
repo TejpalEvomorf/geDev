@@ -619,12 +619,16 @@ $('#hfa_floors').on('change', function(){
 	var selected_floors = $(this).val();
 	$('.sha_location').each(function(){
 		if($(this).attr('value') <= selected_floors){
-			$(this).prop('selected', false)
 			$(this).show()
 		}
 		else{
-			$(this).prop('selected', false)
 			$(this).hide()
+		}
+	})
+
+		$('.hfa_bedroom_floor').each(function(){
+		if($(this).val()>selected_floors && $(this).val()!='g'){
+			$(this).find('option:selected').removeAttr('selected');
 		}
 	})
 });
@@ -632,14 +636,16 @@ $('#hfa_floors').on('change', function(){
 $('#granny_flat').on('change', function(){
 
 	if($(this).val() != 0){
-		$('.hfa_bedroom_floor option').prop('selected', false)
 		$(".location_granny_flat").show()
-	}
-	else{
-		$('.hfa_bedroom_floor option').prop('selected', false)
+	}else{
 		$(".location_granny_flat").hide()
-
 	}
+
+	$('.hfa_bedroom_floor').each(function(){
+		if($(this).val()=='g'){
+			$(this).find('option:selected').removeAttr('selected');
+		}
+	})
 });
 
 $('.hfa_room_avail_from, .hfa_room_avail_to, .hfa_room_date_leaving').datepicker({

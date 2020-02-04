@@ -505,7 +505,7 @@ for($x=1;$x<=9;$x++)
                  <?php } ?>
                 
                 <option class="location_granny_flat" style="display:none;" value="g"  <?php if(!empty($formTwo['bathroomDetails'])){if(count($formTwo['bathroomDetails'])>=$x){if($formTwo['bathroomDetails'][$x-1]['floor']=='g'){echo 'selected="selected"';}}}?>><?=$gf?></option>
-                <option class="" value="0" <?php if(!empty($formTwo['bathroomDetails'])){if(count($formTwo['bathroomDetails'])>=$x){if($formTwo['bathroomDetails'][$x-1]['floor']=='0'){echo 'selected="selected"';}}}?>><?=$nm?></option>
+                <option class="" value="0" <?php if(!empty($formTwo['bathroomDetails'])){if(count($formTwo['bathroomDetails'])>=$x){if($formTwo['bathroomDetails'][$x-1]['floor']=='' || $formTwo['bathroomDetails'][$x-1]['floor']=='0'){echo 'selected="selected"';}}}?>><?=$nm?></option>
                 </select>
 			</span>
 </div>  
@@ -744,28 +744,39 @@ $(window).on('load',function(){
 
 $('#hfa_floors').on('change', function(){
 	var selected_floors=$(this).val();
-	$('.hfa_room_location option').prop('selected', false);	
+	// $('.hfa_room_location option').prop('selected', false);	
 	$('.sha_location').each(function(){
 		if($(this).val()<=selected_floors){
-			$(this).prop('selected',false);
 			$(this).show();
 			}
 		else{
-			$(this).prop('selected',false);
 			$(this).hide();
 		}
 	})
+
+	$('.hfa_room_location').each(function(){
+		if($(this).val()>selected_floors && $(this).val()!='g'){
+			$(this).find('option:selected').removeAttr('selected');
+		}
+	})
+
+
 });
 
 $('#granny_flat').on('change', function(){
 	var granny_flat = $(this).val();
-	$('.hfa_room_location option').prop('selected', false);
 	if(granny_flat==1){
 		$('.location_granny_flat').show();
 	}
 	else{
 		$('.location_granny_flat').hide();
 	}
+	$('.hfa_room_location').each(function(){
+		if($(this).val()=='g'){
+			$(this).find('option:selected').removeAttr('selected');
+		}
+	})
+
 });
 
 
