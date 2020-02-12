@@ -1380,7 +1380,8 @@ function bookings_report_fields()
 	'cg_mobile'=>'Caregiver mobile',
 	'cg_email'=>'Caregiver email',
 	'holidays_latest'=>'Latest holiday',
-	'holidays'=>'All holidays'
+	'holidays'=>'All holidays',
+	'homestay_change'=>'Homestay change'
 	);
 	return $reportFields;
 }
@@ -1427,7 +1428,8 @@ function bookings_allocation_report_fields()
 	'cg_mobile'=>'Caregiver mobile',
 	'cg_email'=>'Caregiver email',
 	'holidays_latest'=>'Latest holiday',
-	'holidays'=>'All holidays'
+	'holidays'=>'All holidays',
+	'homestay_change'=>'Homestay change'
 	);
 	return $reportFields;
 }
@@ -1531,6 +1533,7 @@ function booking_duration_report_fields()
 	);
 	$reportFields['nominated_regular']='Nominated/Regular';
 	$reportFields['duration']='Duration';
+	$reportFields['homestay_change']='Homestay change';
 	return $reportFields;
 }
 
@@ -2437,5 +2440,4 @@ function gstPercent()//GST on accomodation fee
   {
 	  return 10;
   }
-	
 ?>

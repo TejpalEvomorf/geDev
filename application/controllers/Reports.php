@@ -1315,6 +1315,8 @@ class Reports extends CI_Controller {
 					}
 				}
 			}
+			elseif($v=='homestay_change')
+				$value=$this->shaHomestayChangeReportField($shaOne['id']);
 			
 			$this->excel->getActiveSheet()->setCellValue($k.$x, $value);	
 		}
@@ -1705,6 +1707,8 @@ class Reports extends CI_Controller {
 					}
 				}
 			}
+			elseif($v=='homestay_change')
+				$value=$this->shaHomestayChangeReportField($shaOne['id']);
 			
 			$this->excel->getActiveSheet()->setCellValue($k.$x, $value);	
 		}
@@ -2426,6 +2430,8 @@ class Reports extends CI_Controller {
 							$bookingDuration=dayDiff($booking['booking_from'],$data['default_endDate']);	
 						$value .=$bookingDuration.' day'.s($bookingDuration);
 					}
+					elseif($v=='homestay_change')
+						$value=$this->shaHomestayChangeReportField($shaOne['id']);
 					
 					$this->excel->getActiveSheet()->setCellValue($k.$x, $value);	
 				}
@@ -2947,5 +2953,21 @@ class Reports extends CI_Controller {
 				$objWriter->save('static/report/'.$filename);
 				//$mpdf->Output('static/pdf/invoice.pdf','F');
 		//header('location:'.site_url().'reports/hfa');
+	}
+	
+	function shaHomestayChangeReportField($shaId)
+	{
+		$return='No';
+		$duplicateShaSet=getDuplicateShaSet($shaId);
+		$homechangedCount=-1;
+		foreach($duplicateShaSet as $sha)
+		{
+			$booking=bookingByShaId($sha);
+			if(!empty($booking))
+				$homechangedCount++;
+		}
+		if($homechangedCount>0)
+			$return='Yes ('.$homechangedCount.' time'.s($homechangedCount).')';
+		return $return;	
 	}
 }
