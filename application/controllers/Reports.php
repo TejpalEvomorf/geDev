@@ -1073,7 +1073,7 @@ class Reports extends CI_Controller {
 					$value='Not set';	
 			}
 			elseif($v=='hfa_name')
-				$value=ucwords($hfaOne['lname']).' Family';
+				$value=ucwords($hfaOne['fname'].' '.$hfaOne['lname']);
 			elseif($v=='hfa_address')
 			{
 				if($hfaOne['street']!='')
@@ -1463,7 +1463,7 @@ class Reports extends CI_Controller {
 					$value='Not set';	
 			}
 			elseif($v=='hfa_name')
-				$value=ucwords($hfaOne['lname']).' Family';
+				$value=ucwords($hfaOne['fname'].' '.$hfaOne['lname']);
 			elseif($v=='hfa_address')
 			{
 				if($hfaOne['street']!='')
@@ -2369,7 +2369,7 @@ class Reports extends CI_Controller {
 							$value='Not set';	
 					}
 					elseif($v=='hfa_name')
-						$value=ucwords($hfaOne['lname']).' Family';
+						$value=ucwords($hfaOne['fname'].' '.$hfaOne['lname']);
 					elseif($v=='hfa_address')
 					{
 						if($hfaOne['street']!='')
