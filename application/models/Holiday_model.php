@@ -143,7 +143,7 @@ class Holiday_model extends CI_Model {
 			  if($p['name']==$accomodation_type)
 				  $desc .=$p['name'];
 		  }
-		  $desc .=" (Holidays: ".dateFormat($adjustment['from'])." - ".dateFormat($adjustment['to']).")";
+		  $desc .=" (Holidays: ".dateFormat($adjustment['from'])." - ".dateFormat(date(strtotime('Y-m-d',$adjustment['to'].' -1 day'))).")";
 		//DESC #ENDS
 		
 		
