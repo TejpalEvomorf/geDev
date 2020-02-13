@@ -7,7 +7,7 @@ $loggedInUser=loggedInUser();
 						   <div class="m-n form-group">
 					<label  for="notes_title"class="control-label">Title</label>
 					<input type="text" class="form-control"  id="notes_title" name="note_title" value="<?php  echo @$not['note_title'] ?>" required/>
-					<input type="hidden" name="hfa_id" id="hfanoteid" value="<? echo $formOne?>" />
+					<input type="hidden" name="hfa_id" id="hfanoteid" value="<?php echo $formOne?>" />
 					<input type="hidden" name="not_id" id="notid" value="<?php  echo @$not['id'] ?>" />
 				</div>
                 

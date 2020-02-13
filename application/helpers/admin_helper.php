@@ -410,6 +410,8 @@ function getFileTypeIcon($file)
 		$class='fa-file-excel-o';
 	elseif($ext=='jpeg' || $ext=='jpg' || $ext=='png')
 		$class='fa-file-image-o';
+	elseif($ext=='msg')
+		$class='fa-envelope';
 	else
 		$class='fa-file';
 	return '<i class="fa '.$class.'"></i>';

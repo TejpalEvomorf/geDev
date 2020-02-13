@@ -565,7 +565,7 @@ $smokingHabbits=smokingHabbits();
                 
                 <div class="modal-body">
                    <form action="<?=site_url()?>hfa/hfa_familydocument_upload" id="hf-photos-form1" class="dropzone">
-                            <input type="hidden" name="clientId" id="clientId" value="<? echo $formOne['id']?>" />	
+                            <input type="hidden" name="clientId" id="clientId" value="<?php echo $formOne['id']?>" />	
                             <input type="hidden" name="notesid" id="notesid" value=" " />	
                         </form>            
                 
@@ -605,7 +605,7 @@ $smokingHabbits=smokingHabbits();
 			<div class="m-n form-group" style="padding:0;">
 			<label class="control-label">Upload Document</label>
 			 <form action="<?=site_url()?>hfa/hfa_familydocument_upload" id="hf-photos-formedit" class="dropzone">
-                            <input type="hidden" name="clientId" id="clientIdedit" value="<? echo $formOne['id']?>" />	
+                            <input type="hidden" name="clientId" id="clientIdedit" value="<?php echo $formOne['id']?>" />	
                             <input type="hidden" name="notesid" id="notesidedit" value=" " />	
                         </form>    
 </div>						
@@ -772,7 +772,7 @@ $(document).ready(function(){
 
 		Dropzone.options.hfPhotosForm1 = {
 		maxFilesize: 5,
-		acceptedFiles:'.pdf,.PDF,.docx,.xlsx,.jpeg,.jpg,.png,.JPG,.JPEG',
+		acceptedFiles:'.pdf,.PDF,.docx,.xlsx,.jpeg,.jpg,.png,.JPG,.JPEG,.msg',
 			init: function () {
 			 	  this.on("success", function(file, responseText) {
 					  if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0)
@@ -793,7 +793,7 @@ $(document).ready(function(){
 	}
 			Dropzone.options.hfPhotosFormedit = {
 		maxFilesize: 5,
-		acceptedFiles:'.pdf,.PDF,.docx,.xlsx,.jpeg,.jpg,.png,.JPG,.JPEG',
+		acceptedFiles:'.pdf,.PDF,.docx,.xlsx,.jpeg,.jpg,.png,.JPG,.JPEG,.msg',
 			init: function () {
 			 	  this.on("success", function(file, responseText) {
 					  if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0)
