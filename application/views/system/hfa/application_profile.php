@@ -407,21 +407,16 @@ $nm = 'Not mentioned';
                                                                       <div class="media-body pb-md">
                                                                               <a data-toggle="collapse" data-parent="#bedroomAccordion" href="#collapseBedroomAccordion-<?=$bdK+1?>">
                                                                               <div class="panel-heading">
-                                                                              <h5 class="media-heading">STUDENT BEDROOM <?=$bdK+1?>
-                                                                                <strong >
-                                                                                    	Room Location:
-                                                                                </strong>    	
-                                                                                    	<?php 
-                                                                                    	if($bdV['floor']=='0' || $bdV['floor'] == ''){echo $nm;}
-                                                                                    	elseif ($bdV['floor']=='g'){echo $gf;}
-                                                                                    	else{echo 'Floor '.$bdV['floor'];}
-                                                                                    	 
-                                                                                    	?>
-                                                                                    	
-                                                                                    	
-                                                                                 
+                                                                              <h5 class="media-heading">STUDENT BEDROOM <?=$bdK+1?> (<?=$roomTypeList[$bdV['type']]?>)</h5>
+                                                                              <h5 class="pull-right media-heading">
+                                                                                      <strong >Room Location:</strong>    	
+                                                                                      <?php 
+                                                                                      if($bdV['floor']=='0' || $bdV['floor'] == ''){echo $nm;}
+                                                                                      elseif ($bdV['floor']=='g'){echo $gf;}
+                                                                                      else{echo 'Floor '.$bdV['floor'];}
+                                                                                      ?>
                                                                               </h5>
-                                                                                                                                                                 	</p>
+                                                                                                                                                                 	
                                                                               </div>
                                                                               </a>
                                                                       </div>
@@ -551,15 +546,14 @@ $nm = 'Not mentioned';
                                                                       <div class="media-body pb-md">
                                                                               <a data-toggle="collapse" data-parent="#hbedroomAccordion" href="#collapseHBedroomAccordion-<?=$hbdK+1?>">
                                                                               <div class="panel-heading">
-                                                                              <h5 class="media-heading">HOST BEDROOM <?=$hbdK+1?>
-                                                                              <strong>Room Location: </strong>
-                                                                                    	<?php 
-                                                                                    	if($hbdV['floor']=='0' || $hbdV['floor']==''){echo $nm;}
-                                                                                    	elseif ($hbdV['floor']=='g'){echo $gf;}
-                                                                                    	else{echo ' Floor '.$hbdV['floor'];}
-                                                                                    	 
-                                                                                    	?>
-                                                                                    	
+                                                                              <h5 class="media-heading">HOST BEDROOM <?=$hbdK+1?></h5>
+                                                                              <h5 class="pull-right media-heading">
+                                                                                  <strong>Room Location: </strong>
+                                                                                  <?php 
+                                                                                  if($hbdV['floor']=='0' || $hbdV['floor']==''){echo $nm;}
+                                                                                  elseif ($hbdV['floor']=='g'){echo $gf;}
+                                                                                  else{echo ' Floor '.$hbdV['floor'];}
+                                                                                  ?>
                                                                               </h5>
                                                                               </div>
                                                                               </a>
@@ -624,7 +618,9 @@ $nm = 'Not mentioned';
                                                         		
                                                                 <div class="panel panel-default">
                                                                       <div class="media-body pb-md">
-                                                                              <a data-toggle="collapse" data-parent="#bathroomAccordion" href="#collapseBathroomAccordion-<?=$btK+1?>"><div class="panel-heading"><h5 class="media-heading">BATHROOM <?=$btK+1?>
+                                                                              <a data-toggle="collapse" data-parent="#bathroomAccordion" href="#collapseBathroomAccordion-<?=$btK+1?>"><div class="panel-heading">
+                                                                              <h5 class="media-heading">BATHROOM <?=$btK+1?></h5>
+                                                                              <h5 class="pull-right media-heading">
                                                                               	<strong>Bathroom Location:</strong>
                                                                                     	<?php 
                                                                                     	if($btV['floor']=='0' || $btV['floor']==''){echo $nm;}

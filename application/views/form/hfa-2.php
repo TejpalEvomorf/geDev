@@ -63,7 +63,7 @@ $roomLocation=roomLocation();
 </div>
 <div class=" full_width_field" id="flooring_select">
 			<span class="hfa1_app_full">
-			<label for="hfa1_floors" class="full_label">How many floors host family has ?<span class="reqField">*</span></label>
+			<label for="hfa1_floors" class="full_label">How many floors host family has? <span class="reqField">*</span></label>
 				<select class="full_input errorOnBlur" id="hfa_floors" name="hfa_floors">
                 <option value="">Select one</option>
                 <?php foreach($floorsList as $flK=>$flV){?>
@@ -73,7 +73,7 @@ $roomLocation=roomLocation();
 			</span>
 			<div class=" full_width_field">
 			<span class="hfa1_app_full"> 
-			<label for="hfa1_granny_flat" class="full_label">Do you have a Granny flat<span class="reqField">*</span></label>
+			<label for="hfa1_granny_flat" class="full_label">Do you have a Granny flat? <span class="reqField">*</span></label>
 				<select class="full_input errorOnBlur" name="granny_flat" id="granny_flat">
                 <option value="">Select one</option>
                 <option class="" value="1">Yes</option>
