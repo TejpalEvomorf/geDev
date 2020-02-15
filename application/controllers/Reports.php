@@ -3057,15 +3057,15 @@ class Reports extends CI_Controller {
 			if($v=='booking_id')
 				$value=$booking['id'];
 			elseif($v=='accomodation_fee')
-				$value=$bm4->accFee;
+				$value='$'.add_decimal($bm4->accFee);
 			elseif($v=='caregiving_fee')
-				$value=$bm4->caregivingFee;
+				$value='$'.add_decimal($bm4->caregivingFee);
 			elseif($v=='hostfamily_fee')
-				$value=$bmPo->poTotalAmount;
+				$value='$'.add_decimal($bmPo->poTotalAmount);
 			elseif($v=='admin_fee')
-				$value=$bmPo->adminFeePo;
+				$value='$'.add_decimal($bmPo->adminFeePo);
 			elseif($v=='margin')
-				$value=$bmMargin->profitPercent;
+				$value='$'.add_decimal($bmMargin->profit);
 			
 			$this->excel->getActiveSheet()->setCellValue($k.$x, $value);	
 		}

@@ -680,6 +680,7 @@ class Bmargin_model extends CI_Model {
 		$outputHtml .='Profit= '.$profit.'<br>';
 		$outputHtml .='Profit%= '.$profitPercent.'%<br>';
 		$output['html']=$outputHtml;
+		$output['profit']=$profit;
 		$output['profitPercent']=$profitPercent;
 		
 		//echo json_encode($output);
