@@ -271,6 +271,7 @@ else
                 <li><a  class="withripple" href="<?=site_url()?>reports/insurance"><span>Insurance</span></a></li>
 	            <li><a  class="withripple" href="<?=site_url()?>reports/invoice"><span>Invoice</span></a></li>
 	            <li><a  class="withripple" href="<?=site_url()?>reports/parent_nominated_homestay"><span>Parents nominated homestay</span></a></li>
+	            <li><a  class="withripple" href="<?=site_url()?>reports/profit"><span>Profit report</span></a></li>
 	            <li><a  class="withripple" href="<?=site_url()?>reports/booking_regularCheckups"><span>Regular checkups</span></a></li>
                 <li><a  class="withripple" href="<?=site_url()?>reports/revisits"><span>Revisits</span></a></li>
                 <li><a  class="withripple" href="<?=site_url()?>reports/tour_groups"><span>Tour groups</span></a></li>

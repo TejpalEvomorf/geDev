@@ -503,4 +503,32 @@ class Report_model extends CI_Model {
 		$bookings=$query->result_array();
 		return $bookings;
 	}
+	
+	function bookingListForProfitReport($data)
+	{
+		if(!isset($data['CaR_status']))
+			return array();
+		
+		//$clgUniOption=$this->clgUniOptionSelected($data);//see($clgUniOption);
+		
+		$sql="select * from `bookings` where `serviceOnlyBooking`='0' and `status` IN('".implode("','",$data['CaR_status'])."') ";
+		
+		if(isset($data['CaR_activeFromDate']) && isset($data['CaR_activeToDate']))
+		{
+			$fromDate=normalToMysqlDate($data['CaR_activeFromDate']);
+			$toDate=normalToMysqlDate($data['CaR_activeToDate']);
+			
+			$sql .=" and  (";
+			$sql .=" (`booking_from`>='".$fromDate."' and `booking_from`<='".$toDate."')";//start date b/w range
+			$sql .=" OR ( `booking_to`>='".$fromDate."' and `booking_to`<='".$toDate."')";//end date b/w range
+			$sql .=" OR ( `booking_from`<='".$fromDate."' and `booking_to`>='".$toDate."')";// range is b/w the start and end date
+			$sql .=" OR ( `booking_to`='0000-00-00' and `booking_from`<='".$toDate."')";//when booking end date is not set and booking is active in the date range
+			$sql .=" )";
+		}
+		
+		$sql .="order by `bookings`.`id`";	
+		$query=$this->db->query($sql); //echo $this->db->last_query();
+		$bookings=$query->result_array();//return $this->db->query("select * from `bookings` where `student`='24922'")->result_array();
+		return $bookings;
+	}
 }

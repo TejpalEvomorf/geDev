@@ -2970,4 +2970,122 @@ class Reports extends CI_Controller {
 			$return='Yes ('.$homechangedCount.' time'.s($homechangedCount).')';
 		return $return;	
 	}
+	
+	function profit()
+	{
+		if(checkLogin())
+			{
+				recentActionsAddData('report','profit','view');
+				$data['page']='reports-profit';
+				$this->load->view('system/header',$data);
+				$this->load->view('system/reports/profit');
+				$this->load->view('system/footer');
+			}
+			else
+				redirectToLogin();
+	}
+	
+	function profit_submit()
+	{
+		$data=$_POST;
+		//see($data);die(1);
+		$this->load->library('excel');
+		$this->excel->setActiveSheetIndex(0);
+		$this->excel->getActiveSheet()->setTitle('test worksheet');
+		
+		$this->excel->getActiveSheet()->getDefaultStyle()->applyFromArray(array(
+				'font'=>array(
+				'name'      =>  'Arial',
+				'size'      =>  10,
+			)
+		));
+		
+		$fields=array();
+		$fieldIndex=$lastIndex='A';
+		
+		foreach($data['CaR_field'] as $hr_field)
+		{
+			$fields[$fieldIndex]=$hr_field;
+			$lastIndex=$fieldIndex;
+			$fieldIndex++;
+		}
+		//see($fields);
+		foreach ($fields as $fieldK=>$field){//echo $fieldK.', ';
+	   	$this->excel->getActiveSheet()->getColumnDimension($fieldK)->setAutosize(true);}
+	   
+	  $x_start=1;
+	  $reportFields=profit_report_fields();
+	  foreach($fields as $k=>$v)
+	  {
+		  $colHeading=$reportFields[$v];
+		  $this->excel->getActiveSheet()->setCellValue($k.$x_start, $colHeading);
+	  }
+		  
+		$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border:: BORDER_THIN);
+		$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getFont()->setSize(10)->setBold(true);  
+		
+		$x=$x_start+1;
+		
+	$this->load->model('report_model');
+	$bookings=$this->report_model->bookingListForProfitReport($data);//echo $this->db->last_query();see($bookings);die('dddd');
+	
+	
+	$this->load->model('booking_model');
+	$this->load->model('Bmargin_model');
+	
+	$stateList=stateList();
+	$genderList=genderList();
+	$bookingStatusList=bookingStatusList();
+	//see($fields);
+	foreach($bookings as $booking)
+	{
+		
+	$_POST['marginBookingId']=$booking['id'];
+	$_POST['marginFrom']=$data['CaR_activeFromDate'];
+	$_POST['marginTo']=$data['CaR_activeToDate'];
+	$bm4=$this->Bmargin_model->bm4();
+	$bm4=json_decode($bm4);
+	$bmPo=$this->Bmargin_model->bmPo();
+	$bmPo=json_decode($bmPo);
+	$_POST['accFeeInv']=$bm4->accFee;
+	$_POST['accFeePo']=$bmPo->accFee;;
+	$bmMargin=$this->Bmargin_model->bmMargin();
+	$bmMargin=json_decode($bmMargin);
+		foreach($fields as $k=>$v)
+		{
+			$value='';
+			if($v=='booking_id')
+				$value=$booking['id'];
+			elseif($v=='accomodation_fee')
+				$value=$bm4->accFee;
+			elseif($v=='caregiving_fee')
+				$value=$bm4->caregivingFee;
+			elseif($v=='hostfamily_fee')
+				$value=$bmPo->poTotalAmount;
+			elseif($v=='admin_fee')
+				$value=$bmPo->adminFeePo;
+			elseif($v=='margin')
+				$value=$bmMargin->profitPercent;
+			
+			$this->excel->getActiveSheet()->setCellValue($k.$x, $value);	
+		}
+		
+		$x++;
+	}
+
+	
+				$filename='profit_margin.xls'; //save our workbook as this file name
+				header('Content-Type: application/vnd.ms-excel'); //mime type
+				header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+				header('Cache-Control: max-age=0'); //no cache
+							 
+				//save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
+				//if you want to save it as .XLSX Excel 2007 format
+				$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');  
+				//force user to download the Excel file without writing it to server's HD
+				//$objWriter->save('php://output');
+				$objWriter->save('static/report/'.$filename);
+				//$mpdf->Output('static/pdf/invoice.pdf','F');
+		//header('location:'.site_url().'reports/hfa');
+	}
 }

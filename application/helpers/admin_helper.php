@@ -153,7 +153,8 @@ function pageTitleS($page='')
 		'reports-parent_nominated_homestay'=>'Parents nominated homestay report',
 		'reports-caregiving_service'=>'Caregiving service report',
 		'reports-invoice'=>'Invoice report',
-		'reports-booking_allocation'=>'Booking allocation report'
+		'reports-booking_allocation'=>'Booking allocation report',
+		'reports-profit'=>'Profit report'
 	);
 	
 	$pageTitle='';
@@ -1555,6 +1556,19 @@ function bookingsRegularCheckups_report_fields()
 	return $reportFields;
 }
 
+function profit_report_fields()
+{
+	$reportFields=array(
+	'booking_id'=>'Booking id',
+	'accomodation_fee'=>'Accommodation income',
+	'caregiving_fee'=>'Caregiving income',
+	'hostfamily_fee'=>'Cost we paid to host family',
+	'admin_fee'=>'Administration fee',
+	'margin'=>'Profit margin'
+	);
+	return $reportFields;
+}
+
 function insuranceStatusList()
 {
 	$wwccStatus=array(
@@ -2121,6 +2135,7 @@ function shaActivityDesc($activity)
 			'caregiving_service'=>'Caregiving service'.$reportText,
 			'invoice'=>'Invoice'.$reportText,
 			'booking_allocation'=>'Booking allocation'.$reportText,
+			'profit'=>'Profit'.$reportText,
 		);
 	
 		$desc=$report[$activity['action_on']];
