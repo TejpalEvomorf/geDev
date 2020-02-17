@@ -264,9 +264,11 @@ else
                 <?php if(userAuthorisations('booking_duration_report')){?>
                     <li><a  class="withripple" href="<?=site_url()?>reports/booking_duration"><span>Booking duration</span></a></li>
                 <?php } ?>
-                  <li><a  class="withripple" href="<?=site_url()?>reports/caregiving_service"><span>Caregiving service report</span></a></li>
+                 <li><a  class="withripple" href="<?=site_url()?>reports/caregiving_service"><span>Caregiving service report</span></a></li>
                  <li><a  class="withripple" href="<?=site_url()?>reports/college_auditing"><span>College audit</span></a></li>
-                   <li><a  class="withripple" href="<?=site_url()?>reports/feedback"><span>Feedback</span></a></li>   <li><a  class="withripple" href="<?=site_url()?>reports/hfa"><span>Host family</span></a></li>
+                 <li><a  class="withripple" href="<?=site_url()?>reports/feedback"><span>Feedback</span></a></li>   
+                 <li><a  class="withripple" href="<?=site_url()?>reports/booking_holidayCheckups"><span>Holiday check-up</span></a></li>   
+                 <li><a  class="withripple" href="<?=site_url()?>reports/hfa"><span>Host family</span></a></li>
                 <li><a  class="withripple" href="<?=site_url()?>reports/incidents"><span>Incidents</span></a></li>
                 <li><a  class="withripple" href="<?=site_url()?>reports/insurance"><span>Insurance</span></a></li>
 	            <li><a  class="withripple" href="<?=site_url()?>reports/invoice"><span>Invoice</span></a></li>

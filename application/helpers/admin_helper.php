@@ -154,7 +154,9 @@ function pageTitleS($page='')
 		'reports-caregiving_service'=>'Caregiving service report',
 		'reports-invoice'=>'Invoice report',
 		'reports-booking_allocation'=>'Booking allocation report',
-		'reports-profit'=>'Profit report'
+		'reports-profit'=>'Profit report',
+		'reports-bookings_regularCheckup'=>'Booking regular checkups report',
+		'reports-bookings_holidayCheckup'=>'Holiday check-up'
 	);
 	
 	$pageTitle='';
@@ -1569,6 +1571,22 @@ function profit_report_fields()
 	return $reportFields;
 }
 
+function bookingsHolidayCheckups_report_fields()
+{
+	$reportFields=array(
+	'sha_name'=>'Student Name',
+	'student_college_id'=>'Student college id',
+	'college_name'=>'College Name',
+	'hfa_name'=>'Host Family Name',
+	'booking_number'=>'Booking Number',
+	'booking_start_date'=>'Booking Start Date',
+	'booking_end_date'=>'Booking End Date',
+	'booking_checkupDate'=>'Checkup date',
+	'booking_checkupNotes'=>'Notes'
+	);
+	return $reportFields;
+}
+
 function insuranceStatusList()
 {
 	$wwccStatus=array(
@@ -1692,7 +1710,9 @@ function bookingCheckupTypeList()
 	return array(
 		'1'=>'Arrival check',
 		'2'=>'Reminder check',
-		'3'=>'Regular check'
+		'3'=>'Regular check',
+		'4'=>'Holiday reminder check',
+		'5'=>'Holiday return check'
 	);
 }
 
@@ -2136,6 +2156,7 @@ function shaActivityDesc($activity)
 			'invoice'=>'Invoice'.$reportText,
 			'booking_allocation'=>'Booking allocation'.$reportText,
 			'profit'=>'Profit'.$reportText,
+			'booking_holidayCheckup'=>'Holiday check-up'.$reportText
 		);
 	
 		$desc=$report[$activity['action_on']];
@@ -2456,5 +2477,16 @@ function shaCollegeNameMatched($shaId)
 function gstPercent()//GST on accomodation fee
   {
 	  return 10;
+  }
+
+function find_closestDate($array, $date)
+  {
+	  foreach($array as $day)
+		  $interval[] = abs(strtotime($date) - strtotime($day));
+  
+	  asort($interval);
+	  $closest = key($interval);
+  
+	  return $array[$closest];
   }
 ?>

@@ -2552,6 +2552,18 @@ function editInvoiceDataPopContent(id)
 								$('#bookCheckup_notesDiv').show();
 								$('#bookCheckup_notes').prop('disabled', false);
 							}
+							else if(method==4)
+							{
+								title +='holiday reminder';
+								$('#bookCheckup_notesDiv').show();
+								$('#bookCheckup_notes').prop('disabled', false);
+							}
+							else if(method==5)
+							{
+								title +='holiday return';
+								$('#bookCheckup_notesDiv').show();
+								$('#bookCheckup_notes').prop('disabled', false);
+							}
 							
 							$('#model_bookingCheckup_titlePart').text(title);
 							initializeToolTip();

@@ -531,4 +531,85 @@ class Report_model extends CI_Model {
 		$bookings=$query->result_array();//return $this->db->query("select * from `bookings` where `student`='24922'")->result_array();
 		return $bookings;
 	}
+	
+	function bookingListForBookingHolidayCheckupReport($data)
+	{
+		if(!isset($data['CaR_status']))
+			return array();
+		
+		$clgUniOption=$this->clgUniOptionSelected($data);//see($clgUniOption);
+		
+		$sql="select `bookings`.*, `booking_holidays`.`id` as `holiday_id`, `booking_holidays`.`start` as `holiday_start`, `booking_holidays`.`end` as `holiday_end` from `bookings` JOIN `booking_holidays` ON(`bookings`.`id`=`booking_holidays`.`booking_id`)  where `serviceOnlyBooking`='0' and `status` IN('".implode("','",$data['CaR_status'])."') ";
+		if(isset($data['CaR_fromDate']) && isset($data['CaR_toDate']))
+		{
+			if($data['CaR_holidayDateType']=='holiday_startDate')
+				$holidayFromTo='start';
+			else	
+				$holidayFromTo='end';
+			$fromDate=normalToMysqlDate($data['CaR_fromDate']);
+			$toDate=normalToMysqlDate($data['CaR_toDate']);
+			$sql .=" and  `booking_holidays`.`".$holidayFromTo."`>='".$fromDate."' and `booking_holidays`.`".$holidayFromTo."`<='".$toDate."'";
+		}
+		
+		if(!empty($clgUniOption['client']) && $clgUniOption['client']['option']!='all')
+		{
+			if(isset($clgUniOption['client']['clients']))
+			{
+				$shaClientSet="'".implode("','",$clgUniOption['client']['clients'])."'";	
+				$sqlClient=" where `client` IN(".$shaClientSet.")";
+				$sql .=" and `student` IN(select `id` from `sha_one` ".$sqlClient.") ";
+			}
+			else
+				return 	array();
+		}
+		
+		if(!empty($clgUniOption['college']) && $clgUniOption['college']['option']!='all')
+		{
+			$shaClgSet="'".implode("','",$clgUniOption['college']['optionVal'])."'";
+			if($clgUniOption['college']['option']=='clgUni_group')
+				$sqlColg=" where `college_group` IN(".$shaClgSet.")";
+			elseif($clgUniOption['college']['option']=='selective')
+				$sqlColg=" where `college` IN(".$shaClgSet.")";
+				
+			$sql .=" and `student` IN(select `id` from `sha_three` ".$sqlColg.") ";
+		}
+		
+		$sql .="order by `bookings`.`id`";	
+		$query=$this->db->query($sql);//echo $this->db->last_query();
+		$bookings=$query->result_array();
+		return $bookings;
+	}
+	
+	function getLinkedHolidayCheckup($booking,$holidayDateType)
+	{
+		if($holidayDateType=='holiday_startDate')
+		{
+			$type='4';
+			$date=$booking['holiday_start'];
+		}
+		else
+		{
+			$type='5';
+			$date=$booking['holiday_end'];
+		}
+		$sql="select * from `booking_checkups` where `booking`=? and `type`=?";
+		$checkups=$this->db->query($sql,array($booking['id'],$type))->result_array();
+		
+		$allDates=array();
+		foreach($checkups as $checkup)
+			$allDates	[]=$checkup['checkup_date'];
+		
+		$closestDate=find_closestDate($allDates, $date);
+		$linkedCheckup=array();
+		foreach($checkups as $checkup)
+		{
+			if($checkup['checkup_date']==$closestDate)
+			{
+				$linkedCheckup=$checkup;
+				break;
+			}
+		}
+		return $linkedCheckup;
+	}
+	
 }

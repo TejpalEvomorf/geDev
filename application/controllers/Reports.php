@@ -2843,7 +2843,7 @@ class Reports extends CI_Controller {
 			if(checkLogin())
 			{
 				recentActionsAddData('report','booking_regularCheckup','view');
-				$data['page']='reports-bookings';
+				$data['page']='reports-bookings_regularCheckup';
 				$this->load->view('system/header',$data);
 				$this->load->view('system/reports/bookings_regularCheckups');
 				$this->load->view('system/footer');
@@ -3087,5 +3087,142 @@ class Reports extends CI_Controller {
 				$objWriter->save('static/report/'.$filename);
 				//$mpdf->Output('static/pdf/invoice.pdf','F');
 		//header('location:'.site_url().'reports/hfa');
+	}
+	
+	function booking_holidayCheckups()
+	{
+			if(checkLogin())
+			{
+				recentActionsAddData('report','booking_holidayCheckup','view');
+				$data['page']='reports-bookings_holidayCheckup';
+				$this->load->view('system/header',$data);
+				$this->load->view('system/reports/bookings_holidayCheckups');
+				$this->load->view('system/footer');
+			}
+			else
+				redirectToLogin();
+	}
+	
+	function booking_holidayCheckups_submit()
+	{
+		$data=$_POST;
+		//see($data);die(1);
+		$this->load->library('excel');
+		$this->excel->setActiveSheetIndex(0);
+		$this->excel->getActiveSheet()->setTitle('test worksheet');
+		
+		$this->excel->getActiveSheet()->getDefaultStyle()->applyFromArray(array(
+				'font'=>array(
+				'name'      =>  'Arial',
+				'size'      =>  10,
+			)
+		));
+		
+		$fields=array();
+		$fieldIndex=$lastIndex='A';
+		
+		foreach($data['CaR_field'] as $hr_field)
+		{
+			$fields[$fieldIndex]=$hr_field;
+			$lastIndex=$fieldIndex;
+			$fieldIndex++;
+		}
+		//see($fields);
+		foreach ($fields as $fieldK=>$field){//echo $fieldK.', ';
+	   	$this->excel->getActiveSheet()->getColumnDimension($fieldK)->setAutosize(true);}
+	   
+	  $x_start=1;
+	  $reportFields=bookingsHolidayCheckups_report_fields();
+	  foreach($fields as $k=>$v)
+	  {
+		  $colHeading=$reportFields[$v];
+		  if($v=='booking_checkupDate')
+		  {
+			 if($data['CaR_holidayDateType']=='holiday_startDate')
+				 $colHeading='Holiday reminder check date';
+			 else	
+				 $colHeading='Holiday return check date';
+		  }
+		  $this->excel->getActiveSheet()->setCellValue($k.$x_start, $colHeading);
+	  }
+		  
+		$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border:: BORDER_THIN);
+		$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getFont()->setSize(10)->setBold(true);  
+		
+		$x=$x_start+1;
+		
+	$this->load->model('report_model');
+	$bookings=$this->report_model->bookingListForBookingHolidayCheckupReport($data);//see($bookings);
+	
+	$stateList=stateList();
+	$genderList=genderList();
+	$bookingStatusList=bookingStatusList();
+	//see($fields);
+	foreach($bookings as $booking)
+	{
+		$shaOne=getShaOneAppDetails($booking['student']);
+		$shaTwo=getShaTwoAppDetails($booking['student']);
+		$shaThree=getShaThreeAppDetails($booking['student']);
+		$hfaOne=getHfaOneAppDetails($booking['host']);
+		$checkup=$this->report_model->getLinkedHolidayCheckup($booking,$data['CaR_holidayDateType']);
+		
+		foreach($fields as $k=>$v)
+		{
+			$value='';
+			if($v=='sha_name')
+				$value=ucwords($shaOne['fname'].' '.$shaOne['lname']);
+			elseif($v=='student_college_id')
+				$value=$shaOne['sha_student_no'];
+			elseif($v=='college_name')
+				$value=$shaThree['college'];
+			elseif($v=='booking_number')
+				$value=$booking['id'];
+			elseif($v=='booking_start_date')
+				$value=date('d M Y',strtotime($booking['booking_from']));
+			elseif($v=='booking_end_date')
+			{
+				if($booking['booking_to']!='0000-00-00')
+					$value=date('d M Y',strtotime($booking['booking_to'].' +1 day'));
+				else
+					$value='Not set';	
+			}
+			elseif($v=='hfa_name')
+				$value=ucwords($hfaOne['lname']).' Family';
+			elseif($v=='booking_checkupDate')
+			{
+				if(!empty($checkup))
+					$value=date('d M Y',strtotime($checkup['checkup_date']));
+			}
+			elseif($v=='booking_checkupNotes')
+			{
+				if(!empty($checkup))
+					$value=$checkup['notes'];
+			}
+			
+			$this->excel->getActiveSheet()->setCellValue($k.$x, $value);	
+		}
+		
+		$x++;
+	}
+
+	
+				$filename='Booking_holidayCheckups.xls'; //save our workbook as this file name
+				header('Content-Type: application/vnd.ms-excel'); //mime type
+				header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+				header('Cache-Control: max-age=0'); //no cache
+							 
+				//save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
+				//if you want to save it as .XLSX Excel 2007 format
+				$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');  
+				//force user to download the Excel file without writing it to server's HD
+				//$objWriter->save('php://output');
+				$objWriter->save('static/report/'.$filename);
+				//$mpdf->Output('static/pdf/invoice.pdf','F');
+		//header('location:'.site_url().'reports/hfa');
+	}
+	
+	function getHolidayCheckup($booking,$holidayDateType)
+	{
+		return $this->report_model->getHolidayCheckup($booking,$holidayDateType);
 	}
 }
