@@ -3220,9 +3220,4 @@ class Reports extends CI_Controller {
 				//$mpdf->Output('static/pdf/invoice.pdf','F');
 		//header('location:'.site_url().'reports/hfa');
 	}
-	
-	function getHolidayCheckup($booking,$holidayDateType)
-	{
-		return $this->report_model->getHolidayCheckup($booking,$holidayDateType);
-	}
 }
