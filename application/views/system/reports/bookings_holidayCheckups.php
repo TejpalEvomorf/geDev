@@ -53,16 +53,14 @@ $reportFields=bookingsHolidayCheckups_report_fields();
                                                           <h2>Booking Date Range</h2>
                                                       </div>
                                                       <div class="panel-body">
-                                                      <p style="margin-bottom:0;">Only the bookings that have holiday <span id="dateRangeTypeLabelPart">start</span> date between the selected date range will be exported.</p>
-                                                          
-                                                              <div class="widget-body mt-n form-group">
+                                                      <div class="widget-body mt-n form-group">
                                                               <!-- <label  class="mt-n control-label filterItemLabel">Only show applications that are:</label>-->
                                                                <div class="radio block">
                                                                     <label>
                                                                         <input type="radio" name="CaR_holidayDateType" value="holiday_startDate" data-label="start" checked>
                                                                         <span class="circle"></span>
                                                                         <span class="check"></span>
-                                                                        Applies to holiday start date
+                                                                        Apply to holiday start date
                                                                     </label>
                                                                </div>
                                                                <div class="radio block">
@@ -70,11 +68,13 @@ $reportFields=bookingsHolidayCheckups_report_fields();
                                                                         <input type="radio" name="CaR_holidayDateType" data-label="end" value="holiday_endDate">
                                                                         <span class="circle"></span>
                                                                         <span class="check"></span>
-                                                                        Applies to holiday end date
+                                                                        Apply to holiday end date
                                                                     </label>
                                                                </div>
                                                             </div>
-    
+                                                      
+                                                      <p style="margin-bottom:0;">Only the bookings that have holiday <span id="dateRangeTypeLabelPart">start</span> date between the selected date range will be exported.</p>
+                                                          
                                                               <div class="m-n form-group col-xs-6" style="padding-left:0;">
                                                                   <label class="control-label" style="margin-top:0;">From date</label>
                                                                       <input type="text" class="form-control" id="CaR_fromDate" name="CaR_fromDate" value="<?=date('d/m/Y')?>" readonly="readonly" style="cursor:text;">
