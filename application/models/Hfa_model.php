@@ -285,39 +285,36 @@ function changeStatus($data)
 					$sql="insert into `hfa_bedrooms` (`application_id`,`type`,`flooring`,`flooring_other`,`floor`,`access`,`granny_flat`,`internal_ensuit`,`avail`,`avail_from`,`avail_to`,`currently_hosting`,`date_leaving`,`age`,`gender`,`nation`)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 					$this->db->query($sql,array($data['id'],$data['bedroom-'.$x]['room_select'],$data['bedroom-'.$x]['room_flooring_select'],$data['bedroom-'.$x]['hfa_bed_flooring_other_val'],$data['bedroom-'.$x]['student_room'],$data['bedroom-'.$x]['hfa_access_room'],$data['bedroom-'.$x]['flat_grany'],$data['bedroom-'.$x]['internal_ensuite'],$data['bedroom-'.$x]['hfa_room_availability'],$data['bedroom-'.$x]['hfa_room_avail_from'],$data['bedroom-'.$x]['hfa_room_avail_to'],$data['bedroom-'.$x]['hfa_hosting_student'],$data['bedroom-'.$x]['hfa_room_date_leaving'],$data['bedroom-'.$x]['student_age'],$data['bedroom-'.$x]['student_gender'],$data['bedroom-'.$x]['student_nation']));
 				}
+
+				echo $this->db->last_query();//die();
 			}
 		//Bedrooms table #ENDS
 		//Host Bedrooom table #STARTS
 		$hbeds = $data['hfa_bedroom']-$data['hfa_bedroom_avail'];
-
 		if($hbeds==0){
 			$sql0="delete from `hfa_bedrooms_hostfamily` where `application_id`='".$data['id']."'";
 			$this->db->query($sql0);
 		}
-
-		for($x=1;$x<=$hbeds; $x++)
-		{
-			if($data['hbedroom-'.$xD]['hbed_id']=='' && $data['hbedroom-'.$xD]['host_room']!='')
-			{
-				$sqlDelBed="delete from `hfa_bedrooms_hostfamily` where `application_id`='".$data['id']."'";
+		for($xD=9;$xD>$hbeds; $xD--)
+		{	
+			if( $data['hbedroom-'.$xD]['hbed_id']!="" && $data['hbedroom-'.$xD]['host_room']!=""){ 
+				$sqlDelBed="delete from `hfa_bedrooms_hostfamily` where `id`='".$data['hbedroom-'.$xD]['hbed_id']."'";
 				$this->db->query($sqlDelBed);
 			}
+			//echo $this->db->last_query()."<br>";
 		}
-		
-
-			for($x=1;$x<=$hbeds; $x++){
-				if($data['hbedroom-'.$x]['hbed_id']!="")
-				{
-									
-					$sql="update `hfa_bedrooms_hostfamily` set `application_id`=?, `floor`=? where `id`='".$data['hbedroom-'.$x]['hbed_id']."'";
-					$this->db->query($sql,array($data['id'],$data['hbedroom-'.$x]['host_room']));
-				}
-				else
-				{
-					$sql="insert into `hfa_bedrooms_hostfamily` (`application_id`,`floor`)values(?,?)";
-					$this->db->query($sql,array($data['id'],$data['hbedroom-'.$x]['host_room']));
-				}
+		for($x=1;$x<=$hbeds; $x++){
+			if($data['hbedroom-'.$x]['hbed_id']!="")
+			{				
+				$sql="update `hfa_bedrooms_hostfamily` set `application_id`=?, `floor`=? where `id`='".$data['hbedroom-'.$x]['hbed_id']."'";
+				$this->db->query($sql,array($data['id'],$data['hbedroom-'.$x]['host_room']));
 			}
+			else
+			{
+				$sql="insert into `hfa_bedrooms_hostfamily` (`application_id`,`floor`)values(?,?)";
+				$this->db->query($sql,array($data['id'],$data['hbedroom-'.$x]['host_room']));
+			}//echo $this->db->last_query()."<br>";
+		}
 		//Host Bedroom table #End
 		//Bathrooms table #STARTS
 			$sqlDelBed="delete from `hfa_bathrooms` where `application_id`='".$data['id']."'";
@@ -1331,6 +1328,8 @@ function changeStatus($data)
 				$this->db->delete('hfa_bedrooms');
 				$this->db->where('id', $data['id']);
 			$this->db->update('hfa_two',array("bedrooms_avail"=>$c));
+			$sql="insert into `hfa_bedrooms_hostfamily` (`application_id`,`floor`)values(?,?)";
+			$this->db->query($sql,array($data['id'],"0"));
 				
 			}else if($data['type']=='member'){
 				$this->db->where('id',$data['bid']);
@@ -1348,6 +1347,14 @@ function changeStatus($data)
 				$this->db->where('id', $data['id']);
 			$this->db->update('hfa_two',array("bathrooms"=>$c));
 			}	
+		}
+		function deletehostbed($data){
+			$c=$data['c']-1;
+				$this->db->where('id',$data['bid']);
+				$this->db->delete('hfa_bedrooms_hostfamily');
+				$this->db->where('id', $data['id']);
+				$this->db->update('hfa_two',array("bedrooms"=>$c));
+				//echo $this->db->last_query();
 		}
 		function nominatedfmailyname($id){
 			$this->db->select("fname,lname");

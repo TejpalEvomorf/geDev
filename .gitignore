@@ -10,3 +10,5 @@ static/report/
 static/wordFiles/
 static/uploads/
 application/controllers/Bmargin - Copy.php
+*.sql
+application/views/system/booking/Searchall-old.php

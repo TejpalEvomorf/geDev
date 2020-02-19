@@ -1784,4 +1784,20 @@ class Hfa extends CI_Controller {
 			else
 				header('location:'.site_url(),'refresh');
 	}
+
+
+	function deletehostbed(){
+		if(checkLogin())
+					$this->hfa_model->deletehostbed($_POST);
+		else
+				echo "LO";
+		
+	}
+
+
+
+
 }
+
+
+

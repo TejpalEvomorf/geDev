@@ -217,7 +217,6 @@ for($x=1;$x<=9;$x++)
 {
 ?>
 <input type="hidden" name="bedroom-<?=$x?>[bed_id]" value="<?php if($formTwo['bedrooms_avail']>=$x){echo $formTwo['bedroomDetails'][$x-1]['id'];}?>">
-
 <fieldset class="hfa1_top_block_bedrooms hfa_bedroom_avail_details" <?php if($formTwo['bedrooms_avail']<$x){?>style="display:none;"<?php } ?> id="hfa_bedroom_avail_details_<?php echo $x;?>">
 <div class="hfa-member-heading-cont">
 <h2>STUDENT BEDROOM <?php echo $x;?> </h2> 
@@ -399,36 +398,45 @@ if($formTwo['bedrooms_avail']>=$x && canDeactivateRoom($formTwo['bedroomDetails'
 </fieldset>
 <?php } ?>
 
-
 <!--Add Host Bedroom -->
 
 <?php //see($formTwo['hostbedroomDetails']);
+ $hb  = $formTwo['bedrooms'] - $formTwo['bedrooms_avail']; 
 for($x=1;$x<=9;$x++)
 {
-?> 
-<?php if(!empty($formTwo['hostbedroomDetails'])){ ?>
-<input type="hidden" name="hbedroom-<?php echo $x;?>[hbed_id]" value="<?php if(($formTwo['bedrooms']-$formTwo['bedrooms_avail'])>=$x){if($formTwo['hostbedroomDetails']!=''){echo $formTwo['hostbedroomDetails'][$x-1]['id'];}}?>">
-<?php } ?>
- 
+?>
+
+<input class="hidden-id" type="hidden" name="hbedroom-<?php echo $x;?>[hbed_id]" value="<?php if($hb>=$x && !empty($formTwo['hostbedroomDetails'])){if(isset($formTwo['hostbedroomDetails'][$x-1]['id'])){echo($formTwo['hostbedroomDetails'][$x-1]['id']);}}else{} ?>">
+
 <fieldset class="hfa1_top_block_bedrooms  hfa_bedroom_location" <?php if(($formTwo['bedrooms']-$formTwo['bedrooms_avail'])<$x){?>style="display:none; "<?php } ?> id="hfa_bedroom_location_<?php echo $x;?>">
-	<div style="margin-left: 45px;margin-right: 45px;">
+<div style="margin-left: 45px;margin-right: 45px;">
 <div class="hfa-member-heading-cont" >
-<h2>HOST BEDROOM <?php echo $x;?> </h2>
+<h2>HOST BEDROOM <?php echo $x;?></h2>
+
+<!------------------------------------------------------------------------------------------------->
+
+<?php  
+if(count(@$formTwo['hostbedroomDetails'])>1){?>
+	<span class="famember-delete">
+    <i class="font16 material-icons">delete</i>
+    <input type="button" data-id="<?= @$formTwo['hostbedroomDetails'][$x-1]['id']  ?>" value="Delete" onclick="deletehostbed(<?= @$formTwo['hostbedroomDetails'][$x-1]['id']  ?>,'hbedroom',<?= @$formTwo['hostbedroomDetails'][$x-1]['application_id']  ?>,<?= @$formTwo['bedrooms']?>);"   class="hfabedroom ">
+    </span>    
+<?php } ?>
+
 </div>
-    <div class="hfa1_home_left">
+<!------------------------------------------------------------------------------------------------->
+<div class="hfa1_home_left">
 <div class=" full_width_field">
 			<span class="hfa1_app_half margin_10">
 			<label for="hfa1_room_location" class="full_label">Room location <span class="reqField">*</span></label>
 				<select class="full_input hfa_room_location host_room_location errorOnBlur" name="hbedroom-<?php echo $x;?>[host_room]" id="host_room-<?php echo $x;?>" >
                 <option value="" class="">Select one</option>
-                  <?php foreach($roomLocation as $flK=>$flV){?>
-	               	 <option class="sha_location" style="display: none;" value="<?=$flK?>" <?php if(!empty($formTwo['hostbedroomDetails'])){if(count($formTwo['hostbedroomDetails'])>=$x){if(!empty($formTwo['hostbedroomDetails'])){if($formTwo['hostbedroomDetails'][$x-1]['floor']==$flK){echo 'selected="selected"';}}}}?>><?=$flV?></option>
-                 <?php } ?>
-               
-                
+                <?php foreach($roomLocation as $flK=>$flV){?>
+	            <option class="sha_location" style="display: none;" value="<?=$flK?>" <?php if(!empty($formTwo['hostbedroomDetails'])){if(count($formTwo['hostbedroomDetails'])>=$x){if(!empty($formTwo['hostbedroomDetails'])){if($formTwo['hostbedroomDetails'][$x-1]['floor']==$flK){echo 'selected="selected"';}}}}?>><?=$flV?></option>
+                <?php } ?>
                 <option class="location_granny_flat" style="display:none;" value="g"  <?php if(!empty($formTwo['hostbedroomDetails'])){if(count($formTwo['hostbedroomDetails'])>=$x){if(!empty($formTwo['hostbedroomDetails'])){if($formTwo['hostbedroomDetails'][$x-1]['floor']=='g'){echo 'selected="selected"';}}}} ?>><?=$gf?></option>
-                <option class="" value="0"  <?php if(empty($formTwo['hostbedroomDetails'])){echo 'selected="selected"';}else if(count($formTwo['hostbedroomDetails'])>=$x){if(!empty($formTwo['hostbedroomDetails'])){if($formTwo['hostbedroomDetails'][$x-1]['floor']=='0'){echo 'selected="selected"';}}} ?>><?=$nm?></option>
-                </select>
+  			<option class='notmentioned' value='0' <?php if(!empty($formTwo['hostbedroomDetails'])){if(count($formTwo['hostbedroomDetails'])>=$x){if($formTwo['hostbedroomDetails'][$x-1]['floor']=='0' || $formTwo['hostbedroomDetails'][$x-1]['floor']==''){echo 'selected="selected"';} }}else   if(empty($formTwo['hostbedroomDetails'])){echo 'selected="selected"';}?>><?=$nm?></option>
+                 </select>
 			</span>
 			
 			
@@ -438,7 +446,7 @@ for($x=1;$x<=9;$x++)
 </fieldset>
 <?php } ?>
 
-<!--hostt bedroom-->
+<!--host bedroom-->
 
 </fieldset>
 
@@ -661,7 +669,7 @@ function deletehfadetail(bid,type,id,c)
 								  type:'POST',
 								  data:{id:id,bid:bid,type:type,c:c},
 								  success:function(data)
-									  {
+									  {		
 										  if(data=='LO')
 											  redirectToLogin();
 										  else
@@ -714,11 +722,50 @@ function hfaRoomDeactivate(roomId,hfaId)
 				});
 }
 
+function deletehostbed(bid,type,id,c)
+{
+	//alert(site_url());
+		var msg="Are you sure you wish to delete this host bedroom ?";
+		var msg1="Host bedroom deleted successfully";
+		var surl=site_url()+'hfa/deletehostbed';
+		var sid='#'+type;
+		bootbox.dialog({
+				message: msg,
+				title: "Delete",
+				buttons: {
+					  danger: {
+						label: "Delete",
+						className: "hfaDelMember",
+						callback: function() {
+
+								$.ajax({
+								  url:surl,
+								  type:'POST',
+								  data:{id:id,bid:bid,type:type,c:c},
+								  success:function(data)
+									  {		
+										  if(data=='LO')
+											  redirectToLogin();
+										  else
+										  {
+											  window.location.href=site_url()+'hfa/application/'+id+sid;		
+											  
+										  }
+									  }
+								  });
+
+							}
+						}
+					}
+				});
+}
+
 
 $(document).ready(function(){
 
 
 $(window).on('load',function(){
+
 	var selected_floors = $('#hfa_floors').val();
 	
 	$(".sha_location").each(function(){
@@ -737,7 +784,7 @@ $(window).on('load',function(){
 		}
 
 	else{
-			$('.location_granny_flat').hide();		
+		$('.location_granny_flat').hide();		
 	}
 
 	});

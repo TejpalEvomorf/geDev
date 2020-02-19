@@ -411,7 +411,7 @@ $nm = 'Not mentioned';
                                                                               <h5 class="pull-right media-heading">
                                                                                       <strong >Room Location:</strong>    	
                                                                                       <?php 
-                                                                                      if($bdV['floor']=='0' || $bdV['floor'] == ''){echo $nm;}
+                                                                                      if($bdV['floor']==('0' || '')){echo $nm;}
                                                                                       elseif ($bdV['floor']=='g'){echo $gf;}
                                                                                       else{echo 'Floor '.$bdV['floor'];}
                                                                                       ?>
@@ -432,13 +432,11 @@ $nm = 'Not mentioned';
                                                                                     <tr>
                                                                                     	<th>Room Location</th>
                                                                                     	<td><?php 
-                                                                                    	if($bdV['floor']=='0' || $bdV['floo'=='']){echo $nm;}
-                                                                                    	elseif ($bdV['floor']=='g'){echo $gf;}
+                                                                             
+                                                                                    	if ($bdV['floor']=='g'){echo $gf;}
+                                                                                    	else if($bdV['floor']==('0' || '')){echo $nm;}
                                                                                     	else{echo 'Floor '.$bdV['floor'];}
-                                                                                    	 
-                                                                                    	?></td>
-                                                                                    	
-                                                                                    	
+                                                                                      	?></td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <th>Flooring type</th>

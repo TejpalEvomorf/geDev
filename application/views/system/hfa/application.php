@@ -201,6 +201,9 @@ $(document).ready(function(){
 	   else if (tabToOpen != '' && tabToOpen == '#bedroom') {
       notiPop("success", "Student Bedroom deleted successfully.", "");
       window.location.hash = '';
+    }else if (tabToOpen != '' && tabToOpen == '#hbedroom') {
+      notiPop("success", "Host Bedroom deleted successfully.", "");
+      window.location.hash = '';
     } else if (tabToOpen != '' && tabToOpen == '#member') {
       notiPop("success", "Member deleted successfully.", "");
       window.location.hash = '';

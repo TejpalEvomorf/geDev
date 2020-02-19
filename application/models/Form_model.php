@@ -184,21 +184,17 @@ class Form_model extends CI_Model {
 				$this->db->query($sql,array($data['id'],$data['bedroom-'.$x]['room_select'],$data['bedroom-'.$x]['room_flooring_select'],$data['bedroom-'.$x]['hfa_bed_flooring_other_val'],$data['bedroom-'.$x]['student_room'],$data['bedroom-'.$x]['hfa_access_room'],$data['bedroom-'.$x]['flat_grany'],$data['bedroom-'.$x]['internal_ensuite'],$data['bedroom-'.$x]['hfa_room_availability'],$data['bedroom-'.$x]['hfa_room_avail_from'],$data['bedroom-'.$x]['hfa_room_avail_to'],$data['bedroom-'.$x]['hfa_hosting_student'],$data['bedroom-'.$x]['hfa_room_date_leaving'],$data['bedroom-'.$x]['student_age'],$data['bedroom-'.$x]['student_gender'],$data['bedroom-'.$x]['student_nation']));
 			}
 		//Bedrooms table #ENDS
+
+
 		//Host Bedrooom table #STARTS
 
 			for($x=1;$x<=($data['hfa_bedroom'] - $data['hfa_bedroom_avail']); $x++){
-				if($data['hbedroom-'.$x]['hbed_id']!="")
-				{
-					$sql="update `hfa_bedrooms_hostfamily` set `application_id`=?,`floor`=? where `id`='".$data['hbedroom-'.$x]['hbed_id']."'";
-					$this->db->query($sql,array($data['id'],$data['hbedroom-'.$x],$data['hbedroom-'.$x]['host_room']));
-				}
-				else
-				{
 					$sql="insert into `hfa_bedrooms_hostfamily` (`application_id`,`floor`)values(?,?)";
 					$this->db->query($sql,array($data['id'],$data['hbedroom-'.$x]['host_room']));
-				}
-			}
+			}//echo $this->db->last_query();
 		//Host Bedroom table #End
+
+
 		
 		//Bathrooms table #STARTS
 			$sqlDelBed="delete from `hfa_bathrooms` where `application_id`='".$data['id']."'";
