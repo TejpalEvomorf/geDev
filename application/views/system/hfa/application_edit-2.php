@@ -401,6 +401,7 @@ if($formTwo['bedrooms_avail']>=$x && canDeactivateRoom($formTwo['bedroomDetails'
 <!--Add Host Bedroom -->
 
 <?php //see($formTwo['hostbedroomDetails']);
+//see($formTwo);
  $hb  = $formTwo['bedrooms'] - $formTwo['bedrooms_avail']; 
 for($x=1;$x<=9;$x++)
 {
@@ -408,23 +409,25 @@ for($x=1;$x<=9;$x++)
 
 <input class="hidden-id" type="hidden" name="hbedroom-<?php echo $x;?>[hbed_id]" value="<?php if($hb>=$x && !empty($formTwo['hostbedroomDetails'])){if(isset($formTwo['hostbedroomDetails'][$x-1]['id'])){echo($formTwo['hostbedroomDetails'][$x-1]['id']);}}else{} ?>">
 
-<fieldset class="hfa1_top_block_bedrooms  hfa_bedroom_location" <?php if(($formTwo['bedrooms']-$formTwo['bedrooms_avail'])<$x){?>style="display:none; "<?php } ?> id="hfa_bedroom_location_<?php echo $x;?>">
+<fieldset class="hfa1_top_block_bedrooms  hfa_bedroom_location" <?php if($hb<$x){?>style="display:none; "<?php } ?> id="hfa_bedroom_location_<?php echo $x;?>">
 <div style="margin-left: 45px;margin-right: 45px;">
 <div class="hfa-member-heading-cont" >
 <h2>HOST BEDROOM <?php echo $x;?></h2>
 
-<!------------------------------------------------------------------------------------------------->
+<!------------------------------------------------------------------------------------------------------------------------------------------------------------------>
 
-<?php  
-if(count(@$formTwo['hostbedroomDetails'])>1){?>
-	<span class="famember-delete">
+<?php 
+if(!empty($formTwo['hostbedroomDetails'])) {
+if(count(@$formTwo['hostbedroomDetails'])>1){if(count(@$formTwo['hostbedroomDetails']) >= $x){?>
+
+	<span class="famember-delete hbdel">
     <i class="font16 material-icons">delete</i>
     <input type="button" data-id="<?= @$formTwo['hostbedroomDetails'][$x-1]['id']  ?>" value="Delete" onclick="deletehostbed(<?= @$formTwo['hostbedroomDetails'][$x-1]['id']  ?>,'hbedroom',<?= @$formTwo['hostbedroomDetails'][$x-1]['application_id']  ?>,<?= @$formTwo['bedrooms']?>);"   class="hfabedroom ">
     </span>    
-<?php } ?>
+<?php }}}?>
 
+<!------------------------------------------------------------------------------------------------------------------------------------------------------------------>
 </div>
-<!------------------------------------------------------------------------------------------------->
 <div class="hfa1_home_left">
 <div class=" full_width_field">
 			<span class="hfa1_app_half margin_10">
@@ -435,8 +438,9 @@ if(count(@$formTwo['hostbedroomDetails'])>1){?>
 	            <option class="sha_location" style="display: none;" value="<?=$flK?>" <?php if(!empty($formTwo['hostbedroomDetails'])){if(count($formTwo['hostbedroomDetails'])>=$x){if(!empty($formTwo['hostbedroomDetails'])){if($formTwo['hostbedroomDetails'][$x-1]['floor']==$flK){echo 'selected="selected"';}}}}?>><?=$flV?></option>
                 <?php } ?>
                 <option class="location_granny_flat" style="display:none;" value="g"  <?php if(!empty($formTwo['hostbedroomDetails'])){if(count($formTwo['hostbedroomDetails'])>=$x){if(!empty($formTwo['hostbedroomDetails'])){if($formTwo['hostbedroomDetails'][$x-1]['floor']=='g'){echo 'selected="selected"';}}}} ?>><?=$gf?></option>
-  			<option class='notmentioned' value='0' <?php if(!empty($formTwo['hostbedroomDetails'])){if(count($formTwo['hostbedroomDetails'])>=$x){if($formTwo['hostbedroomDetails'][$x-1]['floor']=='0' || $formTwo['hostbedroomDetails'][$x-1]['floor']==''){echo 'selected="selected"';} }}else   if(empty($formTwo['hostbedroomDetails'])){echo 'selected="selected"';}?>><?=$nm?></option>
-                 </select>
+  			<option class='notmentioned' value='0' <?php if(!empty($formTwo['hostbedroomDetails']) &&(count($formTwo['hostbedroomDetails'])>=$x && ($formTwo['hostbedroomDetails'][$x-1]['floor']=='0' || $formTwo['hostbedroomDetails'][$x-1]['floor']==''))){echo 'selected="selected"';}elseif (empty($formTwo['hostbedroomDetails']) && !empty($formTwo['bedroomDetails'])){if($hb >= $x){echo 'selected="selected"';}}?>><?=$nm?></option>
+                </select>
+
 			</span>
 			
 			
@@ -480,12 +484,13 @@ if(count(@$formTwo['hostbedroomDetails'])>1){?>
 
 <div class="hfa-member-heading-cont">
 <h2>BATHROOM <?php echo $x;?></h2>
-<?php // if(count(@$formTwo['bathroomDetails'])>1){?>
+
+<?php if(!empty($formTwo['bathroomDetails'])){ if(count(@$formTwo['bathroomDetails'])>1){if(count(@$formTwo['bathroomDetails']) >= $x){?>
 <span class="famember-delete">
     <i class="font16 material-icons">delete</i>
 <input type="button" data-id="<?= @$formTwo['bathroomDetails'][$x-1]['id']  ?>" value="Delete" onclick="deletehfadetail(<?= @$formTwo['bathroomDetails'][$x-1]['id']  ?>,'bathroom',<?= @$formTwo['bathroomDetails'][$x-1]['application_id']  ?>,<?= @count($formTwo['bathroomDetails'])?>);"  class="hfabathroom">
 </span>
-<?php //}?>
+<?php }}}?>
 </div>
 
 <div class="hfa1_home_left">		
@@ -852,6 +857,7 @@ $('.hfa_room_avail_from, .hfa_room_avail_to, .hfa_room_date_leaving').datepicker
 					$('.hfa_bedroom_location').hide();
 					var bedAvail=$(this).val();
 					var hbed = $('#hfa_bedroom_input').val() - bedAvail;
+
 					if(bedAvail!='')
 					{
 						$('#hfa_bedroom_avail_span').show();

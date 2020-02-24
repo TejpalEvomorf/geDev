@@ -538,17 +538,17 @@ $nm = 'Not mentioned';
                                                                 </div> 											
                                                      <?php }?>
 
-<!-- host bedroom starts -->
-<?php foreach($formTwo['hostbedroomDetails'] as $hbdK=>$hbdV){?>
+													<!-- host bedroom starts -->
+													<?php foreach($formTwo['hostbedroomDetails'] as $hbdK=>$hbdV){?>
                                                                 <div class="panel panel-default">
                                                                       <div class="media-body pb-md">
-                                                                              <a data-toggle="collapse" data-parent="#hbedroomAccordion" href="#collapseHBedroomAccordion-<?=$hbdK+1?>">
+                                                                              <a data-toggle="collapse" data-parent="#bedroomAccordion" href="#collapseHBedroomAccordion-<?=$hbdK+1?>">
                                                                               <div class="panel-heading">
                                                                               <h5 class="media-heading">HOST BEDROOM <?=$hbdK+1?></h5>
                                                                               <h5 class="pull-right media-heading">
                                                                                   <strong>Room Location: </strong>
                                                                                   <?php 
-                                                                                  if($hbdV['floor']=='0' || $hbdV['floor']==''){echo $nm;}
+                                                                                  if($hbdV['floor']==('0' || '')){echo $nm;}
                                                                                   elseif ($hbdV['floor']=='g'){echo $gf;}
                                                                                   else{echo ' Floor '.$hbdV['floor'];}
                                                                                   ?>
@@ -561,29 +561,14 @@ $nm = 'Not mentioned';
                                                                       <div class="panel-body">
                                                                           <table class="table about-table">
                                                                               <tbody>
-
                                                                                     <tr>
                                                                                     	<th>Room Location</th>
                                                                                     	<td><?php 
                                                                                     	if($hbdV['floor']=='0'|| $hbdV['floor']==''){echo $nm;}
                                                                                     	elseif ($hbdV['floor']=='g'){echo $gf;}
                                                                                     	else{echo 'Floor '.$hbdV['floor'];}
-                                                                                    	 
                                                                                     	?></td>
-                                                                                    	
-                                                                                    	
                                                                                     </tr>
- 
-                                                                                 
-                                                                                    <?php
-                                                                                              if($bdV['avail']!="1" && strtotime($bdV['avail_from'])>strtotime(date('Y-m-d'))){?>
-                                                                                    <tr>
-                                                                                        <th>Student currently living in this room</th>
-                                                                                        <td>
-                                                                                         
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                    <?php } ?>
                                                                               </tbody>
                                                                           </table>
                                                                       
@@ -591,8 +576,6 @@ $nm = 'Not mentioned';
                                                                       </div>
                                                                 </div> 											
                                                      <?php }?>
-
-
                                                    <!-- Host bedroom ends -->  
                                                 </div>
                                             </div>
