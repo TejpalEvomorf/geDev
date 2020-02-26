@@ -714,7 +714,9 @@ if($_POST['activealboking']=='activealboking'){
        return  $query->row_array();
 		
 	}
-	
+
+	//////exact search starts/////
+
 	//////Global Search /////////
 	
 	function globalsearch($type,$val){
@@ -727,27 +729,294 @@ if($_POST['activealboking']=='activealboking'){
 				if (is_numeric($val)) {
 				
 
+				//$where .="  `bookings`.`id`='".$val."'";
+				$where =" '".$val."' IN (`bookings`.`id`,' ',`bookings`.`host`,' ',`bookings`.`student`)";		
+				$this->db->where($where);
+				$this->db->order_by('date_status_changed','DESC ');
+				$query = $this->db->get();
+				@$bookid= $query->row()->id;
+				return  "booking_id=".$val."" ;
+				}else{
+				$this->db->join('hfa_one', 'bookings.host = hfa_one.id');
+				$where .=" and '".$val."' IN(`hfa_one`.`fname`,' ',`hfa_one`.`lname`,' ',`hfa_one`.`email`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`)";
+				$this->db->where($where);
+				$this->db->order_by('date_status_changed','DESC ');
+				$query = $this->db->get();
+				@$hid= $query->row()->id;
+				if(!empty($hid)){
+				return  "host=".$val."" ;
+				}else{
+				$this->db->join('sha_one', 'bookings.student = sha_one.id');
+				$where .=" and'".$val."' IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`client`)";
+				$this->db->order_by('date_status_changed','DESC ');
+				return  "student=".$val."" ;
+				
+		}
+				}
+	
+		}else 	if($type=='hfa'){
+			
+			return  "host=".$val."" ;
+			
+		}
+		else 	if($type=='sha'){
+			
+			return  "student ".$val."" ;
+			
+		}
+		else 	if($type=='purchase_orders/all'){
+			
+			return  "host=".$val."" ;
+			
+		}else 	if($type=='invoice/initial_all'){
+			if (is_numeric($val)) {
+			
+			
+		
+		return  "number=".$val."" ;
+		
+		
+			
+		}else{
+		return  "student=".$val."" ;	
+		}
+		}else 	if($type=='invoice/ongoing_all'){
+		if (is_numeric($val)) {	
+		return  "number=".$val."" ;
+		}else{
+		return  "student=".$val."" ;
+		}
+	}else 	if($type=='booking/searchall'){
+	
+	  return  "value=".$val."" ;
+		return "id=".$val."";
+}
+}
+
+function searchall($val){
+	//$where="'1'='1'";
+	
+	$data=array();
+	if (is_numeric($val)) {	
+		$this->db->select('bookings.*,hfa_one.id as hostu,sha_one.id as shau');
+		$this->db->from($this->table);
+		$this->db->join('hfa_one', 'bookings.host = hfa_one.id', 'LEFT');
+		$this->db->join('sha_one', 'bookings.student = sha_one.id', 'LEFT');
+		$where =" '".$val."' IN  (`bookings`.`id`,' ',`bookings`.`host`,' ',`bookings`.`student`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`)";
+		$this->db->where($where);
+		$this->db->order_by('date_status_changed','DESC ');
+		$query = $this->db->get();
+		$datab= $query->result_array();
+		if(!empty($datab)){
+			$data['booking']=$datab;
+		}
+		$this->db->select('hfa_one.*');
+		$this->db->from('hfa_one');
+		$where=" '".$val."' IN (`hfa_one`.`id`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`)";
+		$this->db->where($where);
+		$this->db->order_by('date_status_changed','DESC ');
+		$query = $this->db->get();
+		$datah= $query->result_array();
+		if(!empty($datah)){
+			$data['host']=$datah;
+		}
+		$this->db->select('sha_one.*');
+		$this->db->from('sha_one');
+		$where="'".$val."' IN (`sha_one`.`id`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`)";
+		$this->db->where($where);
+		$this->db->order_by('date_status_changed','DESC ');
+		$query = $this->db->get();
+		$datas=$query->result_array();
+		if(!empty($datas)){
+			$data['student']=$datas;
+		}
+		$this->db->select('clients.*');
+		$this->db->from('clients');
+		$where=" '".$val."' IN (`clients`.`id`,' ',`clients`.`primary_email`,' ',`clients`.`primary_phone`,' ',`clients`.`sec_phone`)";
+		$this->db->where($where);
+		$this->db->order_by('date_added','DESC ');
+		$query = $this->db->get();
+		 $datac=$query->result_array();
+		 if(!empty($datac)){
+		 $data['client']=$datac;
+		 }
+		$this->db->select('invoice_initial.*,sha_one.id as shau');
+		$this->db->from('invoice_initial');
+		$this->db->join('sha_one','invoice_initial.application_id = sha_one.id');
+		$where=" '".$val."' IN (`invoice_initial`.`id`,' ',`invoice_initial`.`application_id`,' ',`invoice_initial`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`)";
+		$this->db->where($where);
+		$this->db->order_by('date','DESC ');
+		$query = $this->db->get();
+		 $datainvoice=$query->result_array();
+		 if(!empty($datainvoice)){
+		 $data['initial invoice']=$datainvoice;
+		 }
+		$this->db->select('invoice_ongoing.*, sha_one.id as shau');
+		$this->db->from('invoice_ongoing');
+		$this->db->join('sha_one','invoice_ongoing.application_id = sha_one.id');
+		$where=" '".$val."' IN (`invoice_ongoing`.`id`,' ',`invoice_ongoing`.`application_id`,' ',`invoice_ongoing`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`)";
+		$this->db->where($where);
+		$this->db->order_by('date','DESC ');
+		$query = $this->db->get();
+		 $dataoninvoice=$query->result_array();
+		 if(!empty($dataoninvoice)){
+		 $data['ongoing invoice']=$dataoninvoice;
+		 }
+	$this->db->select('bookings.id as booking_id,bookings.host,hfa_one.*,purchase_orders.*');
+	$this->db->from('bookings');
+	$this->db->join('purchase_orders','purchase_orders.booking_id = bookings.id','LEFT');
+	$this->db->join('hfa_one','hfa_one.id = bookings.host','LEFT');
+	$where =" '".$val."' IN(`purchase_orders`.`id`,' ',`bookings`.`id`,' ',`bookings`.`host`,' ',`hfa_one`.`id`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`purchase_orders`.`id`,' ',`purchase_orders`.`po_id_xero`)";
+	$this->db->where($where);
+	$this->db->order_by('`purchase_orders`.`date`','DESC ');
+	$query = $this->db->get();
+	@$dataporder = $query->result_array();
+if(!empty($dataporder)){
+	$data['purchase orders'] = $dataporder;
+}
+		
+	}
+	
+	/////////////numeric ends/////////
+	
+	else {
+		
+		$this->db->select('bookings.*,hfa_one.id as hostu');
+		$this->db->from($this->table);
+		$this->db->join('hfa_one', 'bookings.host = hfa_one.id');
+		$where =" '".$val."' IN(`hfa_one`.`fname`,' ',`hfa_one`.`lname`,' ',`hfa_one`.`email`,' ',`hfa_one`.`state`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`)";
+		$this->db->where($where);
+		$this->db->order_by('date_status_changed','DESC ');
+		$query = $this->db->get();
+		@$bookinghost= $query->result_array();//echo $this->db->last_query();
+		if(!empty($bookinghost)){
+		$data['booking']=$bookinghost;
+		}
+
+	 $this->db->select('bookings.*, sha_one.id as shau, clients.bname');
+	 $this->db->from('bookings');
+	 $this->db->join('sha_one', 'sha_one.id = bookings.student', 'LEFT');
+	 $this->db->join('clients', 'clients.id = sha_one.client', 'LEFT');
+	 $where =" '".$val."' IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`clients`.`bname`)";
+	 $this->db->where($where);
+	 $this->db->order_by('date_status_changed','DESC ');
+	 $query = $this->db->get();
+
+			@$bookingstudent= $query->result_array();//echo $this->db->last_query();
+			if(!empty($bookingstudent)){
+		 $data['booking']=$bookingstudent;
+		 }
+		
+
+	$this->db->select('hfa_one.*');
+	$this->db->from("hfa_one");	
+	$where =" '".$val."' IN(`hfa_one`.`fname`,' ',`hfa_one`.`lname`,' ',`hfa_one`.`email`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`)";
+	$this->db->where($where);
+	$this->db->order_by('date_status_changed','DESC ');
+	$query = $this->db->get();
+	@$datah= $query->result_array();//echo $this->db->last_query();	
+	if(!empty($datah)){
+		 $data['host']=$datah;
+		 }	
+
+	$this->db->select('sha_one.*,clients.bname');
+	$this->db->join('clients', 'clients.id = sha_one.client','LEFT');
+	$this->db->from("sha_one");	
+	$where ="  '".$val."' IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`)";
+	$this->db->where($where);
+	$this->db->order_by('date_status_changed','DESC ');
+	$query = $this->db->get();			
+	@$datas= $query->result_array();//echo $this->db->last_query();
+		
+	if(!empty($datas)){
+		 $data['student']=$datas;
+		 }	
+	$this->db->select('clients.*');
+	$this->db->from('clients');
+	$where ="'".$val."' IN(`clients`.`bname`,' ',`clients`.`primary_contact_name`,' ',`clients`.`primary_contact_lname`,' ',`clients`.`primary_email`,' ',`clients`.`primary_phone`,' ',`clients`.`sec_phone`)";
+	$this->db->where($where);
+	$this->db->order_by('date_added','DESC ');
+	$query = $this->db->get();
+	@$datac = $query->result_array();
+	if(!empty($datac)){
+	$data['client'] = $datac;
+	}		
+
+	$sql="select `invoice_initial`.*  FROM `invoice_initial` left join `sha_one` ON (`invoice_initial`.`application_id`=`sha_one`.`id`) left join `study_tours` ON (`invoice_initial`.`application_id`=`study_tours`.`id`) left join `clients` ON (`clients`.`id`=`sha_one`.`client`) ";
+		
+	$sql .="where ";
+	$sql .="IF(`invoice_initial`.`study_tour` = '0', '".$val."' IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`), `study_tours`.`group_name`)";// like '".$val."' ";
+ 	$sql .=" order by `invoice_initial`.`date` DESC";
+ 	$query=$this->db->query($sql);
+		//echo $this->db->last_query();//die;
+	$datainvoice=$query->result_array();
+	 if(!empty($datainvoice)){
+	 $data['initial invoice']=$datainvoice;
+	}		
+	$sql1="select `invoice_ongoing`.*  FROM `invoice_ongoing` left join `sha_one` ON (`invoice_ongoing`.`application_id`=`sha_one`.`id`) left join `study_tours` ON (`invoice_ongoing`.`application_id`=`study_tours`.`id`) left join `clients` ON (`clients`.`id`=`sha_one`.`client`)";
+	$sql1 .="where ";
+ 	$sql1 .="IF(`invoice_ongoing`.`study_tour` = '0', '".$val."' IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`), `study_tours`.`group_name`)";// like '".$val."' ";
+ 	$sql1 .=" order by `invoice_ongoing`.`date` DESC ";
+ 	$query=$this->db->query($sql1);
+		//echo $this->db->last_query();//die;
+	$datainvoiceon=$query->result_array();
+	 if(!empty($datainvoiceon)){
+	 $data['ongoing invoice']=$datainvoiceon;
+	 }
+
+		 
+	$this->db->select('bookings.id as booking_id,bookings.host,hfa_one.*,purchase_orders.*');
+	$this->db->from('bookings');
+	$this->db->join('purchase_orders','purchase_orders.booking_id = bookings.id','LEFT');
+	$this->db->join('hfa_one','hfa_one.id = bookings.host','LEFT');
+	$where =" '".$val."' IN(`hfa_one`.`fname`,' ',`hfa_one`.`lname`,' ',`hfa_one`.`email`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`purchase_orders`.`po_id_xero`)";
+	$this->db->where($where);
+	$this->db->order_by('`purchase_orders`.`date`','DESC ');
+	$query = $this->db->get();
+	@$datapo = $query->result_array();//echo $this->db->last_query();
+	if(!empty($datapo)){
+	$data['purchase orders'] = $datapo;
+	}
+	}
+	
+	return $data;
+
+
+}
+///////exact search ends/////
+	
+// 	//////Global parts match Search /////////
+	
+	function globalsearch2($type,$val){
+		$where="'1'='1'";
+		$this->db->select('bookings.*');
+			$this->db->from($this->table);
+		
+		if($type=='booking'){
+					
+				if (is_numeric($val)) {
+				
+
 				$where .="  `bookings`.`id`='".$val."'";
 				//$where .="  `bookings`.`id` LIKE '%".$val."%'";
-				 $where =" CONCAT (`bookings`.`id`,' ',`bookings`.`host`,' ',`bookings`.`student`) LIKE '%".$val."%'";
-				
+				 $where =" CONCAT (`bookings`.`id`,' ',`bookings`.`host`,' ',`bookings`.`student`) LIKE '%".$val."%' and '".$val."' NOT IN(`bookings`.`id`,' ',`bookings`.`host`,' ',`bookings`.`student`) ";
 				$this->db->where($where);
+				$this->db->order_by('date_status_changed','DESC ');
 				$query = $this->db->get();
 		@$bookid= $query->row()->id;
 		return  "booking_id=".$val."" ;
-					
-
 					}else{
 					$this->db->join('hfa_one', 'bookings.host = hfa_one.id');
-						$where .=" and CONCAT(`hfa_one`.`fname`,' ',`hfa_one`.`lname`,' ',`hfa_one`.`email`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`) LIKE '%".$val."%'";	
-						$this->db->where($where);
+					$where .=" and CONCAT(`hfa_one`.`fname`,' ',`hfa_one`.`lname`,' ',`hfa_one`.`email`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`) LIKE '%".$val."%'  and '".$val."' NOT IN(`hfa_one`.`fname`,' ',`hfa_one`.`lname`,' ',`hfa_one`.`email`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`) ";	
+					$this->db->where($where);
+					$this->db->order_by('date_status_changed','DESC ');
 				$query = $this->db->get();
 		@$hid= $query->row()->id;
 		if(!empty($hid)){
 		return  "host=".$val."" ;
 		}else{
 		$this->db->join('sha_one', 'bookings.student = sha_one.id');
-		$where .=" and CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`client`)  LIKE '%".$val."%'";
+		$where .=" and CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`client`)  LIKE '%".$val."%' and '".$val."' NOT IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`client`) ";
 		return  "student=".$val."" ;
 		
 		}
@@ -805,7 +1074,7 @@ if($_POST['activealboking']=='activealboking'){
 }
 }
 
-function searchall($val){
+function searchall2($val){
 	//$where="'1'='1'";
 	
 		$data=array();
@@ -816,61 +1085,65 @@ function searchall($val){
 		$this->db->from($this->table);
 		$this->db->join('hfa_one', 'bookings.host = hfa_one.id', 'LEFT');
 		$this->db->join('sha_one', 'bookings.student = sha_one.id', 'LEFT');
-				//$where ="  `bookings`.`id`='".$val."'";
-				$where =" CONCAT  (`bookings`.`id`,' ',`bookings`.`host`,' ',`bookings`.`student`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`) LIKE '%".$val."%'";
-				$this->db->where($where);
-				$query = $this->db->get();
+		//$where ="  `bookings`.`id`='".$val."'";
+		$where =" CONCAT  (`bookings`.`id`,' ',`bookings`.`host`,' ',`bookings`.`student`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`) LIKE '%".$val."%' and '".$val."' NOT IN(`bookings`.`id`,' ',`bookings`.`host`,' ',`bookings`.`student`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`)    ";
+		$this->db->where($where);
+		$this->db->order_by('date_status_changed','DESC ');
+		$query = $this->db->get();
 		$datab= $query->result_array();
 		if(!empty($datab)){
 			$data['booking']=$datab;
 		}
 		$this->db->select('hfa_one.*');
-				$this->db->from('hfa_one');
-				//$where="  `hfa_one`.`id`='".$val."'";
-				$where=" CONCAT (`hfa_one`.`id`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`) LIKE '%".$val."%'";
-				$this->db->where($where);
-				$query = $this->db->get();
-		$datah= $query->result_array();
+		$this->db->from('hfa_one');
+		//$where="  `hfa_one`.`id`='".$val."'";
+		$where=" CONCAT (`hfa_one`.`id`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`) LIKE '%".$val."%' and '".$val."' NOT IN(`hfa_one`.`id`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`) ";
+		$this->db->where($where);
+		$this->db->order_by('date_status_changed','DESC ');
+		$query = $this->db->get();
+		$datah= $query->result_array();//echo $this->db->last_query();
 		if(!empty($datah)){
 			$data['host']=$datah;
-
 		}
 		$this->db->select('sha_one.*');
-				$this->db->from('sha_one');
-			//	$where="  `sha_one`.`id`='".$val."'";
-				$where=" CONCAT (`sha_one`.`id`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`) LIKE '%".$val."%'";
-				$this->db->where($where);
-				$query = $this->db->get();
+		$this->db->from('sha_one');
+	//	$where="  `sha_one`.`id`='".$val."'";
+		$where=" CONCAT (`sha_one`.`id`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`) LIKE '%".$val."%' and '".$val."' NOT IN(`sha_one`.`id`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`) "; 
+		$this->db->where($where);
+		$this->db->order_by('date_status_changed','DESC ');
+		$query = $this->db->get();
 		 $datas=$query->result_array();
 		if(!empty($datas)){
 			$data['student']=$datas;
-
 		}
 		$this->db->select('clients.*');
 		$this->db->from('clients');
-		$where=" CONCAT (`clients`.`id`,' ',`clients`.`primary_email`,' ',`clients`.`primary_phone`,' ',`clients`.`sec_phone`) LIKE '%".$val."%'";
-				$this->db->where($where);
-				$query = $this->db->get();
+		$where=" CONCAT (`clients`.`id`,' ',`clients`.`primary_email`,' ',`clients`.`primary_phone`,' ',`clients`.`sec_phone`) LIKE '%".$val."%' and '".$val."' NOT IN (`clients`.`id`,' ',`clients`.`primary_email`,' ',`clients`.`primary_phone`,' ',`clients`.`sec_phone`) ";
+		$this->db->where($where);
+		$this->db->order_by('date_added','DESC ');
+		$query = $this->db->get();
 		 $datac=$query->result_array();
 		 if(!empty($datac)){
 		 $data['client']=$datac;
 		 }
 		 $this->db->select('invoice_initial.*,sha_one.id as shau');
-				$this->db->from('invoice_initial');
-				$this->db->join('sha_one','invoice_initial.application_id = sha_one.id');
-				$where=" CONCAT (`invoice_initial`.`id`,' ',`invoice_initial`.`application_id`,' ',`invoice_initial`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`) LIKE '%".$val."%'";
-				$this->db->where($where);
-				$query = $this->db->get();
+			$this->db->from('invoice_initial');
+			$this->db->join('sha_one','invoice_initial.application_id = sha_one.id');
+			$where=" CONCAT (`invoice_initial`.`id`,' ',`invoice_initial`.`application_id`,' ',`invoice_initial`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`) LIKE '%".$val."%' and '".$val."' NOT IN(`invoice_initial`.`id`,' ',`invoice_initial`.`application_id`,' ',`invoice_initial`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`)" ;
+			$this->db->where($where);
+			$this->db->order_by('date','DESC ');
+			$query = $this->db->get();
 		 $datainvoice=$query->result_array();
 		 if(!empty($datainvoice)){
 		 $data['initial invoice']=$datainvoice;
 		 }
 		  $this->db->select('invoice_ongoing.*, sha_one.id as shau');
-				$this->db->from('invoice_ongoing');
-				$this->db->join('sha_one','invoice_ongoing.application_id = sha_one.id');
-				$where=" CONCAT (`invoice_ongoing`.`id`,' ',`invoice_ongoing`.`application_id`,' ',`invoice_ongoing`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`) LIKE '%".$val."%'";
-				$this->db->where($where);
-				$query = $this->db->get();
+			$this->db->from('invoice_ongoing');
+			$this->db->join('sha_one','invoice_ongoing.application_id = sha_one.id');
+			$where=" CONCAT (`invoice_ongoing`.`id`,' ',`invoice_ongoing`.`application_id`,' ',`invoice_ongoing`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`) LIKE '%".$val."%' and '".$val."' NOT IN(`invoice_ongoing`.`id`,' ',`invoice_ongoing`.`application_id`,' ',`invoice_ongoing`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`)";
+			$this->db->where($where);
+			$this->db->order_by('date','DESC ');
+			$query = $this->db->get();
 		 $dataoninvoice=$query->result_array();
 		 if(!empty($dataoninvoice)){
 		 $data['ongoing invoice']=$dataoninvoice;
@@ -879,37 +1152,40 @@ function searchall($val){
 	$this->db->from('bookings');
 	$this->db->join('purchase_orders','purchase_orders.booking_id = bookings.id','LEFT');
 	$this->db->join('hfa_one','hfa_one.id = bookings.host','LEFT');
-	$where =" CONCAT(`purchase_orders`.`id`,' ',`bookings`.`id`,' ',`bookings`.`host`,' ',`hfa_one`.`id`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`purchase_orders`.`id`,' ',`purchase_orders`.`po_id_xero`) LIKE '%".$val."%'"  ;
+	$where =" CONCAT(`purchase_orders`.`id`,' ',`bookings`.`id`,' ',`bookings`.`host`,' ',`hfa_one`.`id`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`purchase_orders`.`id`,' ',`purchase_orders`.`po_id_xero`) LIKE '%".$val."%' and '".$val."' NOT IN(`purchase_orders`.`id`,' ',`bookings`.`id`,' ',`bookings`.`host`,' ',`hfa_one`.`id`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`purchase_orders`.`id`,' ',`purchase_orders`.`po_id_xero`) "  ;
 		$this->db->where($where);
+		$this->db->order_by('`purchase_orders`.`date`','DESC ');
 		$query = $this->db->get();
 		@$dataporder = $query->result_array();
 if(!empty($dataporder)){
 	$data['purchase orders'] = $dataporder;
 }
 		
+	// echo $this->db->last_query();
 	}
-	
 	/////////////numeric ends/////////
 	
 	else {
 		
-		$this->db->select('bookings.*,hfa_one.id as hostu');
-				$this->db->from($this->table);
-				$this->db->join('hfa_one', 'bookings.host = hfa_one.id');
-						$where =" CONCAT(`hfa_one`.`fname`,' ',`hfa_one`.`lname`,' ',`hfa_one`.`email`,' ',`hfa_one`.`state`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`) LIKE '%".$val."%'";	
-						$this->db->where($where);
-				$query = $this->db->get();
-			@$bookinghost= $query->result_array();
-		 if(!empty($bookinghost)){
-		 $data['booking']=$bookinghost;
-		 }
+	$this->db->select('bookings.*,hfa_one.id as hostu');
+	$this->db->from($this->table);
+	$this->db->join('hfa_one', 'bookings.host = hfa_one.id');
+	$where =" CONCAT(`hfa_one`.`fname`,' ',`hfa_one`.`lname`,' ',`hfa_one`.`email`,' ',`hfa_one`.`state`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`) LIKE '%".$val."%' and '".$val."' NOT IN(`hfa_one`.`fname`,' ',`hfa_one`.`lname`,' ',`hfa_one`.`email`,' ',`hfa_one`.`state`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`) ";	
+	$this->db->where($where);
+	$this->db->order_by('date_status_changed','DESC ');
+	$query = $this->db->get();
+	@$bookinghost= $query->result_array();
+	if(!empty($bookinghost)){
+	$data['booking']=$bookinghost;
+	}
 
 	 $this->db->select('bookings.*, sha_one.id as shau, clients.bname');
 	 $this->db->from('bookings');
 	 $this->db->join('sha_one', 'sha_one.id = bookings.student', 'LEFT');
 	 $this->db->join('clients', 'clients.id = sha_one.client', 'LEFT');
-	 $where =" CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`clients`.`bname`) LIKE '%".$val."%'";
+	 $where =" CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`clients`.`bname`) LIKE '%".$val."%' and '".$val."' NOT IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`clients`.`bname`) ";
 	 $this->db->where($where);
+	 $this->db->order_by('date_status_changed','DESC ');
 	 $query = $this->db->get();
 
 			@$bookingstudent= $query->result_array();
@@ -918,84 +1194,81 @@ if(!empty($dataporder)){
 		 }
 		
 
-$this->db->select('hfa_one.*');
-				$this->db->from("hfa_one");	
-$where ="  CONCAT(`hfa_one`.`fname`,' ',`hfa_one`.`lname`,' ',`hfa_one`.`email`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`)  LIKE '%".$val."%'";
-						$this->db->where($where);
-				$query = $this->db->get();
-				
-			@$datah= $query->result_array();	
-if(!empty($datah)){
+	$this->db->select('hfa_one.*');
+	$this->db->from("hfa_one");	
+	$where ="  CONCAT(`hfa_one`.`fname`,' ',`hfa_one`.`lname`,' ',`hfa_one`.`email`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`)  LIKE '%".$val."%' and '".$val."' NOT IN(`hfa_one`.`fname`,' ',`hfa_one`.`lname`,' ',`hfa_one`.`email`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`) ";
+	$this->db->where($where);
+	$this->db->order_by('date_status_changed','DESC ');
+	$query = $this->db->get();		
+	@$datah= $query->result_array();	
+	if(!empty($datah)){
 		 $data['host']=$datah;
-		 }	
+	}	
 
-$this->db->select('sha_one.*,clients.bname');
-$this->db->join('clients', 'clients.id = sha_one.client','LEFT');
-				$this->db->from("sha_one");	
-$where ="  CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`)  LIKE '%".$val."%'";
+	$this->db->select('sha_one.*,clients.bname');
+	$this->db->join('clients', 'clients.id = sha_one.client','LEFT');
+	$this->db->from("sha_one");	
+	$where ="  CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`)  LIKE '%".$val."%' and '".$val."' NOT IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`) ";
 
-						$this->db->where($where);
-				$query = $this->db->get();
-				
-			@$datas= $query->result_array();
-		
-if(!empty($datas)){
-		 $data['student']=$datas;
-		 }	
-$this->db->select('clients.*');
-$this->db->from('clients');
-$where =" CONCAT(`clients`.`bname`,' ',`clients`.`primary_contact_name`,' ',`clients`.`primary_contact_lname`,' ',`clients`.`primary_email`,' ',`clients`.`primary_phone`,' ',`clients`.`sec_phone`) like '%".$val."%' ";
-		$this->db->where($where);
-		$query = $this->db->get();
-		@$datac = $query->result_array();
-if(!empty($datac)){
-	$data['client'] = $datac;
-}		
+	$this->db->where($where);
+	$this->db->order_by('date_status_changed','DESC ');
+	$query = $this->db->get();
+	@$datas= $query->result_array();
+			
+	if(!empty($datas)){$data['student']=$datas;}
 
-$sql="select `invoice_initial`.*  FROM `invoice_initial` left join `sha_one` ON (`invoice_initial`.`application_id`=`sha_one`.`id`) left join `study_tours` ON (`invoice_initial`.`application_id`=`study_tours`.`id`) left join `clients` ON (`clients`.`id`=`sha_one`.`client`) ";
-		
-		$sql .="where ";
- $sql .="IF(`invoice_initial`.`study_tour` = '0', CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`), `study_tours`.`group_name`) like '%".$val."%' ";
- $sql .=" order by `invoice_initial`.`date` DESC";
- $query=$this->db->query($sql);
-		//echo $this->db->last_query();die;
-		$datainvoice=$query->result_array();
-		 if(!empty($datainvoice)){
-		 $data['initial invoice']=$datainvoice;
+	$this->db->select('clients.*');
+	$this->db->from('clients');
+	$where =" CONCAT(`clients`.`bname`,' ',`clients`.`primary_contact_name`,' ',`clients`.`primary_contact_lname`,' ',`clients`.`primary_email`,' ',`clients`.`primary_phone`,' ',`clients`.`sec_phone`) like '%".$val."%' and '".$val."' NOT IN(`clients`.`bname`,' ',`clients`.`primary_contact_name`,' ',`clients`.`primary_contact_lname`,' ',`clients`.`primary_email`,' ',`clients`.`primary_phone`,' ',`clients`.`sec_phone`) ";
+	$this->db->where($where);
+	$this->db->order_by('date_added','DESC ');
+	$query = $this->db->get();
+	@$datac = $query->result_array();
+	if(!empty($datac)){$data['client'] = $datac;}		
 
-		 }		
-		  $sql1="select `invoice_ongoing`.*  FROM `invoice_ongoing` left join `sha_one` ON (`invoice_ongoing`.`application_id`=`sha_one`.`id`) left join `study_tours` ON (`invoice_ongoing`.`application_id`=`study_tours`.`id`) left join `clients` ON (`clients`.`id`=`sha_one`.`client`)";
-		
-		$sql1 .="where ";
- $sql1 .="IF(`invoice_ongoing`.`study_tour` = '0', CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`), `study_tours`.`group_name`) like '%".$val."%' ";
- $sql1 .=" order by `invoice_ongoing`.`date` DESC";
- $query=$this->db->query($sql1);
-		//echo $this->db->last_query();die;
-		$datainvoiceon=$query->result_array();
-		 if(!empty($datainvoiceon)){
-		 $data['ongoing invoice']=$datainvoiceon;
-		 }
+	$sql="select `invoice_initial`.*  FROM `invoice_initial` left join `sha_one` ON (`invoice_initial`.`application_id`=`sha_one`.`id`) left join `study_tours` ON (`invoice_initial`.`application_id`=`study_tours`.`id`) left join `clients` ON (`clients`.`id`=`sha_one`.`client`) ";
+	$sql .="where ";
+	$sql .="IF(`invoice_initial`.`study_tour` = '0', CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`), `study_tours`.`group_name`) like '%".$val."%'and '".$val."' NOT IN (`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`)";
+	$sql .=" order by `invoice_initial`.`date` DESC";
+	$query=$this->db->query($sql);
+	//echo $this->db->last_query();die;
+	$datainvoice=$query->result_array();
+	if(!empty($datainvoice)){
+	$data['initial invoice']=$datainvoice;}		
+	$sql1="select `invoice_ongoing`.*  FROM `invoice_ongoing` left join `sha_one` ON (`invoice_ongoing`.`application_id`=`sha_one`.`id`) left join `study_tours` ON (`invoice_ongoing`.`application_id`=`study_tours`.`id`) left join `clients` ON (`clients`.`id`=`sha_one`.`client`)";
+	$sql1 .="where ";
+	$sql1 .="IF(`invoice_ongoing`.`study_tour` = '0', CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`), `study_tours`.`group_name`) like '%".$val."%' and '".$val."' NOT IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`)";
+	$sql1 .=" order by `invoice_ongoing`.`date` DESC";
+	$query=$this->db->query($sql1);
+			//echo $this->db->last_query();die;
+			$datainvoiceon=$query->result_array();
+			 if(!empty($datainvoiceon)){
+			 $data['ongoing invoice']=$datainvoiceon;
+			 }
 
-		 
-	$this->db->select('bookings.id as booking_id,bookings.host,hfa_one.*,purchase_orders.*');
-	$this->db->from('bookings');
-	$this->db->join('purchase_orders','purchase_orders.booking_id = bookings.id','LEFT');
-	$this->db->join('hfa_one','hfa_one.id = bookings.host','LEFT');
-	$where =" CONCAT(`hfa_one`.`fname`,' ',`hfa_one`.`lname`,' ',`hfa_one`.`email`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`purchase_orders`.`po_id_xero`) LIKE '%".$val."%'"  ;
-		$this->db->where($where);
-		$query = $this->db->get();
-		@$datapo = $query->result_array();
-if(!empty($datapo)){
-	$data['purchase orders'] = $datapo;
-}
+			 
+		$this->db->select('bookings.id as booking_id,bookings.host,hfa_one.*,purchase_orders.*');
+		$this->db->from('bookings');
+		$this->db->join('purchase_orders','purchase_orders.booking_id = bookings.id','LEFT');
+		$this->db->join('hfa_one','hfa_one.id = bookings.host','LEFT');
+		$where =" CONCAT(`hfa_one`.`fname`,' ',`hfa_one`.`lname`,' ',`hfa_one`.`email`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`purchase_orders`.`po_id_xero`) LIKE '%".$val."%' and '".$val."' NOT IN(`hfa_one`.`fname`,' ',`hfa_one`.`lname`,' ',`hfa_one`.`email`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`purchase_orders`.`po_id_xero`) "  ;
+			$this->db->where($where);
+			$this->db->order_by('`purchase_orders`.`date`','DESC ');
+			$query = $this->db->get();
+			@$datapo = $query->result_array();
+	if(!empty($datapo)){
+		$data['purchase orders'] = $datapo;
 	}
-	
-	return $data;
-	
+		}
+		
+		return $data;
+		
 
-}
+	}
 
-	
+
+
+
 	
 	function cBP($data)
 	{

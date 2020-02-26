@@ -1361,9 +1361,10 @@ class Booking extends CI_Controller {
 			{
 				
 			$res=$this->booking_model->globalsearch($data1['type'],$data1['val']);
-			
+			$res1=$this->booking_model->globalsearch2($data1['type'],$data1['val']);
 			
 			echo json_encode(array("type"=>$data1['type'],"meth"=>$res));
+			//echo json_encode(array("type"=>$data1['type'],"meth"=>$res1));
 				 exit;
 			
 				
@@ -1377,6 +1378,7 @@ class Booking extends CI_Controller {
 				$data['page']='Search All';
 				if($_GET['value']!=''){
 				$tmp['result']=$this->booking_model->searchall($_GET['value']);
+				$tmp['result1']=$this->booking_model->searchall2($_GET['value']);
 				}
 				$this->load->view('system/header',$data);
 			$this->load->view('system/booking/Searchall',$tmp);
