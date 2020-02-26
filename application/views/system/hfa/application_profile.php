@@ -409,7 +409,7 @@ $nm = 'Not mentioned';
                                                                               <div class="panel-heading">
                                                                               <h5 class="media-heading">STUDENT BEDROOM <?=$bdK+1?> (<?=$roomTypeList[$bdV['type']]?>)</h5>
                                                                               <h5 class="pull-right media-heading">
-                                                                                      <strong >Room Location:</strong>    	
+                                                                                      <strong >Location:</strong>    	
                                                                                       <?php 
                                                                                       if($bdV['floor']==('0' || '')){echo $nm;}
                                                                                       elseif ($bdV['floor']=='g'){echo $gf;}
@@ -430,7 +430,7 @@ $nm = 'Not mentioned';
                                                                                         <td><?=$roomTypeList[$bdV['type']]?></td>
                                                                                     </tr>
                                                                                     <tr>
-                                                                                    	<th>Room Location</th>
+                                                                                    	<th>Location</th>
                                                                                     	<td><?php 
                                                                              
                                                                                     	if ($bdV['floor']=='g'){echo $gf;}
@@ -546,7 +546,7 @@ $nm = 'Not mentioned';
                                                                               <div class="panel-heading">
                                                                               <h5 class="media-heading">HOST BEDROOM <?=$hbdK+1?></h5>
                                                                               <h5 class="pull-right media-heading">
-                                                                                  <strong>Room Location: </strong>
+                                                                                  <strong>Location: </strong>
                                                                                   <?php 
                                                                                   if($hbdV['floor']==('0' || '')){echo $nm;}
                                                                                   elseif ($hbdV['floor']=='g'){echo $gf;}
@@ -562,7 +562,7 @@ $nm = 'Not mentioned';
                                                                           <table class="table about-table">
                                                                               <tbody>
                                                                                     <tr>
-                                                                                    	<th>Room Location</th>
+                                                                                    	<th>Location</th>
                                                                                     	<td><?php 
                                                                                     	if($hbdV['floor']=='0'|| $hbdV['floor']==''){echo $nm;}
                                                                                     	elseif ($hbdV['floor']=='g'){echo $gf;}
@@ -602,7 +602,7 @@ $nm = 'Not mentioned';
                                                                               <a data-toggle="collapse" data-parent="#bathroomAccordion" href="#collapseBathroomAccordion-<?=$btK+1?>"><div class="panel-heading">
                                                                               <h5 class="media-heading">BATHROOM <?=$btK+1?></h5>
                                                                               <h5 class="pull-right media-heading">
-                                                                              	<strong>Bathroom Location:</strong>
+                                                                              	<strong>Location:</strong>
                                                                                     	<?php 
                                                                                     	if($btV['floor']=='0' || $btV['floor']==''){echo $nm;}
                                                                                     	elseif ($btV['floor']=='g'){echo $gf;}
@@ -629,7 +629,7 @@ $nm = 'Not mentioned';
                                                                                       </tr>
 
                                                                                     <tr>
-                                                                                    	<th>Bathroom Location</th>
+                                                                                    	<th>Location</th>
                                                                                     	<td><?php 
                                                                                     	if($btV['floor']=='0' || $btV['floor']==''){echo $nm;}
                                                                                     	elseif ($btV['floor']=='g'){echo $gf;}
