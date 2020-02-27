@@ -3220,4 +3220,214 @@ class Reports extends CI_Controller {
 				//$mpdf->Output('static/pdf/invoice.pdf','F');
 		//header('location:'.site_url().'reports/hfa');
 	}
+
+
+	////-----------training event #starts-------//////
+
+	function training_event()
+	{
+			if(checkLogin())
+			{
+				recentActionsAddData('report','hfa','view');
+				$data['page']='reports-hfa';
+				$this->load->view('system/header',$data);
+				$this->load->view('system/reports/training_event');
+				$this->load->view('system/footer');
+			}
+			else
+				redirectToLogin();
+	}
+	
+	function training_event_submit()
+	{
+		$data=$_POST;
+		
+		$this->load->library('excel');
+		$this->excel->setActiveSheetIndex(0);
+		$this->excel->getActiveSheet()->setTitle('test worksheet');
+		
+		$this->excel->getActiveSheet()->getDefaultStyle()->applyFromArray(array(
+				'font'=>array(
+				'name'      =>  'Arial',
+				'size'      =>  10,
+			)
+		));
+		
+		$fields=array();
+		$fieldIndex=$lastIndex='A';
+		
+		foreach($data['HR_field'] as $hr_field)
+		{
+			$fields[$fieldIndex]=$hr_field;
+			$lastIndex=$fieldIndex;
+			$fieldIndex++;
+		}
+		
+		
+	   foreach ($fields as $fieldK=>$field)
+	   	$this->excel->getActiveSheet()->getColumnDimension($fieldK)->setAutosize(true);
+	   
+		
+	  $x_start=1;
+	  foreach($fields as $k=>$v)
+	  {
+		  $colHeading=ucwords($v);
+		  if($v=='post_code')
+			$colHeading='Postcode';		
+			
+		  $this->excel->getActiveSheet()->setCellValue($k.$x_start, $colHeading);
+	  }
+		  
+		$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border:: BORDER_THIN);
+		$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getFont()->setSize(10)->setBold(true);  
+		
+		$x=$x_start+1;
+		
+	$this->load->model('report_model');
+	$families=$this->report_model->hfaListForReport($data);
+	
+	foreach($families as $hfa)
+	{
+		foreach($fields as $k=>$v)
+		{
+			$value='';
+			if($v=='id')
+				$value=$hfa['id'];
+			elseif($v=='name')
+				$value=$hfa['fname'].' '.$hfa['lname'];		
+			elseif($v=='address')
+				$value=$hfa['street'];		
+			elseif($v=='suburb')
+				$value=$hfa['suburb'];		
+			elseif($v=='state')
+			{
+				$stateList=stateList();
+				if(isset($stateList[$hfa['state']]))
+					$value=$stateList[$hfa['state']];
+				else	
+					$value=$hfa['state'];
+			}
+			elseif($v=='post_code')
+				$value=$hfa['postcode'];		
+			elseif($v=='mobile')
+				$value=$hfa['mobile'];		
+			elseif($v=='email')
+				$value=$hfa['email'];		
+			elseif($v=='insurance' || $v=='wwcc')
+			{
+				$formThree=getHfaThreeAppDetails($hfa['id']);
+				if(!empty($formThree))
+				{
+					if($v=='insurance')
+					{
+						if($formThree['insurance']=="1")
+							{
+								$value='Insurance provider: ';
+								if(trim($formThree['ins_provider'])!='')
+									$value .=ucfirst($formThree['ins_provider']);
+								else
+									$value .='N/A';
+								
+								$value .=', Policy no.: ';
+								if(trim($formThree['ins_policy_no'])!='')
+									$value .=$formThree['ins_policy_no'];
+								else
+									$value .='N/A';
+								
+								$value .=', Expiry date: ';
+								if($formThree['ins_expiry']!='0000-00-00')
+									$value .=date('d M Y',strtotime($formThree['ins_expiry']));
+								else
+									$value .='N/A';
+								
+								if($formThree['20_million']=='1')
+									$value .=', $20 million Public Liability cover';
+							}
+							else
+								$value="No";
+					}
+					elseif($v=='wwcc')
+					{
+						$value='';
+						$family_role=family_role();
+						$wwccPipe=false;
+						foreach($formThree['memberDetails'] as $memberK=>$member)
+						{
+							if($wwccPipe)
+								$value .=' | ';
+							$wwccPipe=true;
+							
+							$value .=ucwords($member['fname'].' '.$member['lname']);
+							if($member['role']!='')
+							   {
+									$value .=" (";
+									  if($member['role']==17)
+										  $value .=!empty($member['other_role']) ? ' - '.$member['other_role'] :'';
+									  else
+										  $value .= $family_role[$member['role']];
+									$value .=")";	  
+								}
+							
+							if($member['wwcc']=="1")
+								{
+											if($member['wwcc_clearence']=='1')
+											{
+												if(trim($member['wwcc_clearence_no'])!='')
+													$value .=' - Clearance no.: '.$member['wwcc_clearence_no'];
+												else
+													$value .=' - Clearance no. unavailable';	
+												if($member['wwcc_expiry']!="0000-00-00")
+													$value .=', Expiry date: '.date('d M Y',strtotime($member['wwcc_expiry']));
+												else
+													$value .=', Expiry date unavailable';
+											}
+											else
+											{
+												if($member['wwcc_application_no']!='')
+													$value .=' - Application no.: '.$member['wwcc_application_no'];
+												else
+													$value .=', Application no. unavailable';	
+											}
+								}
+								else
+									$value .=' - No WWCC details';
+						}
+					}
+				}
+				else
+				{
+					if($v=='insurance')
+						$value="No";
+					elseif($v=='wwcc')
+						$value="No WWCC details";
+				}
+			}
+				
+			$this->excel->getActiveSheet()->setCellValue($k.$x, $value);	
+		}
+		
+		$x++;	
+	}
+
+				$filename='families.xls'; //save our workbook as this file name
+				header('Content-Type: application/vnd.ms-excel'); //mime type
+				header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+				header('Cache-Control: max-age=0'); //no cache
+							 
+				//save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
+				//if you want to save it as .XLSX Excel 2007 format
+				$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');  
+				//force user to download the Excel file without writing it to server's HD
+				//$objWriter->save('php://output');
+				$objWriter->save('static/report/families.xls');
+				//$mpdf->Output('static/pdf/invoice.pdf','F');
+		//header('location:'.site_url().'reports/hfa');
+	}
+
+
+
+
+
+
+	////-----------training event #ends---------//////
 }

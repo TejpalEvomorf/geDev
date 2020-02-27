@@ -528,6 +528,24 @@ $smokingHabbits=smokingHabbits();
            
         </div>
     </div>
+
+    <!---- Training Attendence #Starts ------->
+
+    <div class="panel panel-profile panel-bluegraylight family-notes">
+        <div class="panel-heading">
+            <h2>Training event Attendence</h2>
+        </div>
+        <div class="panel-body">
+             <div class="widget referral-info-widget infobar" id="attendence">
+              <div class="widget-heading" style="padding-left:0;">Attendence HISTORY</div>
+             
+                
+            </div>
+      
+           
+        </div>
+    </div>
+    <!---- Family Attendence #Ends ------->
     
     
     
