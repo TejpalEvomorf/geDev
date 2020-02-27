@@ -798,11 +798,13 @@ function searchall($val){
 	
 	$data=array();
 	if (is_numeric($val)) {	
-		$this->db->select('bookings.*,hfa_one.id as hostu,sha_one.id as shau');
+		$this->db->select('bookings.*,hfa_one.id as hostu,sha_one.id as shau,sha_three.college,clients.bname');
 		$this->db->from($this->table);
 		$this->db->join('hfa_one', 'bookings.host = hfa_one.id', 'LEFT');
 		$this->db->join('sha_one', 'bookings.student = sha_one.id', 'LEFT');
-		$where =" '".$val."' IN  (`bookings`.`id`,' ',`bookings`.`host`,' ',`bookings`.`student`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`)";
+		$this->db->join('sha_three', 'sha_three.id = sha_one.id', 'LEFT');
+		$this->db->join('clients', 'clients.id = sha_one.client', 'LEFT');
+		$where =" '".$val."' IN  (`bookings`.`id`,' ',`bookings`.`host`,' ',`bookings`.`student`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`,' ',`sha_three`.`college`,' ',`clients`.`bname`)";
 		$this->db->where($where);
 		$this->db->order_by('date_status_changed','DESC ');
 		$query = $this->db->get();
@@ -820,9 +822,11 @@ function searchall($val){
 		if(!empty($datah)){
 			$data['host']=$datah;
 		}
-		$this->db->select('sha_one.*');
+		$this->db->select('sha_one.*,sha_three.college,clients.bname');
 		$this->db->from('sha_one');
-		$where="'".$val."' IN (`sha_one`.`id`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`)";
+		$this->db->join('sha_three','sha_three.id = sha_one.id','LEFT');
+		$this->db->join('clients','clients.id = sha_one.client','LEFT');
+		$where="'".$val."' IN (`sha_one`.`id`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`,' ',`sha_three`.`college`,' ',`clients`.`bname`)";
 		$this->db->where($where);
 		$this->db->order_by('date_status_changed','DESC ');
 		$query = $this->db->get();
@@ -840,23 +844,27 @@ function searchall($val){
 		 if(!empty($datac)){
 		 $data['client']=$datac;
 		 }
-		$this->db->select('invoice_initial.*,sha_one.id as shau');
+		$this->db->select('invoice_initial.*,sha_one.id as shau,sha_three.college,clients.bname');
 		$this->db->from('invoice_initial');
-		$this->db->join('sha_one','invoice_initial.application_id = sha_one.id');
-		$where=" '".$val."' IN (`invoice_initial`.`id`,' ',`invoice_initial`.`application_id`,' ',`invoice_initial`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`)";
+		$this->db->join('sha_one','invoice_initial.application_id = sha_one.id','LEFT');
+		$this->db->join('sha_three', 'sha_three.id = sha_one.id', 'LEFT');
+		$this->db->join('clients', 'clients.id = sha_one.client', 'LEFT');
+		$where=" '".$val."' IN (`invoice_initial`.`id`,' ',`invoice_initial`.`application_id`,' ',`invoice_initial`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`,' ',`sha_three`.`college`,' ',`clients`.`bname`)";
 		$this->db->where($where);
-		$this->db->order_by('date','DESC ');
+		//$this->db->order_by('date','DESC ');
 		$query = $this->db->get();
 		 $datainvoice=$query->result_array();
 		 if(!empty($datainvoice)){
 		 $data['initial invoice']=$datainvoice;
 		 }
-		$this->db->select('invoice_ongoing.*, sha_one.id as shau');
-		$this->db->from('invoice_ongoing');
-		$this->db->join('sha_one','invoice_ongoing.application_id = sha_one.id');
-		$where=" '".$val."' IN (`invoice_ongoing`.`id`,' ',`invoice_ongoing`.`application_id`,' ',`invoice_ongoing`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`)";
+		  $this->db->select('invoice_ongoing.*,sha_one.id as shau,sha_three.college,clients.bname');
+			$this->db->from('invoice_ongoing');
+			$this->db->join('sha_one','invoice_ongoing.application_id = sha_one.id','LEFT');
+			$this->db->join('sha_three', 'sha_three.id = sha_one.id', 'LEFT');
+			$this->db->join('clients', 'clients.id = sha_one.client', 'LEFT');
+		$where=" '".$val."' IN (`invoice_ongoing`.`id`,' ',`invoice_ongoing`.`application_id`,' ',`invoice_ongoing`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`,' ',`sha_three`.`college`,' ',`clients`.`bname`)";
 		$this->db->where($where);
-		$this->db->order_by('date','DESC ');
+	
 		$query = $this->db->get();
 		 $dataoninvoice=$query->result_array();
 		 if(!empty($dataoninvoice)){
@@ -893,11 +901,12 @@ if(!empty($dataporder)){
 		$data['booking']=$bookinghost;
 		}
 
-	 $this->db->select('bookings.*, sha_one.id as shau, clients.bname');
+	 $this->db->select('bookings.*, sha_one.id as shau, sha_three.college,clients.bname');
 	 $this->db->from('bookings');
 	 $this->db->join('sha_one', 'sha_one.id = bookings.student', 'LEFT');
+	 $this->db->join('sha_three', 'sha_three.id = sha_one.id', 'LEFT');
 	 $this->db->join('clients', 'clients.id = sha_one.client', 'LEFT');
-	 $where =" '".$val."' IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`clients`.`bname`)";
+	 $where =" '".$val."' IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_three`.`college`,' ',`clients`.`bname`)";
 	 $this->db->where($where);
 	 $this->db->order_by('date_status_changed','DESC ');
 	 $query = $this->db->get();
@@ -919,10 +928,11 @@ if(!empty($dataporder)){
 		 $data['host']=$datah;
 		 }	
 
-	$this->db->select('sha_one.*,clients.bname');
+	$this->db->select('sha_one.*,sha_three.college ,clients.bname');
+	$this->db->join('sha_three','sha_three.id = sha_one.id','LEFT');
 	$this->db->join('clients', 'clients.id = sha_one.client','LEFT');
 	$this->db->from("sha_one");	
-	$where ="  '".$val."' IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`)";
+	$where ="  '".$val."' IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_three`.`college`,`clients`.`bname`)";
 	$this->db->where($where);
 	$this->db->order_by('date_status_changed','DESC ');
 	$query = $this->db->get();			
@@ -942,24 +952,25 @@ if(!empty($dataporder)){
 	$data['client'] = $datac;
 	}		
 
-	$sql="select `invoice_initial`.*  FROM `invoice_initial` left join `sha_one` ON (`invoice_initial`.`application_id`=`sha_one`.`id`) left join `study_tours` ON (`invoice_initial`.`application_id`=`study_tours`.`id`) left join `clients` ON (`clients`.`id`=`sha_one`.`client`) ";
+	$sql="select `invoice_initial`.*,`sha_three`.`college`,`clients`.`bname`  FROM `invoice_initial` left join `sha_one` ON (`invoice_initial`.`application_id`=`sha_one`.`id`) left join `study_tours` ON (`invoice_initial`.`application_id`=`study_tours`.`id`) left join `clients` ON (`clients`.`id`=`sha_one`.`client`)  left join `sha_three` ON (`sha_three`.`id` = `sha_one`.`id`)";
 		
 	$sql .="where ";
-	$sql .="IF(`invoice_initial`.`study_tour` = '0', '".$val."' IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`), `study_tours`.`group_name`)";// like '".$val."' ";
- 	$sql .=" order by `invoice_initial`.`date` DESC";
+	$sql .="IF(`invoice_initial`.`study_tour` = '0', '".$val."' IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`,' ',`sha_three`.`college`), `study_tours`.`group_name`)";// like '".$val."' ";
+ 	// $sql .=" order by `invoice_initial`.`date` DESC";
  	$query=$this->db->query($sql);
-		//echo $this->db->last_query();//die;
-	$datainvoice=$query->result_array();
+	$datainvoice=$query->result_array();//echo $this->db->last_query();//die;
+
+
 	 if(!empty($datainvoice)){
 	 $data['initial invoice']=$datainvoice;
 	}		
-	$sql1="select `invoice_ongoing`.*  FROM `invoice_ongoing` left join `sha_one` ON (`invoice_ongoing`.`application_id`=`sha_one`.`id`) left join `study_tours` ON (`invoice_ongoing`.`application_id`=`study_tours`.`id`) left join `clients` ON (`clients`.`id`=`sha_one`.`client`)";
+	$sql1="select `invoice_ongoing`.*,`sha_three`.`college`,`clients`.`bname`  FROM `invoice_ongoing` left join `sha_one` ON (`invoice_ongoing`.`application_id`=`sha_one`.`id`) left join `study_tours` ON (`invoice_ongoing`.`application_id`=`study_tours`.`id`) left join `clients` ON (`clients`.`id`=`sha_one`.`client`) left join `sha_three` ON (`sha_three`.`id` = `sha_one`.`id`)";
 	$sql1 .="where ";
- 	$sql1 .="IF(`invoice_ongoing`.`study_tour` = '0', '".$val."' IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`), `study_tours`.`group_name`)";// like '".$val."' ";
- 	$sql1 .=" order by `invoice_ongoing`.`date` DESC ";
+ 	$sql1 .="IF(`invoice_ongoing`.`study_tour` = '0', '".$val."' IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`,' ',`sha_three`.`college`), `study_tours`.`group_name`)";// like '".$val."' ";
+ 	// $sql1 .=" order by `invoice_ongoing`.`date` DESC ";
  	$query=$this->db->query($sql1);
-		//echo $this->db->last_query();//die;
-	$datainvoiceon=$query->result_array();
+	$datainvoiceon=$query->result_array();//echo $this->db->last_query();//die;
+
 	 if(!empty($datainvoiceon)){
 	 $data['ongoing invoice']=$datainvoiceon;
 	 }
@@ -1080,13 +1091,15 @@ function searchall2($val){
 		$data=array();
 	if (is_numeric($val)) {
 		
-		$this->db->select('bookings.*,hfa_one.id as hostu,sha_one.id as shau');
+		$this->db->select('bookings.*,hfa_one.id as hostu,sha_one.id as shau,sha_three.college,clients.bname');
 		
 		$this->db->from($this->table);
 		$this->db->join('hfa_one', 'bookings.host = hfa_one.id', 'LEFT');
 		$this->db->join('sha_one', 'bookings.student = sha_one.id', 'LEFT');
+		$this->db->join('sha_three', 'sha_three.id = sha_one.id', 'LEFT');
+		$this->db->join('clients', 'clients.id = sha_one.client', 'LEFT');
 		//$where ="  `bookings`.`id`='".$val."'";
-		$where =" CONCAT  (`bookings`.`id`,' ',`bookings`.`host`,' ',`bookings`.`student`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`) LIKE '%".$val."%' and '".$val."' NOT IN(`bookings`.`id`,' ',`bookings`.`host`,' ',`bookings`.`student`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`)    ";
+		$where =" CONCAT  (`bookings`.`id`,' ',`bookings`.`host`,' ',`bookings`.`student`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`,' ',`sha_three`.`college`,' ',`clients`.`bname`) LIKE '%".$val."%' and '".$val."' NOT IN(`bookings`.`id`,' ',`bookings`.`host`,' ',`bookings`.`student`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`home_phone`,' ',`hfa_one`.`work_phone`,' ',`hfa_one`.`mobile`,' ',`hfa_one`.`work_phone`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`,' ',`sha_three`.`college`,' ',`clients`.`bname`)    ";
 		$this->db->where($where);
 		$this->db->order_by('date_status_changed','DESC ');
 		$query = $this->db->get();
@@ -1105,10 +1118,12 @@ function searchall2($val){
 		if(!empty($datah)){
 			$data['host']=$datah;
 		}
-		$this->db->select('sha_one.*');
+		$this->db->select('sha_one.*,sha_three.college,clients.bname');
+		$this->db->join('sha_three', 'sha_three.id = sha_one.id', 'LEFT');
+		$this->db->join('clients', 'clients.id = sha_one.client', 'LEFT');
 		$this->db->from('sha_one');
 	//	$where="  `sha_one`.`id`='".$val."'";
-		$where=" CONCAT (`sha_one`.`id`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`) LIKE '%".$val."%' and '".$val."' NOT IN(`sha_one`.`id`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`) "; 
+		$where=" CONCAT (`sha_one`.`id`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`,' ',`sha_three`.`college`,' ',`clients`.`bname`) LIKE '%".$val."%' and '".$val."' NOT IN(`sha_one`.`id`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`,' ',`sha_three`.`college`,' ',`clients`.`bname`) "; 
 		$this->db->where($where);
 		$this->db->order_by('date_status_changed','DESC ');
 		$query = $this->db->get();
@@ -1126,23 +1141,27 @@ function searchall2($val){
 		 if(!empty($datac)){
 		 $data['client']=$datac;
 		 }
-		 $this->db->select('invoice_initial.*,sha_one.id as shau');
-			$this->db->from('invoice_initial');
-			$this->db->join('sha_one','invoice_initial.application_id = sha_one.id');
-			$where=" CONCAT (`invoice_initial`.`id`,' ',`invoice_initial`.`application_id`,' ',`invoice_initial`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`) LIKE '%".$val."%' and '".$val."' NOT IN(`invoice_initial`.`id`,' ',`invoice_initial`.`application_id`,' ',`invoice_initial`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`)" ;
+		$this->db->select('invoice_initial.*,sha_one.id as shau,sha_three.college,clients.bname');
+		$this->db->from('invoice_initial');
+		$this->db->join('sha_one','invoice_initial.application_id = sha_one.id','LEFT');
+		$this->db->join('sha_three', 'sha_three.id = sha_one.id', 'LEFT');
+		$this->db->join('clients', 'clients.id = sha_one.client', 'LEFT');
+		$where=" CONCAT (`invoice_initial`.`id`,' ',`invoice_initial`.`application_id`,' ',`invoice_initial`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`,' ',`sha_three`.`college`,' ',`clients`.`bname`) LIKE '%".$val."%' and '".$val."' NOT IN(`invoice_initial`.`id`,' ',`invoice_initial`.`application_id`,' ',`invoice_initial`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`,' ',`sha_three`.`college`,' ',`clients`.`bname`)" ;
 			$this->db->where($where);
-			$this->db->order_by('date','DESC ');
+			//$this->db->order_by('date','DESC ');
 			$query = $this->db->get();
 		 $datainvoice=$query->result_array();
 		 if(!empty($datainvoice)){
 		 $data['initial invoice']=$datainvoice;
 		 }
-		  $this->db->select('invoice_ongoing.*, sha_one.id as shau');
+		  $this->db->select('invoice_ongoing.*,sha_one.id as shau,sha_three.college,clients.bname');
 			$this->db->from('invoice_ongoing');
-			$this->db->join('sha_one','invoice_ongoing.application_id = sha_one.id');
-			$where=" CONCAT (`invoice_ongoing`.`id`,' ',`invoice_ongoing`.`application_id`,' ',`invoice_ongoing`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`) LIKE '%".$val."%' and '".$val."' NOT IN(`invoice_ongoing`.`id`,' ',`invoice_ongoing`.`application_id`,' ',`invoice_ongoing`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`)";
+			$this->db->join('sha_one','invoice_ongoing.application_id = sha_one.id','LEFT');
+			$this->db->join('sha_three', 'sha_three.id = sha_one.id', 'LEFT');
+			$this->db->join('clients', 'clients.id = sha_one.client', 'LEFT');
+			$where=" CONCAT (`invoice_ongoing`.`id`,' ',`invoice_ongoing`.`application_id`,' ',`invoice_ongoing`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`,' ',`sha_three`.`college`,' ',`clients`.`bname`) LIKE '%".$val."%' and '".$val."' NOT IN(`invoice_ongoing`.`id`,' ',`invoice_ongoing`.`application_id`,' ',`invoice_ongoing`.`invoice_number`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_one`.`sha_student_no`,' ',`sha_one`.`client`,' ',`sha_three`.`college`,' ',`clients`.`bname`)";
 			$this->db->where($where);
-			$this->db->order_by('date','DESC ');
+			//$this->db->order_by('date','DESC ');
 			$query = $this->db->get();
 		 $dataoninvoice=$query->result_array();
 		 if(!empty($dataoninvoice)){
@@ -1179,11 +1198,12 @@ if(!empty($dataporder)){
 	$data['booking']=$bookinghost;
 	}
 
-	 $this->db->select('bookings.*, sha_one.id as shau, clients.bname');
+	 $this->db->select('bookings.*, sha_one.id as shau,sha_three.college ,clients.bname');
 	 $this->db->from('bookings');
 	 $this->db->join('sha_one', 'sha_one.id = bookings.student', 'LEFT');
+	 $this->db->join('sha_three', 'sha_three.id = sha_one.id', 'LEFT');
 	 $this->db->join('clients', 'clients.id = sha_one.client', 'LEFT');
-	 $where =" CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`clients`.`bname`) LIKE '%".$val."%' and '".$val."' NOT IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`clients`.`bname`) ";
+	 $where =" CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`client`,' ',`sha_three`.`college`,' ',`clients`.`bname`) LIKE '%".$val."%' and '".$val."' NOT IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`client`,' ',`sha_three`.`college`,' ',`clients`.`bname`) ";
 	 $this->db->where($where);
 	 $this->db->order_by('date_status_changed','DESC ');
 	 $query = $this->db->get();
@@ -1205,10 +1225,11 @@ if(!empty($dataporder)){
 		 $data['host']=$datah;
 	}	
 
-	$this->db->select('sha_one.*,clients.bname');
+	$this->db->select('sha_one.*,sha_three.college,clients.bname');
+	$this->db->join('sha_three', 'sha_three.id = sha_one.id','LEFT');
 	$this->db->join('clients', 'clients.id = sha_one.client','LEFT');
 	$this->db->from("sha_one");	
-	$where ="  CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`)  LIKE '%".$val."%' and '".$val."' NOT IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`) ";
+	$where ="  CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_three`.`college`,' ',`clients`.`bname`)  LIKE '%".$val."%' and '".$val."' NOT IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`sha_three`.`college`,' ',`clients`.`bname`) ";
 
 	$this->db->where($where);
 	$this->db->order_by('date_status_changed','DESC ');
@@ -1224,27 +1245,30 @@ if(!empty($dataporder)){
 	$this->db->order_by('date_added','DESC ');
 	$query = $this->db->get();
 	@$datac = $query->result_array();
+
+
 	if(!empty($datac)){$data['client'] = $datac;}		
 
-	$sql="select `invoice_initial`.*  FROM `invoice_initial` left join `sha_one` ON (`invoice_initial`.`application_id`=`sha_one`.`id`) left join `study_tours` ON (`invoice_initial`.`application_id`=`study_tours`.`id`) left join `clients` ON (`clients`.`id`=`sha_one`.`client`) ";
+	$sql="select `invoice_initial`.*,`sha_three`.`college`,`clients`.`bname`  FROM `invoice_initial` left join `sha_one` ON (`invoice_initial`.`application_id`=`sha_one`.`id`) left join `study_tours` ON (`invoice_initial`.`application_id`=`study_tours`.`id`) left join `clients` ON (`clients`.`id`=`sha_one`.`client`)  left join `sha_three` ON (`sha_three`.`id` = `sha_one`.`id`) ";
 	$sql .="where ";
-	$sql .="IF(`invoice_initial`.`study_tour` = '0', CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`), `study_tours`.`group_name`) like '%".$val."%'and '".$val."' NOT IN (`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`)";
-	$sql .=" order by `invoice_initial`.`date` DESC";
+	$sql .="IF(`invoice_initial`.`study_tour` = '0', CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`,' ',`sha_three`.`college`) like '%".$val."%'and '".$val."' NOT IN (`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`,' ',`sha_three`.`college`), `study_tours`.`group_name`)";
 	$query=$this->db->query($sql);
 	//echo $this->db->last_query();die;
 	$datainvoice=$query->result_array();
-	if(!empty($datainvoice)){
-	$data['initial invoice']=$datainvoice;}		
-	$sql1="select `invoice_ongoing`.*  FROM `invoice_ongoing` left join `sha_one` ON (`invoice_ongoing`.`application_id`=`sha_one`.`id`) left join `study_tours` ON (`invoice_ongoing`.`application_id`=`study_tours`.`id`) left join `clients` ON (`clients`.`id`=`sha_one`.`client`)";
+	if(!empty($datainvoice)){$data['initial invoice']=$datainvoice;}	
+
+
+	$sql1="select `invoice_ongoing`.*,`sha_three`.`college`,`clients`.`bname`  FROM `invoice_ongoing` left join `sha_one` ON (`invoice_ongoing`.`application_id`=`sha_one`.`id`) left join `study_tours` ON (`invoice_ongoing`.`application_id`=`study_tours`.`id`) left join `clients` ON (`clients`.`id`=`sha_one`.`client`) left join `sha_three` ON (`sha_three`.`id` = `sha_one`.`id`)";
 	$sql1 .="where ";
-	$sql1 .="IF(`invoice_ongoing`.`study_tour` = '0', CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`), `study_tours`.`group_name`) like '%".$val."%' and '".$val."' NOT IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`)";
+	$sql1 .="IF(`invoice_ongoing`.`study_tour` = '0', CONCAT(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`,' ',`sha_three`.`college`) like '%".$val."%' and '".$val."' NOT IN(`sha_one`.`fname`,' ',`sha_one`.`lname`,' ',`sha_one`.`email`,' ',`sha_one`.`mobile`,' ',`sha_one`.`home_phone`,' ',`clients`.`bname`,' ',`sha_three`.`college`), `study_tours`.`group_name`) ";
 	$sql1 .=" order by `invoice_ongoing`.`date` DESC";
 	$query=$this->db->query($sql1);
 			//echo $this->db->last_query();die;
-			$datainvoiceon=$query->result_array();
-			 if(!empty($datainvoiceon)){
-			 $data['ongoing invoice']=$datainvoiceon;
-			 }
+
+ 	$dataoninvoice=$query->result_array();	
+
+		@$datainvoiceon=$query->result_array();
+		if(!empty($datainvoiceon)){$data['ongoing invoice']=$datainvoiceon;}
 
 			 
 		$this->db->select('bookings.id as booking_id,bookings.host,hfa_one.*,purchase_orders.*');
