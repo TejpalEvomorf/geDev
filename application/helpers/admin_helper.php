@@ -156,7 +156,9 @@ function pageTitleS($page='')
 		'reports-booking_allocation'=>'Booking allocation report',
 		'reports-profit'=>'Profit report',
 		'reports-bookings_regularCheckup'=>'Booking regular checkups report',
-		'reports-bookings_holidayCheckup'=>'Holiday check-up'
+		'reports-bookings_holidayCheckup'=>'Holiday check-up',
+		'reports-clients_report'=>'Clients Report',
+		'reports-training_event'=>'Training Event'
 	);
 	
 	$pageTitle='';
@@ -1439,6 +1441,19 @@ function bookings_allocation_report_fields()
 	return $reportFields;
 }
 
+function clients_report_fields()
+{
+	$reportFields=array(
+	'bname'=>'Business name',
+	'client_address'=>'Address',
+	'primary_contact_name'=>'Primary Contact name',
+	'primary_phone'=>'Primary number',
+	'primary_email'=>'Primary email',
+	
+	);
+	return $reportFields;
+}
+
 function wwcc_report_fields()
 {
 	$reportFields=array(
@@ -2156,7 +2171,9 @@ function shaActivityDesc($activity)
 			'invoice'=>'Invoice'.$reportText,
 			'booking_allocation'=>'Booking allocation'.$reportText,
 			'profit'=>'Profit'.$reportText,
-			'booking_holidayCheckup'=>'Holiday check-up'.$reportText
+			'booking_holidayCheckup'=>'Holiday check-up'.$reportText,
+			'clients_report'=>'Clients Report'.$reportText,
+			'training_event'=>'Training Event'.$reportText
 		);
 	
 		$desc=$report[$activity['action_on']];

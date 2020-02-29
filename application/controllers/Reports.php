@@ -3228,8 +3228,8 @@ class Reports extends CI_Controller {
 	{
 			if(checkLogin())
 			{
-				recentActionsAddData('report','hfa','view');
-				$data['page']='reports-hfa';
+				recentActionsAddData('report','training_event','view');
+				$data['page']='reports-training_event';
 				$this->load->view('system/header',$data);
 				$this->load->view('system/reports/training_event');
 				$this->load->view('system/footer');
@@ -3425,9 +3425,118 @@ class Reports extends CI_Controller {
 	}
 
 
-
-
-
-
 	////-----------training event #ends---------//////
+
+	////-------------Clents Report #Starts-------/////////
+
+
+function clients_report()
+	{
+			if(checkLogin())
+			{
+				recentActionsAddData('report','clients_report','view');
+				$data['page']='reports-clients_report';
+				$this->load->view('system/header',$data);
+				$this->load->view('system/reports/clients_report');
+				$this->load->view('system/footer');
+			}
+			else
+				redirectToLogin();
+	}
+	
+	function clients_report_submit()
+	{
+		$data=$_POST;
+		//see($data);die('1');
+		$this->load->library('excel');
+		$this->excel->setActiveSheetIndex(0);
+		$this->excel->getActiveSheet()->setTitle('test worksheet');
+		
+		$this->excel->getActiveSheet()->getDefaultStyle()->applyFromArray(array(
+				'font'=>array(
+				'name'      =>  'Arial',
+				'size'      =>  10,
+			)
+		));
+		
+		$fields=array();
+		$fieldIndex=$lastIndex='A';
+		
+		foreach($data['CaR_field'] as $hr_field)
+		{
+			$fields[$fieldIndex]=$hr_field;
+			$lastIndex=$fieldIndex;
+			$fieldIndex++;
+		}
+		//see($fields);
+		foreach ($fields as $fieldK=>$field){//echo $fieldK.', ';
+	   	$this->excel->getActiveSheet()->getColumnDimension($fieldK)->setAutosize(true);}
+	   
+	  $x_start=1;
+	  $reportFields=clients_report_fields();
+	  foreach($fields as $k=>$v)
+	  {
+		  $colHeading=$reportFields[$v];
+		  $this->excel->getActiveSheet()->setCellValue($k.$x_start, $colHeading);
+	  }
+		  
+		$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border:: BORDER_THIN);
+		$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getFont()->setSize(10)->setBold(true);  
+		
+		$x=$x_start+1;
+		
+	$this->load->model('report_model');
+	$clients=$this->report_model->ClientsReport($data);//echo $this->db->last_query();see($data);see($clients);//die('dddd');
+	
+	$this->load->model('Client_model');
+	
+	$stateList=stateList();
+	//see($fields);
+	foreach($clients as $client)
+	{
+		
+		foreach($fields as $k=>$v)
+		{
+			$value='';
+			if($v=='bname')
+				$value=ucwords($client['bname']);
+			elseif($v=='client_address'){
+					$value=$client['street_address'];
+					$value.=$client['suburb'];
+			}
+			elseif($v=='primary_contact_name')
+				$value=ucwords($client['primary_contact_name']." ".$client['primary_contact_lname']);
+			elseif($v=='primary_email')
+				$value=$client['primary_email'];
+			elseif($v=='primary_phone')
+				$value=$client['primary_phone'];
+
+	
+			
+			$this->excel->getActiveSheet()->setCellValue($k.$x, $value);	
+		}
+		
+		$x++;
+	}
+
+	
+				$filename='client_report.xls'; //save our workbook as this file name
+				header('Content-Type: application/vnd.ms-excel'); //mime type
+				header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+				header('Cache-Control: max-age=0'); //no cache
+							 
+				//save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
+				//if you want to save it as .XLSX Excel 2007 format
+				$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');  
+				//force user to download the Excel file without writing it to server's HD
+				//$objWriter->save('php://output');
+				$objWriter->save('static/report/'.$filename);
+				//$mpdf->Output('static/pdf/invoice.pdf','F');
+		//header('location:'.site_url().'reports/hfa');
+	}
+	
+
+
+
+	////------------Clients  Report #Ends---------/////////
 }
