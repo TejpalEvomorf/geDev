@@ -364,4 +364,15 @@ class Purchase_orders extends CI_Controller{
 		else
 			echo "LO";
 	}
+
+
+	function poUpdateDueDate()
+	{
+		$data = $_POST;
+		$po_id = $data['po_id'];
+		$po_due_date = normalToMysqlDate($data['po_dueDate']);
+		$this->load->model('po_model');
+
+		$this->po_model->updatePoDueDate($po_id,$po_due_date);
+	}
 }

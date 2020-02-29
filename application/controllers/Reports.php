@@ -91,8 +91,9 @@ class Reports extends CI_Controller {
 			elseif($v=='mobile')
 				$value=$hfa['mobile'];		
 			elseif($v=='email')
-				$value=$hfa['email'];		
-			elseif($v=='insurance' || $v=='wwcc')
+				$value=$hfa['email'];
+			
+			elseif($v=='insurance' || $v=='wwcc' || $v=='occupation')
 			{
 				$formThree=getHfaThreeAppDetails($hfa['id']);
 				if(!empty($formThree))
@@ -172,6 +173,38 @@ class Reports extends CI_Controller {
 									$value .=' - No WWCC details';
 						}
 					}
+					elseif($v=='occupation')
+					{
+
+						$value='';
+						$family_role=family_role();
+						$occupyPipe=false;
+						foreach($formThree['memberDetails'] as $memberK=>$member)
+						{
+						if($occupyPipe)
+						$value .=' | ';
+						$occupyPipe=true;
+
+						$value .=ucwords($member['fname'].' '.$member['lname']);
+						if($member['role']!='')
+						{
+						$value .=" (";
+						if($member['role']==17)
+						$value .=!empty($member['other_role']) ? ' - '.$member['other_role'] :'';
+						else
+						$value .= $family_role[$member['role']];
+						$value .=")";	  
+						}
+
+						if(trim($member['occu'])!='')
+						{
+						$value .=' - Occupation : '.$member['occu'];
+						}
+						else{
+						$value .=' - Occupation not mentioned';
+						}	
+						}
+					}		
 				}
 				else
 				{
@@ -179,6 +212,8 @@ class Reports extends CI_Controller {
 						$value="No";
 					elseif($v=='wwcc')
 						$value="No WWCC details";
+					elseif($v=='occupation')
+						$value='No Occupation details';
 				}
 			}
 				
@@ -3220,4 +3255,323 @@ class Reports extends CI_Controller {
 				//$mpdf->Output('static/pdf/invoice.pdf','F');
 		//header('location:'.site_url().'reports/hfa');
 	}
+
+
+	////-----------training event #starts-------//////
+
+	function training_event()
+	{
+			if(checkLogin())
+			{
+				recentActionsAddData('report','training_event','view');
+				$data['page']='reports-training_event';
+				$this->load->view('system/header',$data);
+				$this->load->view('system/reports/training_event');
+				$this->load->view('system/footer');
+			}
+			else
+				redirectToLogin();
+	}
+	
+	function training_event_submit()
+	{
+		$data=$_POST;
+		
+		$this->load->library('excel');
+		$this->excel->setActiveSheetIndex(0);
+		$this->excel->getActiveSheet()->setTitle('test worksheet');
+		
+		$this->excel->getActiveSheet()->getDefaultStyle()->applyFromArray(array(
+				'font'=>array(
+				'name'      =>  'Arial',
+				'size'      =>  10,
+			)
+		));
+		
+		$fields=array();
+		$fieldIndex=$lastIndex='A';
+		
+		foreach($data['HR_field'] as $hr_field)
+		{
+			$fields[$fieldIndex]=$hr_field;
+			$lastIndex=$fieldIndex;
+			$fieldIndex++;
+		}
+		
+		
+	   foreach ($fields as $fieldK=>$field)
+	   	$this->excel->getActiveSheet()->getColumnDimension($fieldK)->setAutosize(true);
+	   
+		
+	  $x_start=1;
+	  foreach($fields as $k=>$v)
+	  {
+		  $colHeading=ucwords($v);
+		  if($v=='post_code')
+			$colHeading='Postcode';		
+			
+		  $this->excel->getActiveSheet()->setCellValue($k.$x_start, $colHeading);
+	  }
+		  
+		$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border:: BORDER_THIN);
+		$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getFont()->setSize(10)->setBold(true);  
+		
+		$x=$x_start+1;
+		
+	$this->load->model('report_model');
+	$families=$this->report_model->hfaListForReport($data);
+	
+	foreach($families as $hfa)
+	{
+		foreach($fields as $k=>$v)
+		{
+			$value='';
+			if($v=='id')
+				$value=$hfa['id'];
+			elseif($v=='name')
+				$value=$hfa['fname'].' '.$hfa['lname'];		
+			elseif($v=='address')
+				$value=$hfa['street'];		
+			elseif($v=='suburb')
+				$value=$hfa['suburb'];		
+			elseif($v=='state')
+			{
+				$stateList=stateList();
+				if(isset($stateList[$hfa['state']]))
+					$value=$stateList[$hfa['state']];
+				else	
+					$value=$hfa['state'];
+			}
+			elseif($v=='post_code')
+				$value=$hfa['postcode'];		
+			elseif($v=='mobile')
+				$value=$hfa['mobile'];		
+			elseif($v=='email')
+				$value=$hfa['email'];		
+			elseif($v=='insurance' || $v=='wwcc')
+			{
+				$formThree=getHfaThreeAppDetails($hfa['id']);
+				if(!empty($formThree))
+				{
+					if($v=='insurance')
+					{
+						if($formThree['insurance']=="1")
+							{
+								$value='Insurance provider: ';
+								if(trim($formThree['ins_provider'])!='')
+									$value .=ucfirst($formThree['ins_provider']);
+								else
+									$value .='N/A';
+								
+								$value .=', Policy no.: ';
+								if(trim($formThree['ins_policy_no'])!='')
+									$value .=$formThree['ins_policy_no'];
+								else
+									$value .='N/A';
+								
+								$value .=', Expiry date: ';
+								if($formThree['ins_expiry']!='0000-00-00')
+									$value .=date('d M Y',strtotime($formThree['ins_expiry']));
+								else
+									$value .='N/A';
+								
+								if($formThree['20_million']=='1')
+									$value .=', $20 million Public Liability cover';
+							}
+							else
+								$value="No";
+					}
+					elseif($v=='wwcc')
+					{
+						$value='';
+						$family_role=family_role();
+						$wwccPipe=false;
+						foreach($formThree['memberDetails'] as $memberK=>$member)
+						{
+							if($wwccPipe)
+								$value .=' | ';
+							$wwccPipe=true;
+							
+							$value .=ucwords($member['fname'].' '.$member['lname']);
+							if($member['role']!='')
+							   {
+									$value .=" (";
+									  if($member['role']==17)
+										  $value .=!empty($member['other_role']) ? ' - '.$member['other_role'] :'';
+									  else
+										  $value .= $family_role[$member['role']];
+									$value .=")";	  
+								}
+							
+							if($member['wwcc']=="1")
+								{
+											if($member['wwcc_clearence']=='1')
+											{
+												if(trim($member['wwcc_clearence_no'])!='')
+													$value .=' - Clearance no.: '.$member['wwcc_clearence_no'];
+												else
+													$value .=' - Clearance no. unavailable';	
+												if($member['wwcc_expiry']!="0000-00-00")
+													$value .=', Expiry date: '.date('d M Y',strtotime($member['wwcc_expiry']));
+												else
+													$value .=', Expiry date unavailable';
+											}
+											else
+											{
+												if($member['wwcc_application_no']!='')
+													$value .=' - Application no.: '.$member['wwcc_application_no'];
+												else
+													$value .=', Application no. unavailable';	
+											}
+								}
+								else
+									$value .=' - No WWCC details';
+						}
+					}
+				}
+				else
+				{
+					if($v=='insurance')
+						$value="No";
+					elseif($v=='wwcc')
+						$value="No WWCC details";
+				}
+			}
+				
+			$this->excel->getActiveSheet()->setCellValue($k.$x, $value);	
+		}
+		
+		$x++;	
+	}
+
+				$filename='families.xls'; //save our workbook as this file name
+				header('Content-Type: application/vnd.ms-excel'); //mime type
+				header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+				header('Cache-Control: max-age=0'); //no cache
+							 
+				//save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
+				//if you want to save it as .XLSX Excel 2007 format
+				$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');  
+				//force user to download the Excel file without writing it to server's HD
+				//$objWriter->save('php://output');
+				$objWriter->save('static/report/families.xls');
+				//$mpdf->Output('static/pdf/invoice.pdf','F');
+		//header('location:'.site_url().'reports/hfa');
+	}
+
+
+	////-----------training event #ends---------//////
+
+	////-------------Clents Report #Starts-------/////////
+
+
+function clients_report()
+	{
+			if(checkLogin())
+			{
+				recentActionsAddData('report','clients_report','view');
+				$data['page']='reports-clients_report';
+				$this->load->view('system/header',$data);
+				$this->load->view('system/reports/clients_report');
+				$this->load->view('system/footer');
+			}
+			else
+				redirectToLogin();
+	}
+	
+	function clients_report_submit()
+	{
+		$data=$_POST;
+		//see($data);die('1');
+		$this->load->library('excel');
+		$this->excel->setActiveSheetIndex(0);
+		$this->excel->getActiveSheet()->setTitle('test worksheet');
+		
+		$this->excel->getActiveSheet()->getDefaultStyle()->applyFromArray(array(
+				'font'=>array(
+				'name'      =>  'Arial',
+				'size'      =>  10,
+			)
+		));
+		
+		$fields=array();
+		$fieldIndex=$lastIndex='A';
+		
+		foreach($data['CaR_field'] as $hr_field)
+		{
+			$fields[$fieldIndex]=$hr_field;
+			$lastIndex=$fieldIndex;
+			$fieldIndex++;
+		}
+		//see($fields);
+		foreach ($fields as $fieldK=>$field){//echo $fieldK.', ';
+	   	$this->excel->getActiveSheet()->getColumnDimension($fieldK)->setAutosize(true);}
+	   
+	  $x_start=1;
+	  $reportFields=clients_report_fields();
+	  foreach($fields as $k=>$v)
+	  {
+		  $colHeading=$reportFields[$v];
+		  $this->excel->getActiveSheet()->setCellValue($k.$x_start, $colHeading);
+	  }
+		  
+		$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border:: BORDER_THIN);
+		$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getFont()->setSize(10)->setBold(true);  
+		
+		$x=$x_start+1;
+		
+	$this->load->model('report_model');
+	$clients=$this->report_model->ClientsReport($data);//echo $this->db->last_query();see($data);see($clients);//die('dddd');
+	
+	$this->load->model('Client_model');
+	
+	$stateList=stateList();
+	//see($fields);
+	foreach($clients as $client)
+	{
+		
+		foreach($fields as $k=>$v)
+		{
+			$value='';
+			if($v=='bname')
+				$value=ucwords($client['bname']);
+			elseif($v=='client_address'){
+					$value=$client['street_address'];
+					$value.=$client['suburb'];
+			}
+			elseif($v=='primary_contact_name')
+				$value=ucwords($client['primary_contact_name']." ".$client['primary_contact_lname']);
+			elseif($v=='primary_email')
+				$value=$client['primary_email'];
+			elseif($v=='primary_phone')
+				$value=$client['primary_phone'];
+
+	
+			
+			$this->excel->getActiveSheet()->setCellValue($k.$x, $value);	
+		}
+		
+		$x++;
+	}
+
+	
+				$filename='client_report.xls'; //save our workbook as this file name
+				header('Content-Type: application/vnd.ms-excel'); //mime type
+				header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+				header('Cache-Control: max-age=0'); //no cache
+							 
+				//save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
+				//if you want to save it as .XLSX Excel 2007 format
+				$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');  
+				//force user to download the Excel file without writing it to server's HD
+				//$objWriter->save('php://output');
+				$objWriter->save('static/report/'.$filename);
+				//$mpdf->Output('static/pdf/invoice.pdf','F');
+		//header('location:'.site_url().'reports/hfa');
+	}
+	
+
+
+
+	////------------Clients  Report #Ends---------/////////
 }

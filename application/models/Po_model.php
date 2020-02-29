@@ -490,5 +490,11 @@ class Po_model extends CI_Model{
 			$return=false;
 		return $return;	
 	}
+
+	function updatePoDueDate($po_id, $po_due_date)
+	{
+		$sql ="update `purchase_orders` set `due_date`=? where `id`=?";
+		$this->db->query($sql,array($po_due_date,$po_id));
+	}
 	
 }

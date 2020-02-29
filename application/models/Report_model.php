@@ -611,4 +611,74 @@ class Report_model extends CI_Model {
 		}
 		return $linkedCheckup;
 	}
+
+
+
+
+	function ClientsReport($data)
+{
+
+	
+	$sql ="select * from `clients` where `state` IN ('".implode("','",$data['CaR_state'])."')";
+
+	if(count($data['CaR_state']) == 8 ){
+		$sql =" select * from `clients`";
+
+	if(!empty($data) && $data['CaR_client_option']!='all' ){
+	if($data['CaR_client_option'] == 'selective')
+	{
+		$sql.=" where `id` IN ('".implode("','",$data['CaR_clients'])."')";
+	}
+	elseif($data['CaR_client_option'] == 'allIndividuals')
+	{
+		$sql.=" where `client_group`=''";
+	}
+	elseif($data['CaR_client_option'] == 'selectGroup')
+	{
+		$sql.=" where `client_group` IN('".implode("','",$data['CaR_client_group'])."')";
+	}
+	elseif($data['CaR_client_option'] == 'selectType')
+	{
+		$sql.=" where `category` IN('".implode("','",$data['CaR_client_type'])."')";
+	}
+	else
+		return array();
+}
+}
+else{
+
+	if(!empty($data) && $data['CaR_client_option']!='all' ){
+	if($data['CaR_client_option'] == 'selective')
+	{
+		$sql.=" and `id` IN ('".implode("','",$data['CaR_clients'])."')";
+	}
+	elseif($data['CaR_client_option'] == 'allIndividuals')
+	{
+		$sql.=" and `client_group`=''";
+	}
+	elseif($data['CaR_client_option'] == 'selectGroup')
+	{
+		$sql.=" and `client_group` IN('".implode("','",$data['CaR_client_group'])."')";
+	}
+	elseif($data['CaR_client_option'] == 'selectType')
+	{
+		$sql.=" and `category` IN('".implode("','",$data['CaR_client_type'])."')";
+	}
+	else
+		return array();
+}
+}
+
+	$sql .="order by `clients`.`bname`";
+	$query=$this->db->query($sql); //echo $this->db->last_query();
+	$clients=$query->result_array();
+	return $clients;
+}
+
+
+
+
+
+
+
 }

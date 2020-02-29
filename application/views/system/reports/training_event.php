@@ -2,21 +2,18 @@
 $hfaStatusList=hfaStatusList();
 $stateList=stateList();
 $reportFields=array(
-	'name'=>'Primary contact fullname',
-	'address'=>'Family address',
-	'suburb'=>'Suburb',
-	'state'=>'State',
-	'post_code'=>'Postcode',
+	'hfaname'=>'HF Primary contact name',
 	'mobile'=>'Mobile number',
 	'email'=>'Email address',
-  'occupation'=>'Occupation for every member',
-	'wwcc'=>'WWCC for every member <br><b style="font-size: 12px; font-weight:normal; margin-left: 31px;">Clearance number and expire date</b>',
-	'insurance'=>'Insurance details <br><b style="font-size: 12px; font-weight:normal; margin-left: 31px;">Policy number and expire date</b>'
+	'shaname'=>'Student name',
+  'age'=>'Student age',
+  'pevent'=>'Past event attendence',
+  'cevent'=>'Current event attendence'
 );
 ?>
 
 <div class="page-heading report-page-heading">
-      <h1>Host family report</h1>
+      <h1>Training Event report</h1>
 </div>
 
 <!--11111111111-->
@@ -55,18 +52,22 @@ $reportFields=array(
                                               <div class="col-md-6  no-pad-ryt">
                                                   <div class="panel panel-profile panel-bluegraylight">
                                                       <div class="panel-heading">
-                                                          <h2>Select State</h2>
+                                                          <h2>Select Booking Type</h2>
                                                       </div>
                                                       <div class="panel-body">
-                                                          <?php foreach($stateList as $stateK=>$stateV){?>
                                                               <div class="checkbox">
                                                                   <div class="checkbox block">
-                                                                      <label><input type="checkbox" name="HR_state[]"  value="<?=$stateK?>" checked> 
-                                                                      <?=$stateV?>
+                                                                      <label><input type="checkbox" name=""  value="" checked> 
+                                                                      Homestay nominated
+                                                                      </label>
+                                                                  </div>
+                                                                  <div class="checkbox block">
+                                                                      <label><input type="checkbox" name=""  value="" checked> 
+                                                                      Under 18 bookings
                                                                       </label>
                                                                   </div>
                                                               </div>
-                                                          <?php } ?> 
+                                                
                                                       </div>
                                                   </div>
                                               </div>
@@ -84,11 +85,11 @@ $reportFields=array(
                                               <h2>Select Fields</h2>
                                           </div>
                                           <div class="panel-body margin-minus" style="text-align:left;">
-                                              <input type="hidden" name="HR_field[]" value="id">
+                                              <input type="hidden" name="" value="id">
                                               <?php foreach($reportFields as $fieldK=>$fieldV){?>
                                                   <div class="checkbox width-float checkbox-width-float">
                                                       <div class="checkbox block">
-                                                          <label><input type="checkbox" name="HR_field[]"  value="<?=$fieldK?>" checked>
+                                                          <label><input type="checkbox" name=""  value="" checked>
                                                           <?=$fieldV?>
                                                           </label>
                                                       </div>

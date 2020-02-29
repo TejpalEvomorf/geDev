@@ -130,10 +130,11 @@ $getWeekNDays=getWeekNDays($totalDays);
                         <div class="row-action-primary">
                        <span class="icon"><i class="material-icons">date_range</i></span>
                         </div>
-                        <div class="row-content">
-                            <h4 class="list-group-item-heading">Purchase due date</h4>
+                        <div class="row-content" data-toggle="modal" data-target="#model_changePoDueDate" onclick="$('#poUpdateDueDateForm')[0].reset();" style="cursor:pointer;">
+                            <h4 class="list-group-item-heading">PO due date</h4>
                             <p class="list-group-item-text"><?=date('d M Y',strtotime($po['due_date']))?></p>
                         </div>
+                        <i class="material-icons updateInvDurationIcon" data-toggle="modal" data-target="#model_changePoDueDate" onclick="$('#poUpdateDueDateForm')[0].reset();" style="cursor:pointer;">edit</i>
                        </div>
                     
                     <div class="list-group-separator"></div>
@@ -314,6 +315,42 @@ $getWeekNDays=getWeekNDays($totalDays);
           </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->
 
+
+       <div class="modal fade " id="model_changePoDueDate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+          <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h2 class="modal-title">Update PO due date</h2>
+                  </div>
+                  
+                  <div class="modal-body">
+                     <form id="poUpdateDueDateForm">
+                      
+                      <div class="m-n form-group col-xs" style="padding-left:0;">
+                          <label class="control-label">Date</label>
+                          <input type="text" class="form-control" id="po_dueDate" name="po_dueDate" value="<?=date('d/m/y',strtotime($po['due_date']))?>" readonly="readonly" style="cursor:text;">
+                         
+                      </div>
+                                            
+  
+                     
+                     <input type="hidden" name="po_id" value="<?=$po['id']?>" />
+                     
+                     <!-- <p id="" class="changeStatusWarningMsg">Changing the duration of the purchase order will regenerate purchase order data according to new duration.</p> -->
+                     
+                     </form>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-success btn-raised" id="poUpdateDueDate">Update</button>
+                      <img src="<?=loadingImagePath()?>" id="initialInvoiceUpdateDurationProcess" style="margin-right:16px;display:none;">
+                  </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+ 
+
+
   </div>
  
  
@@ -388,6 +425,14 @@ $getWeekNDays=getWeekNDays($totalDays);
   
   <script type="text/javascript">
   $(document).ready(function(){
+
+    $('#po_dueDate').datepicker({
+      orientation: "bottom",
+      todayHighlight: true,
+        /*startDate: "-0d",*/
+      format:'dd/mm/yyyy',
+      autoclose:true
+    });
 	  
 	 	$('#movePOToXeroSubmitPage').click(function(){
 				var invoiceId=$('#movePOToXero_id').val();
@@ -455,6 +500,25 @@ $getWeekNDays=getWeekNDays($totalDays);
 						});
 				
 			});
+
+      $('#poUpdateDueDate').click(function(){
+        
+          $('#poUpdateDueDate').hide();
+          $('#initialInvoiceUpdateDurationProcess').show();
+          var url='purchase_orders/poUpdateDueDate';
+          
+          var formdata=$('#poUpdateDueDateForm').serialize();
+          $.ajax({
+              url:site_url+url,
+              type:'POST',
+              data:formdata,
+              success:function(data)
+                {
+                  window.location.reload();
+                }
+            });
+        
+      });
 					
 	 });
   </script>
