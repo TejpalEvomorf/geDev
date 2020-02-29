@@ -9,8 +9,9 @@ $reportFields=array(
 	'post_code'=>'Postcode',
 	'mobile'=>'Mobile number',
 	'email'=>'Email address',
-	'insurance'=>'Insurance details <br><b style="font-size: 12px; font-weight:normal; margin-left: 31px;">Policy number and expire date</b>',
-	'wwcc'=>'WWCC for every member <br><b style="font-size: 12px; font-weight:normal; margin-left: 31px;">Clearance number and expire date</b>'
+  'occupation'=>'Occupation for every member',
+	'wwcc'=>'WWCC for every member <br><b style="font-size: 12px; font-weight:normal; margin-left: 31px;">Clearance number and expire date</b>',
+	'insurance'=>'Insurance details <br><b style="font-size: 12px; font-weight:normal; margin-left: 31px;">Policy number and expire date</b>'
 );
 ?>
 

@@ -91,8 +91,9 @@ class Reports extends CI_Controller {
 			elseif($v=='mobile')
 				$value=$hfa['mobile'];		
 			elseif($v=='email')
-				$value=$hfa['email'];		
-			elseif($v=='insurance' || $v=='wwcc')
+				$value=$hfa['email'];
+			
+			elseif($v=='insurance' || $v=='wwcc' || $v=='occupation')
 			{
 				$formThree=getHfaThreeAppDetails($hfa['id']);
 				if(!empty($formThree))
@@ -172,6 +173,38 @@ class Reports extends CI_Controller {
 									$value .=' - No WWCC details';
 						}
 					}
+					elseif($v=='occupation')
+					{
+
+						$value='';
+						$family_role=family_role();
+						$occupyPipe=false;
+						foreach($formThree['memberDetails'] as $memberK=>$member)
+						{
+						if($occupyPipe)
+						$value .=' | ';
+						$occupyPipe=true;
+
+						$value .=ucwords($member['fname'].' '.$member['lname']);
+						if($member['role']!='')
+						{
+						$value .=" (";
+						if($member['role']==17)
+						$value .=!empty($member['other_role']) ? ' - '.$member['other_role'] :'';
+						else
+						$value .= $family_role[$member['role']];
+						$value .=")";	  
+						}
+
+						if(trim($member['occu'])!='')
+						{
+						$value .=' - Occupation : '.$member['occu'];
+						}
+						else{
+						$value .=' - Occupation not mentioned';
+						}	
+						}
+					}		
 				}
 				else
 				{
@@ -179,6 +212,8 @@ class Reports extends CI_Controller {
 						$value="No";
 					elseif($v=='wwcc')
 						$value="No WWCC details";
+					elseif($v=='occupation')
+						$value='No Occupation details';
 				}
 			}
 				
