@@ -968,7 +968,7 @@ class Invoice_model extends CI_Model {
 	}
 	
 	function editInvoiceItem($data)
-	{
+	{	//see($data);
 			$tableSuffix="";
 			if($data['invoiceType']=='standard')
 			$tableSuffix="_standard";
@@ -984,16 +984,32 @@ class Invoice_model extends CI_Model {
 				$this->db->query($sqlDel);
 			}
 			else
-			{
+			{	
 				if($item=='week')
 				{
 					$sqlDel="insert into `invoice_initial_items".$tableSuffix."` (`invoice_id`, `application_id`, `desc`, `unit`, `qty_unit`, `qty`, `total`, `gst`, `xero_code`, `type`, `date`) values (?,?,?,?,?,?,?,?,?,?,?)";
 					$this->db->query($sqlDel,array($data['invoice_id'],$data['invoiceAddDaysAppId'],$data['description'],$data['unit_price'],$data['qty_unit'],$data['quantity'],$total,$data['invoiceAddDaysGst'],$data['invoiceAddDaysXero_code'],'accomodation',date('Y-m-d H:i:s') ));
 				}
 				else
-				{
+				{	
+					if(isset($data['applytoAll'])){
+					if($data['applytoAll']=='1'){
+						if($data['productType']=='placement' ){
+							$sqlDel = "update `invoice_initial_items".$tableSuffix."` set  `unit`='".$data['unit_price']."' where '".$data['unit_priceTemp']."' IN (`unit`) and `invoice_id`='".$data['invoice_id']."' and `type`='placement'";
+							$this->db->query($sqlDel);//echo $this->db->last_query();
+						}
+						elseif( $data['productType']==('accomodation' || 'accomodation_ed')){
+							$sqlDel = "update `invoice_initial_items".$tableSuffix."` set `unit`= '".$data['unit_price']."' where '".$data['unit_priceTemp']."' IN (`unit`) and `invoice_id`='".$data['invoice_id']."' and `type`='accomodation'";
+							$sqlDel1 = "update `invoice_initial_items".$tableSuffix."` set `unit`= '".$data['invoiceAddDaysUnit_price']."' where `invoice_id`='".$data['invoice_id']."' and `type`='accomodation_ed'";
+							$this->db->query($sqlDel);//echo $this->db->last_query();
+							$this->db->query($sqlDel1);//echo $this->db->last_query();
+						}
+					}
+				}
+				else{
 					$sqlDel="update `invoice_initial_items".$tableSuffix."` set `desc`='".$data['description']."', `unit`='".$data['unit_price']."', `qty_unit`='".$data['qty_unit']."', `qty`='".$data['quantity']."', `total`='".$total."' where `id`='".$item."' and `invoice_id`='".$data['invoice_id']."'";
 					$this->db->query($sqlDel);
+				}
 				}
 			}
 			
