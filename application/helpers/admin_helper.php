@@ -59,7 +59,8 @@ function userTasks()
 				'booking_duration_report'=>$adminAccounts,
 				'triple_share_booking'=>$adminAccounts,
 				'bookingHoldPayment_delete'=>$adminAccounts,
-				'bookingCheckup_delete'=>$adminAccounts
+				'bookingCheckup_delete'=>$adminAccounts,
+				'poDuedate_update'=>array(1,33)
 			);
 }
 

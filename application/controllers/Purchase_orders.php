@@ -368,11 +368,18 @@ class Purchase_orders extends CI_Controller{
 
 	function poUpdateDueDate()
 	{
-		$data = $_POST;
-		$po_id = $data['po_id'];
-		$po_due_date = normalToMysqlDate($data['po_dueDate']);
-		$this->load->model('po_model');
+	if(checkLogin())
+		{
+			if(userAuthorisations('poDuedate_update')){
+			$data = $_POST;
+			$po_id = $data['po_id'];
+			$po_due_date = normalToMysqlDate($data['po_dueDate']);
+			$this->load->model('po_model');
 
-		$this->po_model->updatePoDueDate($po_id,$po_due_date);
+			$this->po_model->updatePoDueDate($po_id,$po_due_date);
+			}
+		}
+	else
+			echo "LO";
 	}
 }

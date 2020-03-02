@@ -130,11 +130,14 @@ $getWeekNDays=getWeekNDays($totalDays);
                         <div class="row-action-primary">
                        <span class="icon"><i class="material-icons">date_range</i></span>
                         </div>
-                        <div class="row-content" data-toggle="modal" data-target="#model_changePoDueDate" onclick="$('#poUpdateDueDateForm')[0].reset();" style="cursor:pointer;">
+                      
+                        <div class="row-content" <?php if(userAuthorisations('poDuedate_update')){echo 'data-toggle="modal" data-target="#model_changePoDueDate" onclick="$("#poUpdateDueDateForm")[0].reset();" style="cursor:pointer;"';}?>>
                             <h4 class="list-group-item-heading">PO due date</h4>
                             <p class="list-group-item-text"><?=date('d M Y',strtotime($po['due_date']))?></p>
                         </div>
-                        <i class="material-icons updateInvDurationIcon" data-toggle="modal" data-target="#model_changePoDueDate" onclick="$('#poUpdateDueDateForm')[0].reset();" style="cursor:pointer;">edit</i>
+                        <?php if(userAuthorisations('poDuedate_update')){?>
+                        <i class="material-icons updateInvDurationIcon"  data-toggle="modal" data-target="#model_changePoDueDate" onclick='$("#poUpdateDueDateForm")[0].reset();' style="cursor:pointer";}>edit</i>
+                      <?php } ?>
                        </div>
                     
                     <div class="list-group-separator"></div>
@@ -329,7 +332,7 @@ $getWeekNDays=getWeekNDays($totalDays);
                       
                       <div class="m-n form-group col-xs" style="padding-left:0;">
                           <label class="control-label">Date</label>
-                          <input type="text" class="form-control" id="po_dueDate" name="po_dueDate" value="<?=date('d/m/y',strtotime($po['due_date']))?>" readonly="readonly" style="cursor:text;">
+                          <input type="text" class="form-control" id="po_dueDate" name="po_dueDate" value="<?=date('d/m/Y',strtotime($po['due_date']))?>" readonly="readonly" style="cursor:text;">
                          
                       </div>
                                             
