@@ -3534,6 +3534,7 @@ function clients_report()
 		 if(trim($client['street_address'])!='')
 		 	$stringAddress.=trim($client['street_address']);
 		  if(trim($client['suburb'])!='')
+		  		$stringAddress .=', ';
 			  $stringAddress .=trim($client['suburb']);
 		  if(trim($client['state'])!='')
 		  {
