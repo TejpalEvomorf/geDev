@@ -1447,9 +1447,9 @@ function clients_report_fields()
 	$reportFields=array(
 	'bname'=>'Business name',
 	'client_address'=>'Address',
-	'primary_contact_name'=>'Primary Contact name',
-	'primary_phone'=>'Primary number',
-	'primary_email'=>'Primary email',
+	'primary_contact_name'=>'Primary contact name',
+	'primary_phone'=>'Primary contact phone',
+	'primary_email'=>'Primary contact email',
 	
 	);
 	return $reportFields;
