@@ -104,7 +104,7 @@ $reportFields=clients_report_fields();
                               <input type="radio" name="CaR_client_option" value="selectiveClientType"  >
                               <span class="circle"></span>
                               <span class="check"></span>
-                              Selective Client Type
+                              Selective Client Types
                           </label>
                       </div>
               
@@ -216,7 +216,7 @@ $(document).ready(function(){
 function clientTypeDropdownHtml()
 {
 	var clientTypeDropdownHtml='<div class="form-group"><select class="form-control" name="CaR_client_type[]">';
-	clientTypeDropdownHtml+='<option value="">Select Clients Type</option>';
+	clientTypeDropdownHtml+='<option value="">Select Client Type</option>';
 	<?php foreach($clientTypes as $clientK=>$clientV)
 		{?>
 	clientTypeDropdownHtml +='<option value="<?=$clientK?>" ><?=str_replace("'","\'",$clientV)?></option>';
