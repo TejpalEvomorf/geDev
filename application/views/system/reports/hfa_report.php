@@ -9,9 +9,11 @@ $reportFields=array(
 	'post_code'=>'Postcode',
 	'mobile'=>'Mobile number',
 	'email'=>'Email address',
-  'occupation'=>'Occupation for every member',
+    'occupation'=>'Occupation for every member',
 	'wwcc'=>'WWCC for every member <br><b style="font-size: 12px; font-weight:normal; margin-left: 31px;">Clearance number and expire date</b>',
 	'insurance'=>'Insurance details <br><b style="font-size: 12px; font-weight:normal; margin-left: 31px;">Policy number and expire date</b>'
+	/*'wwcc'=>'WWCC for every member ',
+	'insurance'=>'Insurance details '*/
 );
 ?>
 
@@ -78,7 +80,7 @@ $reportFields=array(
 								
                                 
                                 <!--2222222222-->
-                                 <div class="col-md-12  no-pad-lft">
+                                 <!--<div class="col-md-12  no-pad-lft">
                                       <div class="panel panel-profile panel-bluegraylight">
                                           <div class="panel-heading">
                                               <h2>Select Fields</h2>
@@ -87,6 +89,25 @@ $reportFields=array(
                                               <input type="hidden" name="HR_field[]" value="id">
                                               <?php foreach($reportFields as $fieldK=>$fieldV){?>
                                                   <div class="checkbox width-float checkbox-width-float">
+                                                      <div class="checkbox block">
+                                                          <label><input type="checkbox" name="HR_field[]"  value="<?=$fieldK?>" checked>
+                                                          <?=$fieldV?>
+                                                          </label>
+                                                      </div>
+                                                  </div>
+                                              <?php } ?> 
+                                          </div>
+                                      </div>
+                                  </div>-->
+                                  
+                                  <div class="col-md-12 no-pad-lft IR_field">
+                                      <div class="panel panel-profile panel-bluegraylight">
+                                          <div class="panel-heading">
+                                              <h2>Select Fields</h2>
+                                          </div>
+                                          <div class="panel-body margin-minus" style="text-align:left;">
+                                              <?php foreach($reportFields as $fieldK=>$fieldV){?>
+                                                  <div class="checkbox width-float">
                                                       <div class="checkbox block">
                                                           <label><input type="checkbox" name="HR_field[]"  value="<?=$fieldK?>" checked>
                                                           <?=$fieldV?>

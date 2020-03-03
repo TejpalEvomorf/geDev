@@ -198,10 +198,10 @@ class Reports extends CI_Controller {
 
 						if(trim($member['occu'])!='')
 						{
-						$value .=' - Occupation : '.$member['occu'];
+						$value .=': '.trim($member['occu']);
 						}
 						else{
-						$value .=' - Occupation not mentioned';
+						$value .=': Not mentioned';
 						}	
 						}
 					}		
