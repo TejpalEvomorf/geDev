@@ -3526,18 +3526,34 @@ function clients_report()
 	$this->load->model('Client_model');
 	
 	$stateList=stateList();
+	
 	//see($fields);
 	foreach($clients as $client)
 	{
-		
+		 $stringAddress='';
+		 if(trim($client['street_address'])!='')
+		 	$stringAddress.=trim($client['street_address']);
+		  if(trim($client['suburb'])!='')
+			  $stringAddress .=trim($client['suburb']);
+		  if(trim($client['state'])!='')
+		  {
+			  if($stringAddress!='')
+				  $stringAddress .=', ';
+			  $stringAddress .=trim($client['state']);
+		  }
+		  if(trim($client['postal_code'])!='' && $client['postal_code']!='0')
+		  {
+			  if($stringAddress!='')
+				  $stringAddress .=', ';
+			  $stringAddress .=trim($client['postal_code']);
+		  }
 		foreach($fields as $k=>$v)
 		{
 			$value='';
 			if($v=='bname')
 				$value=ucwords($client['bname']);
 			elseif($v=='client_address'){
-					$value=$client['street_address'];
-					$value.=$client['suburb'];
+					$value=$stringAddress;
 			}
 			elseif($v=='primary_contact_name')
 				$value=ucwords($client['primary_contact_name']." ".$client['primary_contact_lname']);

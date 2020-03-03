@@ -634,12 +634,12 @@ class Report_model extends CI_Model {
 		$sql.=" where `client_group`=''";
 	}
 	elseif($data['CaR_client_option'] == 'selectiveClientGroup')
-	{
-		$sql.=" where `client_group` IN('".implode("','",$data['CaR_client_group'])."')";
+	{	$clientGroups=array_filter($data['CaR_client_group']);
+		$sql.=" where `client_group` IN('".implode("','",$clientGroups)."')";
 	}
 	elseif($data['CaR_client_option'] == 'selectiveClientType')
-	{
-		$sql.=" where `category` IN('".implode("','",$data['CaR_client_type'])."')";
+	{	$clientTypes=array_filter($data['CaR_client_type']);
+		$sql.=" where `category` IN('".implode("','",$clientTypes)."')";
 	}
 	else
 		return array();
@@ -657,12 +657,12 @@ else{
 		$sql.=" and `client_group`=''";
 	}
 	elseif($data['CaR_client_option'] == 'selectiveClientGroup')
-	{
-		$sql.=" and `client_group` IN('".implode("','",$data['CaR_client_group'])."')";
+	{	$clientGroups=array_filter($data['CaR_client_group']);
+		$sql.=" and `client_group` IN('".implode("','",$clientGroups)."')";
 	}
 	elseif($data['CaR_client_option'] == 'selectiveClientType')
-	{
-		$sql.=" and `category` IN('".implode("','",$data['CaR_client_type'])."')";
+	{	$clientTypes=array_filter($data['CaR_client_type']);
+		$sql.=" and `category` IN('".implode("','",$clientTypes)."')";
 	}
 	else
 		return array();
