@@ -66,37 +66,28 @@ $reportFields=clients_report_fields();
 
                       <div class="radio block" style="margin-top: -12px;">
                           <label>
-                              <input type="radio" name="CaR_client_option" value="selective"  >
-                              <span class="circle"></span>
-                              <span class="check"></span>
-                              Selective Clients
-                          </label>
-                      </div>
-
-
-                        <div id="CaR_clientSelectDiv" style="display:none;  position:relative; overflow:hidden;">
-                        <div class="col-md-10" id="CaR_clientsSelect">
-                        </div>
-                        <button type="button" class="btn btn-fab btn-fab-mini m-n" id="CaR_clientSelectAddNew" style="position: absolute;bottom: 15px;">
-                        <i style="color:#00aac0;" class="material-icons">add</i>
-                        </button>
-                    </div>
-
-
-                      <div class="radio block" style="margin-top: -12px;">
-                          <label>
                               <input type="radio" name="CaR_client_option" value="allIndividuals"  >
                               <span class="circle"></span>
                               <span class="check"></span>
                               Individual Clients
                           </label>
                       </div>
-                      <div class="radio block" style="margin-top: -12px;">
+
+                       <div class="radio block" style="margin-top: -12px;">
                           <label>
-                              <input type="radio" name="CaR_client_option" value="selectGroup"  >
+                              <input type="radio" name="CaR_client_option" value="allClientGroups"  >
                               <span class="circle"></span>
                               <span class="check"></span>
-                              Client Groups
+                              All Client Groups
+                          </label>
+                      </div>
+
+                      <div class="radio block" style="margin-top: -12px;">
+                          <label>
+                              <input type="radio" name="CaR_client_option" value="selectiveClientGroup"  >
+                              <span class="circle"></span>
+                              <span class="check"></span>
+                              Selective Client Groups
                           </label>
                       </div>
 
@@ -110,10 +101,10 @@ $reportFields=clients_report_fields();
 
                       <div class="radio block" style="margin-top: -12px;">
                           <label>
-                              <input type="radio" name="CaR_client_option" value="selectType"  >
+                              <input type="radio" name="CaR_client_option" value="selectiveClientType"  >
                               <span class="circle"></span>
                               <span class="check"></span>
-                              Client Type
+                              Selective Client Type
                           </label>
                       </div>
               
@@ -125,6 +116,9 @@ $reportFields=clients_report_fields();
                         </button>
                     </div>
                     </div>
+
+
+                     
                 <!--clients ends-->
             
         </div>
@@ -180,25 +174,10 @@ $reportFields=clients_report_fields();
 <script type="text/javascript">
 $(document).ready(function(){
 
-	clientDropdownHtml();
 	clientTypeDropdownHtml();
 	clientGroupDropdownHtml();
 	
-	$('#CaR_clientSelect').on('change',"select[name='CaR_clients[]']",function(){
-		$('#CaR_clientSelect div').removeClass('has-error is-empty');
-		$('.parsley-clientFieldError').remove();
-		});
-		
-	$('#CaR_clientSelectAddNew').click(function(){clientDropdownHtml();});
-	
-	$('input:radio[name=CaR_client_option]').click(function(){
-			var empOption=$("input[name='CaR_client_option']:checked").val();
-			if(empOption=='selective')
-				$('#CaR_clientSelectDiv').show();
-			else	
-				$('#CaR_clientSelectDiv').hide();
-			
-		});
+
 
 	$('#CaR_clientTypeSelect').on('change', "select[name='CaR_client_type[]']",function(){
 		$('#CaR_clientTypeSelect div').removeClass('has-error is-empty');
@@ -209,7 +188,7 @@ $(document).ready(function(){
 
 	$('input:radio[name=CaR_client_option]').click(function(){
 		var clientType = $("input[name='CaR_client_option']:checked").val();
-		if(clientType=='selectType')
+		if(clientType=='selectiveClientType')
 				$('#CaR_clientTypeSelectDiv').show();
 			else	
 				$('#CaR_clientTypeSelectDiv').hide();
@@ -225,27 +204,13 @@ $(document).ready(function(){
 
 	$('input:radio[name=CaR_client_option]').click(function(){
 		var clientGroup = $("input[name='CaR_client_option']:checked").val();
-		if(clientGroup=='selectGroup')
+		if(clientGroup=='selectiveClientGroup')
 				$('#CaR_clientGroupSelectDiv').show();
 			else	
 				$('#CaR_clientGroupSelectDiv').hide();
 	});
 
 
-
-function clientDropdownHtml()
-{
-	var clientDropdownHtml='<div class="form-group"><select class="form-control" name="CaR_clients[]">';
-	clientDropdownHtml +='<option value="">Select Clients</option>';
-		<?php foreach($clientList as $client)
-		{?>
-	clientDropdownHtml +='<option value="<?=$client['id']?>" ><?=str_replace("'","\'",$client['bname'])?></option>';
-		<?php } ?>
-	clientDropdownHtml +='</select></div>';
-	$('#CaR_clientsSelect').append(clientDropdownHtml);
-
-
-}
 
 
 function clientTypeDropdownHtml()
@@ -282,10 +247,9 @@ function clientGroupDropdownHtml()
 		finishButton: true, titleClick: true, block: true, 
 		next:function()
 			{
-			var resultClient=validateSelectedClient();
 			var resultClientType=validateSelectedClientType();
 			var resultClientGroup=validateSelectedClientGroup();
-			if(resultClient=='notValid' || resultClientType=='notValid' || resultClientGroup=='notValid'){return false;} 				
+			if(resultClientType=='notValid' || resultClientGroup=='notValid'){return false;} 				
 								
 			}
 	});
@@ -317,32 +281,6 @@ function clientGroupDropdownHtml()
 });
 
 
-
-function validateSelectedClient()
-{	  
-	  var result='valid';
-	  if($('#CaR_clientSelectDiv').is(':visible'))
-	  {
-		  var clientSelected='';
-		  $("select[name='CaR_clients[]']").each(function(){
-			  if($(this).val()!='')
-				  clientSelected=$(this).val();
-
-		  });
-		  if(clientSelected=='')
-		  {
-			  $("select[name='CaR_clients[]']:first").focus();
-			  var clientField = $("select[name='CaR_clients[]']:first").parsley();
-			  window.ParsleyUI.removeError(clientField,'clientFieldError');
-			  window.ParsleyUI.addError(clientField, 'clientFieldError', 'Please select at least one client');
-		  
-			  //return false;
-			  result='notValid';
-		  }
-	  }
-	  return result;	
-	  
-}
 
 
 
