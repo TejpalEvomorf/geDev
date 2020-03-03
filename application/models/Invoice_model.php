@@ -968,7 +968,7 @@ class Invoice_model extends CI_Model {
 	}
 	
 	function editInvoiceItem($data)
-	{	//see($data);
+	{	see($data);
 			$tableSuffix="";
 			if($data['invoiceType']=='standard')
 			$tableSuffix="_standard";
@@ -995,12 +995,13 @@ class Invoice_model extends CI_Model {
 					if(isset($data['applytoAll'])){
 					if($data['applytoAll']=='1'){
 						if($data['productType']=='placement' ){
-							$sqlDel = "update `invoice_initial_items".$tableSuffix."` set  `unit`='".$data['unit_price']."' where '".$data['unit_priceTemp']."' IN (`unit`) and `invoice_id`='".$data['invoice_id']."' and `type`='placement'";
+							$sqlDel = "update `invoice_initial_items".$tableSuffix."` set `unit`='".$data['unit_price']."', `qty_unit`='".$data['qty_unit']."', `qty`='".$data['quantity']."', `total`='".$total."'  where '".$data['unit_priceTemp']."' IN (`unit`) and `invoice_id`='".$data['invoice_id']."' and `type`='placement'";
 							$this->db->query($sqlDel);//echo $this->db->last_query();
 						}
 						elseif( $data['productType']==('accomodation' || 'accomodation_ed')){
-							$sqlDel = "update `invoice_initial_items".$tableSuffix."` set `unit`= '".$data['unit_price']."' where '".$data['unit_priceTemp']."' IN (`unit`) and `invoice_id`='".$data['invoice_id']."' and `type`='accomodation'";
-							$sqlDel1 = "update `invoice_initial_items".$tableSuffix."` set `unit`= '".$data['invoiceAddDaysUnit_price']."' where `invoice_id`='".$data['invoice_id']."' and `type`='accomodation_ed'";
+							$total1=add_decimal($data['invoiceAddDaysUnit_price']*$data['invoiceAddDaysQuantity']);
+							$sqlDel = "update `invoice_initial_items".$tableSuffix."` set `unit`='".$data['unit_price']."', `qty_unit`='".$data['qty_unit']."', `qty`='".$data['quantity']."', `total`='".$total."' where '".$data['unit_priceTemp']."' IN (`unit`) and `invoice_id`='".$data['invoice_id']."' and `type`='accomodation'";
+							$sqlDel1 = "update `invoice_initial_items".$tableSuffix."` set `unit`= '".$data['invoiceAddDaysUnit_price']."', `qty_unit`='".$data['invoiceAddDaysQty_unit']."', `qty`='".$data['invoiceAddDaysQuantity']."', `total`='".$total1."' where `invoice_id`='".$data['invoice_id']."' and `type`='accomodation_ed'";
 							$this->db->query($sqlDel);//echo $this->db->last_query();
 							$this->db->query($sqlDel1);//echo $this->db->last_query();
 						}
