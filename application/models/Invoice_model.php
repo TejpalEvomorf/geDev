@@ -968,7 +968,7 @@ class Invoice_model extends CI_Model {
 	}
 	
 	function editInvoiceItem($data)
-	{	see($data);
+	{	//see($data);
 			$tableSuffix="";
 			if($data['invoiceType']=='standard')
 			$tableSuffix="_standard";
