@@ -612,62 +612,60 @@ class Report_model extends CI_Model {
 		return $linkedCheckup;
 	}
 
-
-
-
-	function ClientsReport($data)
+function ClientsReport($data)
 {
-
-	
 	$sql ="select * from `clients` where `state` IN ('".implode("','",$data['CaR_state'])."')";
 
-	if(count($data['CaR_state']) == 8 ){
+	if(count($data['CaR_state']) == 8 )
+	{
 		$sql =" select * from `clients`";
 
-	if(!empty($data) && $data['CaR_client_option']!='all' ){
-	if($data['CaR_client_option'] == 'allClientGroups')
-	{
-		$sql.=" where `client_group`!=''";
-	}
-	elseif($data['CaR_client_option'] == 'allIndividuals')
-	{
-		$sql.=" where `client_group`=''";
-	}
-	elseif($data['CaR_client_option'] == 'selectiveClientGroup')
-	{	$clientGroups=array_filter($data['CaR_client_group']);
-		$sql.=" where `client_group` IN('".implode("','",$clientGroups)."')";
-	}
-	elseif($data['CaR_client_option'] == 'selectiveClientType')
-	{	$clientTypes=array_filter($data['CaR_client_type']);
-		$sql.=" where `category` IN('".implode("','",$clientTypes)."')";
-	}
-	else
-		return array();
-}
-}
-else{
-
-	if(!empty($data) && $data['CaR_client_option']!='all' ){
-	if($data['CaR_client_option'] == 'allClientGroups')
-	{
-		$sql.=" and `client_group`!=''";
-	}
-	elseif($data['CaR_client_option'] == 'allIndividuals')
-	{
-		$sql.=" and `client_group`=''";
-	}
-	elseif($data['CaR_client_option'] == 'selectiveClientGroup')
-	{	$clientGroups=array_filter($data['CaR_client_group']);
-		$sql.=" and `client_group` IN('".implode("','",$clientGroups)."')";
-	}
-	elseif($data['CaR_client_option'] == 'selectiveClientType')
-	{	$clientTypes=array_filter($data['CaR_client_type']);
-		$sql.=" and `category` IN('".implode("','",$clientTypes)."')";
+		if(!empty($data) && $data['CaR_client_option']!='all' )
+		{
+			if($data['CaR_client_option'] == 'allClientGroups')
+			{
+				$sql.=" where `client_group`!=''";
+			}
+			elseif($data['CaR_client_option'] == 'allIndividuals')
+			{
+				$sql.=" where `client_group`=''";
+			}
+			elseif($data['CaR_client_option'] == 'selectiveClientGroup')
+			{	$clientGroups=array_filter($data['CaR_client_group']);
+				$sql.=" where `client_group` IN('".implode("','",$clientGroups)."')";
+			}
+			elseif($data['CaR_client_option'] == 'selectiveClientType')
+			{	$clientTypes=array_filter($data['CaR_client_type']);
+				$sql.=" where `category` IN('".implode("','",$clientTypes)."')";
+			}
+			else
+				return array();
+		}
 	}
 	else
-		return array();
-}
-}
+	{
+		if(!empty($data) && $data['CaR_client_option']!='all' )
+		{
+			if($data['CaR_client_option'] == 'allClientGroups')
+			{
+				$sql.=" and `client_group`!=''";
+			}
+			elseif($data['CaR_client_option'] == 'allIndividuals')
+			{
+				$sql.=" and `client_group`=''";
+			}
+			elseif($data['CaR_client_option'] == 'selectiveClientGroup')
+			{	$clientGroups=array_filter($data['CaR_client_group']);
+				$sql.=" and `client_group` IN('".implode("','",$clientGroups)."')";
+			}
+			elseif($data['CaR_client_option'] == 'selectiveClientType')
+			{	$clientTypes=array_filter($data['CaR_client_type']);
+				$sql.=" and `category` IN('".implode("','",$clientTypes)."')";
+			}
+			else
+				return array();
+		}
+	}
 
 	$sql .="order by `clients`.`bname`";
 	$query=$this->db->query($sql); //echo $this->db->last_query();

@@ -2174,7 +2174,7 @@ function shaActivityDesc($activity)
 			'booking_allocation'=>'Booking allocation'.$reportText,
 			'profit'=>'Profit'.$reportText,
 			'booking_holidayCheckup'=>'Holiday check-up'.$reportText,
-			'clients_report'=>'Clients Report'.$reportText,
+			'clients_report'=>'Clients'.$reportText,
 			'training_event'=>'Training Event'.$reportText
 		);
 	
