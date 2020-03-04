@@ -3460,29 +3460,147 @@ class Reports extends CI_Controller {
 	}
 
 
-	////-----------training event #ends---------//////
+	function clients_report()
+		{
+				if(checkLogin())
+				{
+					recentActionsAddData('report','clients_report','view');
+					$data['page']='reports-clients_report';
+					$this->load->view('system/header',$data);
+					$this->load->view('system/reports/clients_report');
+					$this->load->view('system/footer');
+				}
+				else
+					redirectToLogin();
+		}
+		
+		function clients_report_submit()
+		{
+			$data=$_POST;
+			//see($data);die('1');
+			$this->load->library('excel');
+			$this->excel->setActiveSheetIndex(0);
+			$this->excel->getActiveSheet()->setTitle('Client List');
+			
+			$this->excel->getActiveSheet()->getDefaultStyle()->applyFromArray(array(
+					'font'=>array(
+					'name'      =>  'Arial',
+					'size'      =>  10,
+				)
+			));
+			
+			$fields=array();
+			$fieldIndex=$lastIndex='A';
+			
+			foreach($data['CaR_field'] as $hr_field)
+			{
+				$fields[$fieldIndex]=$hr_field;
+				$lastIndex=$fieldIndex;
+				$fieldIndex++;
+			}
+			//see($fields);
+			foreach ($fields as $fieldK=>$field){//echo $fieldK.', ';
+		   	$this->excel->getActiveSheet()->getColumnDimension($fieldK)->setAutosize(true);}
+		   
+		  $x_start=1;
+		  $reportFields=clients_report_fields();
+		  foreach($fields as $k=>$v)
+		  {
+			  $colHeading=$reportFields[$v];
+			  $this->excel->getActiveSheet()->setCellValue($k.$x_start, $colHeading);
+		  }
+			  
+			$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border:: BORDER_THIN);
+			$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getFont()->setSize(10)->setBold(true);  
+			
+			$x=$x_start+1;
+			
+		$this->load->model('report_model');
+		$clients=$this->report_model->ClientsReport($data);//echo $this->db->last_query();see($data);see($clients);//die('dddd');
+		
+		$this->load->model('Client_model');
+		
+		$stateList=stateList();
+		
+		//see($fields);
+		foreach($clients as $client)
+		{
+			 $stringAddress='';
+			 if(trim($client['street_address'])!='')
+			 	$stringAddress.=trim($client['street_address']);
+			  if(trim($client['suburb'])!='')
+			  		$stringAddress .=', ';
+				  $stringAddress .=trim($client['suburb']);
+			  if(trim($client['state'])!='')
+			  {
+				  if($stringAddress!='')
+					  $stringAddress .=', ';
+				  $stringAddress .=trim($client['state']);
+			  }
+			  if(trim($client['postal_code'])!='' && $client['postal_code']!='0')
+			  {
+				  if($stringAddress!='')
+					  $stringAddress .=', ';
+				  $stringAddress .=trim($client['postal_code']);
+			  }
+			foreach($fields as $k=>$v)
+			{
+				$value='';
+				if($v=='bname')
+					$value=ucwords($client['bname']);
+				elseif($v=='client_address'){
+						$value=$stringAddress;
+				}
+				elseif($v=='primary_contact_name')
+					$value=ucwords($client['primary_contact_name']." ".$client['primary_contact_lname']);
+				elseif($v=='primary_email')
+					$value=$client['primary_email'];
+				elseif($v=='primary_phone')
+					$value=$client['primary_phone'];
 
-	////-------------Clents Report #Starts-------/////////
+		
+				
+				$this->excel->getActiveSheet()->setCellValue($k.$x, $value);	
+			}
+			
+			$x++;
+		}
 
+		
+					$filename='client_report.xls'; //save our workbook as this file name
+					header('Content-Type: application/vnd.ms-excel'); //mime type
+					header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+					header('Cache-Control: max-age=0'); //no cache
+								 
+					//save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
+					//if you want to save it as .XLSX Excel 2007 format
+					$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');  
+					//force user to download the Excel file without writing it to server's HD
+					//$objWriter->save('php://output');
+					$objWriter->save('static/report/'.$filename);
+					//$mpdf->Output('static/pdf/invoice.pdf','F');
+			//header('location:'.site_url().'reports/hfa');
+		}
+	
 
-function clients_report()
+	function booking_comparison()
 	{
 			if(checkLogin())
 			{
-				recentActionsAddData('report','clients_report','view');
-				$data['page']='reports-clients_report';
+				recentActionsAddData('report','booking_comparison','view');
+				$data['page']='reports-booking_comparison';
 				$this->load->view('system/header',$data);
-				$this->load->view('system/reports/clients_report');
+				$this->load->view('system/reports/booking_comparison_report');
 				$this->load->view('system/footer');
 			}
 			else
 				redirectToLogin();
 	}
 	
-	function clients_report_submit()
+	function booking_comparison_submit()
 	{
 		$data=$_POST;
-		//see($data);die('1');
+		//see($data);die(1);
 		$this->load->library('excel');
 		$this->excel->setActiveSheetIndex(0);
 		$this->excel->getActiveSheet()->setTitle('test worksheet');
@@ -3508,7 +3626,7 @@ function clients_report()
 	   	$this->excel->getActiveSheet()->getColumnDimension($fieldK)->setAutosize(true);}
 	   
 	  $x_start=1;
-	  $reportFields=clients_report_fields();
+	  $reportFields=bookings_report_fields();
 	  foreach($fields as $k=>$v)
 	  {
 		  $colHeading=$reportFields[$v];
@@ -3521,49 +3639,665 @@ function clients_report()
 		$x=$x_start+1;
 		
 	$this->load->model('report_model');
-	$clients=$this->report_model->ClientsReport($data);//echo $this->db->last_query();see($data);see($clients);//die('dddd');
+	$bookings=$this->report_model->bookingListForAuditingReport($data);//echo $this->db->last_query();see($bookings);die('dddd');
 	
-	$this->load->model('Client_model');
+	$this->load->model('booking_model');
 	
 	$stateList=stateList();
-	
+	$genderList=genderList();
+	$bookingStatusList=bookingStatusList();
 	//see($fields);
-	foreach($clients as $client)
+	foreach($bookings as $booking)
 	{
-		 $stringAddress='';
-		 if(trim($client['street_address'])!='')
-		 	$stringAddress.=trim($client['street_address']);
-		  if(trim($client['suburb'])!='')
-		  		$stringAddress .=', ';
-			  $stringAddress .=trim($client['suburb']);
-		  if(trim($client['state'])!='')
-		  {
-			  if($stringAddress!='')
-				  $stringAddress .=', ';
-			  $stringAddress .=trim($client['state']);
-		  }
-		  if(trim($client['postal_code'])!='' && $client['postal_code']!='0')
-		  {
-			  if($stringAddress!='')
-				  $stringAddress .=', ';
-			  $stringAddress .=trim($client['postal_code']);
-		  }
+		$shaOne=getShaOneAppDetails($booking['student']);
+		$shaTwo=getShaTwoAppDetails($booking['student']);
+		$shaThree=getShaThreeAppDetails($booking['student']);
+		$hfaOne=getHfaOneAppDetails($booking['host']);
+		$caregiver=getCaregiverDetail($shaTwo['guardian_assigned']);
+		$caregiverCompany=getCaregiverCompanyDetail($caregiver['company']);
 		foreach($fields as $k=>$v)
 		{
 			$value='';
-			if($v=='bname')
-				$value=ucwords($client['bname']);
-			elseif($v=='client_address'){
-					$value=$stringAddress;
+			if($v=='sha_name')
+				$value=ucwords($shaOne['fname'].' '.$shaOne['lname']);
+			elseif($v=='student_college_id')
+				$value=$shaOne['sha_student_no'];
+			elseif($v=='sha_dob')
+				$value=date('d M Y',strtotime($shaOne['dob']));
+			elseif($v=='sha_gender')
+				$value=$genderList[$shaOne['gender']];
+			elseif($v=='sha_age')
+				$value=age_from_dob($shaOne['dob']);
+			elseif($v=='sha_email')
+				$value=$shaOne['email'];
+			elseif($v=='sha_mobile')
+				$value=$shaOne['mobile'].' ';
+			elseif($v=='booking_number')
+				$value=$booking['id'];
+			elseif($v=='booking_status')
+				$value=$bookingStatusList[$booking['status']];
+			elseif($v=='client_name')
+				{	
+					$clientDetail=clientDetail($shaOne['client']);
+					$value=$clientDetail['bname'];
+				}
+			elseif($v=='client_group')
+				{
+					if($shaOne['client']!='0')
+					{
+						$clientGroupList=clientGroupList();
+						$clientDetail=clientDetail($shaOne['client']);
+						if($clientDetail['client_group']!='')
+							$value=$clientGroupList[$clientDetail['client_group']];
+					}
+				}
+			elseif($v=='college_name')
+				$value=$shaThree['college'];
+			elseif($v=='booking_start_date')
+				$value=date('d M Y',strtotime($booking['booking_from']));
+			elseif($v=='booking_end_date')
+			{
+				if($booking['booking_to']!='0000-00-00')
+					$value=date('d M Y',strtotime($booking['booking_to'].' +1 day'));
+				else
+					$value='Not set';	
 			}
-			elseif($v=='primary_contact_name')
-				$value=ucwords($client['primary_contact_name']." ".$client['primary_contact_lname']);
-			elseif($v=='primary_email')
-				$value=$client['primary_email'];
-			elseif($v=='primary_phone')
-				$value=$client['primary_phone'];
-
+			elseif($v=='hfa_name')
+				$value=ucwords($hfaOne['fname'].' '.$hfaOne['lname']);
+			elseif($v=='hfa_address')
+			{
+				if($hfaOne['street']!='')
+					$value .=$hfaOne['street'].", ";
+				$value .=ucfirst($hfaOne['suburb']).", ".$stateList[$hfaOne['state']].", ".$hfaOne['postcode'];	
+			}
+			elseif($v=='hfa_mobile')
+				$value=$hfaOne['mobile'];
+			elseif($v=='hfa_email')
+				$value=$hfaOne['email'];
+			elseif($v=='apu')
+			{
+				if($shaTwo['airport_pickup']=='1')
+					$value='Yes';
+				else
+					$value='No';	
+			}
+			elseif($v=='apu_company')
+			{
+				if($shaTwo['apu_company']!='0')
+				{
+					$apuCompanyDetail=apuCompanyDetail($shaTwo['apu_company']);
+					if(!empty($apuCompanyDetail))
+						$value=$apuCompanyDetail['company_name'];	 
+				}
+			}
+			elseif($v=='apu_arrival_date')
+			{
+				if($shaOne['arrival_date']!='0000-00-00')
+					$value=dateFormat($shaOne['arrival_date']);
+			}
+			elseif($v=='apu_arrival_time')
+			{
+				if($shaTwo['airport_arrival_time']!='00:00:00')
+					$value=date('h:i A',strtotime($shaTwo['airport_arrival_time']));
+			}
+			elseif($v=='apu_flight_number')
+				$value=$shaTwo['airport_flightno'];
+			elseif($v=='sha_pets')
+			{
+				  if($shaTwo['live_with_pets']=="0")
+					  $value .="No";
+				  elseif($shaTwo['live_with_pets']=="1")
+					  $value .="Yes";
+				  else
+					  $value .="n/a";
+				  
+				  if($shaTwo['live_with_pets']==1)
+				  {
+						$pets=array();
+						if($shaTwo['pet_dog']==1)
+							$pets[]='Dog';
+						if($shaTwo['pet_cat']==1)
+							$pets[]='Cat';
+						if($shaTwo['pet_bird']==1)
+							$pets[]='Bird';
+						if($shaTwo['pet_other']==1 && $shaTwo['pet_other_val']!='')
+							$pets[]=ucfirst ($shaTwo['pet_other_val']);	
+						
+						if(!empty($pets))
+							$value .=' - '.implode(', ',$pets);
+						
+						if($shaTwo['pet_live_inside']==1)
+							$value .= ", can live with pets inside the house";
+						elseif($shaTwo['pet_live_inside']=="0")
+							$value .= ", cannot live with pets inside the house";	
+					}
+			}
+			elseif($v=='sha_kids')
+			{
+				$value .='0-11 years old: ';
+				if($shaThree['live_with_child11']==1)
+					$value .="Yes";
+				elseif($shaThree['live_with_child11']=="0")	
+					$value .="No";
+				else
+					$value .='n/a';	
+				$value .=', ';
+				
+				$value .='12-20 years old: ';
+				if($shaThree['live_with_child20']==1)
+					$value .= "Yes";
+				elseif($shaThree['live_with_child20']=="0")	
+					$value .= "No";
+				else
+					$value .= 'n/a';
+				$value .='';	
+				
+				if(trim($shaThree['live_with_child_reason'])!='')
+					$value .= ', Reason: '.ucfirst ($shaThree['live_with_child_reason']);
+			}
+			elseif($v=='sha_allergy')
+			{
+					if($shaThree['allergy_req']=='0')
+						$value .="No";
+					elseif($shaThree['allergy_req']=='1')
+						$value .="Yes ";
+					else
+						$value .='n/a';
+						
+					if($shaThree['allergy_req']=='1')
+						{
+							$allergy=array();
+							if($shaThree['allergy_hay_fever']==1)
+								$allergy[]='Hay Fever';
+							if($shaThree['allergy_asthma']==1)
+								$allergy[]='Asthma';
+							if($shaThree['allergy_lactose']==1)
+								$allergy[]='Lactose Intolerance';
+							if($shaThree['allergy_gluten']==1)
+								$allergy[]='Gluten Intolerance';	
+							if($shaThree['allergy_peanut']==1)
+								$allergy[]='Peanut Allergies';	
+							if($shaThree['allergy_dust']==1)
+								$allergy[]='Dust Allergies';	
+							if($shaThree['allergy_other']==1 && $shaThree['allergy_other_val']!='')
+								$allergy[]=ucfirst ($shaThree['allergy_other_val']);		
+							
+							if(!empty($allergy))
+								$value .='- '.implode(', ',$allergy);
+						}	
+			}
+			elseif($v=='sha_dietry_requirement')
+			{
+					if($shaThree['diet_req']=='0')
+					  $value .= "No";
+				  elseif($shaThree['diet_req']=='1')
+					  $value .= "Yes ";
+				  else
+					   $value .= 'n/a';
+					  
+				  if($shaThree['diet_req']=='1')
+					  {
+						  $dietReq=array();
+						  if($shaThree['diet_veg']==1)
+							  $dietReq[]='Vegetarian';
+						  if($shaThree['diet_gluten']==1)
+							  $diet[]='Gluten/Lactose Free';
+						  if($shaThree['diet_pork']==1)
+							  $dietReq[]='No Pork';
+						  if($shaThree['diet_food_allergy']==1)
+							  $dietReq[]='Food Allergies';	
+						  if($shaThree['diet_other']==1 && $shaThree['diet_other_val']!='')
+							  $dietReq[]=ucfirst ($shaThree['diet_other_val']);		
+						  
+						  if(!empty($dietReq))
+							  $value .='- '.implode(', ',$dietReq);
+					  }
+			}
+			elseif($v=='sha_medication')
+			{
+				  if($shaThree['medication']=='1')
+					  $value .= 'Yes';
+				  elseif($shaThree['medication']=='0')
+					  $value .= "No";
+				  else 
+					  $value .= 'n/a';	
+					  
+				  if($shaThree['medication']=='1')
+					  $value .='- '.$shaThree['medication_desc'];
+			}
+			elseif($v=='sha_disabilty')
+			{
+				  if($shaThree['disabilities']=='1')
+					  $value .= 'Yes';
+				  elseif($shaThree['disabilities']=='0')
+					  $value .= "No";
+				  else 
+					  $value .= 'n/a';	
+					  
+				  if($shaThree['disabilities']=='1')
+					  $value .='- '.$shaThree['disabilities_desc'];
+			}
+			elseif($v=='sha_smoke')
+			{
+				  $smokingHabbits=smokingHabbits();
+				  if($shaThree['smoker']!='')
+					  $value .= str_replace('&amp;','&',$smokingHabbits[$shaThree['smoker']]);
+				  else
+					  $value .= 'n/a';	
+			}
+			elseif($v=='sha_smoker_inside')
+			{
+				  $smokingHabbits=smokingHabbits();
+				  if($shaThree['family_include_smoker']!='')
+					  $value .= str_replace('&amp;','&',$smokingHabbits[$shaThree['family_include_smoker']]);
+				  else
+					  $value .= 'n/a';	
+			}
+			elseif($v=='sha_other_family_pref')
+			{
+				  if($shaThree['family_pref']!='')
+					  $value .= $shaThree['family_pref'];
+				  else
+					  $value .= 'n/a';
+			}
+			elseif($v=='course_name')
+			{
+				if($shaThree['course_name'] && $shaThree['course_start_date'])
+				{
+				$value = 'Course: '.$shaThree['course_name'].' | Start date: '.date('d M Y',strtotime($shaThree['course_start_date']));
+				}
+				elseif($shaThree['course_start_date']=='0000-00-00' && !$shaThree['course_name'])
+				{
+				$value = 'Course not available | Start date not available';
+				}
+				elseif(!$shaThree['course_name'] && $shaThree['course_start_date'])
+				{
+				$value = 'Course not available'.' | Start Date: '.date('d M Y',strtotime($shaThree['course_start_date']));
+				}
+				if($shaThree['course_start_date']=='0000-00-00' && $shaThree['course_name'])
+				{
+				$value = 'Course: '.$shaThree['course_name'].' | Start date not available';
+				}
+			}
+			elseif($v=='cg_company')
+				$value=$caregiverCompany['name'];
+			elseif($v=='cg_name')
+				$value=$caregiver['fname'].' '.$caregiver['lname'];
+			elseif($v=='cg_mobile')
+				$value=$caregiver['phone'];
+			elseif($v=='cg_email')
+				$value=$caregiver['email'];
+			elseif($v=='holidays_latest' || $v=='holidays')
+			{
+				$bookingHolidays=$this->booking_model->holidaysByBooking($booking['id']);
+				if(empty($bookingHolidays))
+					$value='N/A';
+				else	
+				{
+					if($v=='holidays_latest')
+							$value=dateFormat($bookingHolidays[0]['start']).' - '.dateFormat($bookingHolidays[0]['end']);
+					elseif($v=='holidays')
+					{
+						$holidayArray=array();
+						foreach($bookingHolidays as $holiday)
+							$holidayArray[]=dateFormat($holiday['start']).' - '.dateFormat($holiday['end']);
+						$value=implode(' | ',$holidayArray);	
+					}
+				}
+			}
+			elseif($v=='homestay_change')
+				$value=$this->shaHomestayChangeReportField($shaOne['id']);
+			
+			$this->excel->getActiveSheet()->setCellValue($k.$x, $value);	
+		}
+		
+		$x++;
+	}
+		$this->excel->createSheet();
+		$this->excel->setActiveSheetIndex(1);
+		$this->excel->getActiveSheet()->setTitle('test worksheet');
+		$this->excel->getActiveSheet()->getDefaultStyle()->applyFromArray(array(
+				'font'=>array(
+				'name'      =>  'Arial',
+				'size'      =>  10,
+			)
+		));
+		
+		$fields=array();
+		$fieldIndex=$lastIndex='A';
+		
+		foreach($data['CaR_field'] as $hr_field)
+		{
+			$fields[$fieldIndex]=$hr_field;
+			$lastIndex=$fieldIndex;
+			$fieldIndex++;
+		}
+		//see($fields);
+		foreach ($fields as $fieldK=>$field){//echo $fieldK.', ';
+	   	$this->excel->getActiveSheet()->getColumnDimension($fieldK)->setAutosize(true);}
+	   
+	  $x_start=1;
+	  $reportFields=bookings_report_fields();
+	  foreach($fields as $k=>$v)
+	  {
+		  $colHeading=$reportFields[$v];
+		  $this->excel->getActiveSheet()->setCellValue($k.$x_start, $colHeading);
+	  }
+		  
+		$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border:: BORDER_THIN);
+		$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getFont()->setSize(10)->setBold(true);  
+		
+		$x=$x_start+1;
+		
+	$this->load->model('report_model');
+	$bookings=$this->report_model->bookingListForComparisonReport($data);//echo $this->db->last_query();see($bookings);die('dddd');
 	
+	$this->load->model('booking_model');
+	
+	$stateList=stateList();
+	$genderList=genderList();
+	$bookingStatusList=bookingStatusList();
+	//see($fields);
+	foreach($bookings as $booking)
+	{
+		$shaOne=getShaOneAppDetails($booking['student']);
+		$shaTwo=getShaTwoAppDetails($booking['student']);
+		$shaThree=getShaThreeAppDetails($booking['student']);
+		$hfaOne=getHfaOneAppDetails($booking['host']);
+		$caregiver=getCaregiverDetail($shaTwo['guardian_assigned']);
+		$caregiverCompany=getCaregiverCompanyDetail($caregiver['company']);
+		foreach($fields as $k=>$v)
+		{
+			$value='';
+			if($v=='sha_name')
+				$value=ucwords($shaOne['fname'].' '.$shaOne['lname']);
+			elseif($v=='student_college_id')
+				$value=$shaOne['sha_student_no'];
+			elseif($v=='sha_dob')
+				$value=date('d M Y',strtotime($shaOne['dob']));
+			elseif($v=='sha_gender')
+				$value=$genderList[$shaOne['gender']];
+			elseif($v=='sha_age')
+				$value=age_from_dob($shaOne['dob']);
+			elseif($v=='sha_email')
+				$value=$shaOne['email'];
+			elseif($v=='sha_mobile')
+				$value=$shaOne['mobile'].' ';
+			elseif($v=='booking_number')
+				$value=$booking['id'];
+			elseif($v=='booking_status')
+				$value=$bookingStatusList[$booking['status']];
+			elseif($v=='client_name')
+				{	
+					$clientDetail=clientDetail($shaOne['client']);
+					$value=$clientDetail['bname'];
+				}
+			elseif($v=='client_group')
+				{
+					if($shaOne['client']!='0')
+					{
+						$clientGroupList=clientGroupList();
+						$clientDetail=clientDetail($shaOne['client']);
+						if($clientDetail['client_group']!='')
+							$value=$clientGroupList[$clientDetail['client_group']];
+					}
+				}
+			elseif($v=='college_name')
+				$value=$shaThree['college'];
+			elseif($v=='booking_start_date')
+				$value=date('d M Y',strtotime($booking['booking_from']));
+			elseif($v=='booking_end_date')
+			{
+				if($booking['booking_to']!='0000-00-00')
+					$value=date('d M Y',strtotime($booking['booking_to'].' +1 day'));
+				else
+					$value='Not set';	
+			}
+			elseif($v=='hfa_name')
+				$value=ucwords($hfaOne['fname'].' '.$hfaOne['lname']);
+			elseif($v=='hfa_address')
+			{
+				if($hfaOne['street']!='')
+					$value .=$hfaOne['street'].", ";
+				$value .=ucfirst($hfaOne['suburb']).", ".$stateList[$hfaOne['state']].", ".$hfaOne['postcode'];	
+			}
+			elseif($v=='hfa_mobile')
+				$value=$hfaOne['mobile'];
+			elseif($v=='hfa_email')
+				$value=$hfaOne['email'];
+			elseif($v=='apu')
+			{
+				if($shaTwo['airport_pickup']=='1')
+					$value='Yes';
+				else
+					$value='No';	
+			}
+			elseif($v=='apu_company')
+			{
+				if($shaTwo['apu_company']!='0')
+				{
+					$apuCompanyDetail=apuCompanyDetail($shaTwo['apu_company']);
+					if(!empty($apuCompanyDetail))
+						$value=$apuCompanyDetail['company_name'];	 
+				}
+			}
+			elseif($v=='apu_arrival_date')
+			{
+				if($shaOne['arrival_date']!='0000-00-00')
+					$value=dateFormat($shaOne['arrival_date']);
+			}
+			elseif($v=='apu_arrival_time')
+			{
+				if($shaTwo['airport_arrival_time']!='00:00:00')
+					$value=date('h:i A',strtotime($shaTwo['airport_arrival_time']));
+			}
+			elseif($v=='apu_flight_number')
+				$value=$shaTwo['airport_flightno'];
+			elseif($v=='sha_pets')
+			{
+				  if($shaTwo['live_with_pets']=="0")
+					  $value .="No";
+				  elseif($shaTwo['live_with_pets']=="1")
+					  $value .="Yes";
+				  else
+					  $value .="n/a";
+				  
+				  if($shaTwo['live_with_pets']==1)
+				  {
+						$pets=array();
+						if($shaTwo['pet_dog']==1)
+							$pets[]='Dog';
+						if($shaTwo['pet_cat']==1)
+							$pets[]='Cat';
+						if($shaTwo['pet_bird']==1)
+							$pets[]='Bird';
+						if($shaTwo['pet_other']==1 && $shaTwo['pet_other_val']!='')
+							$pets[]=ucfirst ($shaTwo['pet_other_val']);	
+						
+						if(!empty($pets))
+							$value .=' - '.implode(', ',$pets);
+						
+						if($shaTwo['pet_live_inside']==1)
+							$value .= ", can live with pets inside the house";
+						elseif($shaTwo['pet_live_inside']=="0")
+							$value .= ", cannot live with pets inside the house";	
+					}
+			}
+			elseif($v=='sha_kids')
+			{
+				$value .='0-11 years old: ';
+				if($shaThree['live_with_child11']==1)
+					$value .="Yes";
+				elseif($shaThree['live_with_child11']=="0")	
+					$value .="No";
+				else
+					$value .='n/a';	
+				$value .=', ';
+				
+				$value .='12-20 years old: ';
+				if($shaThree['live_with_child20']==1)
+					$value .= "Yes";
+				elseif($shaThree['live_with_child20']=="0")	
+					$value .= "No";
+				else
+					$value .= 'n/a';
+				$value .='';	
+				
+				if(trim($shaThree['live_with_child_reason'])!='')
+					$value .= ', Reason: '.ucfirst ($shaThree['live_with_child_reason']);
+			}
+			elseif($v=='sha_allergy')
+			{
+					if($shaThree['allergy_req']=='0')
+						$value .="No";
+					elseif($shaThree['allergy_req']=='1')
+						$value .="Yes ";
+					else
+						$value .='n/a';
+						
+					if($shaThree['allergy_req']=='1')
+						{
+							$allergy=array();
+							if($shaThree['allergy_hay_fever']==1)
+								$allergy[]='Hay Fever';
+							if($shaThree['allergy_asthma']==1)
+								$allergy[]='Asthma';
+							if($shaThree['allergy_lactose']==1)
+								$allergy[]='Lactose Intolerance';
+							if($shaThree['allergy_gluten']==1)
+								$allergy[]='Gluten Intolerance';	
+							if($shaThree['allergy_peanut']==1)
+								$allergy[]='Peanut Allergies';	
+							if($shaThree['allergy_dust']==1)
+								$allergy[]='Dust Allergies';	
+							if($shaThree['allergy_other']==1 && $shaThree['allergy_other_val']!='')
+								$allergy[]=ucfirst ($shaThree['allergy_other_val']);		
+							
+							if(!empty($allergy))
+								$value .='- '.implode(', ',$allergy);
+						}	
+			}
+			elseif($v=='sha_dietry_requirement')
+			{
+					if($shaThree['diet_req']=='0')
+					  $value .= "No";
+				  elseif($shaThree['diet_req']=='1')
+					  $value .= "Yes ";
+				  else
+					   $value .= 'n/a';
+					  
+				  if($shaThree['diet_req']=='1')
+					  {
+						  $dietReq=array();
+						  if($shaThree['diet_veg']==1)
+							  $dietReq[]='Vegetarian';
+						  if($shaThree['diet_gluten']==1)
+							  $diet[]='Gluten/Lactose Free';
+						  if($shaThree['diet_pork']==1)
+							  $dietReq[]='No Pork';
+						  if($shaThree['diet_food_allergy']==1)
+							  $dietReq[]='Food Allergies';	
+						  if($shaThree['diet_other']==1 && $shaThree['diet_other_val']!='')
+							  $dietReq[]=ucfirst ($shaThree['diet_other_val']);		
+						  
+						  if(!empty($dietReq))
+							  $value .='- '.implode(', ',$dietReq);
+					  }
+			}
+			elseif($v=='sha_medication')
+			{
+				  if($shaThree['medication']=='1')
+					  $value .= 'Yes';
+				  elseif($shaThree['medication']=='0')
+					  $value .= "No";
+				  else 
+					  $value .= 'n/a';	
+					  
+				  if($shaThree['medication']=='1')
+					  $value .='- '.$shaThree['medication_desc'];
+			}
+			elseif($v=='sha_disabilty')
+			{
+				  if($shaThree['disabilities']=='1')
+					  $value .= 'Yes';
+				  elseif($shaThree['disabilities']=='0')
+					  $value .= "No";
+				  else 
+					  $value .= 'n/a';	
+					  
+				  if($shaThree['disabilities']=='1')
+					  $value .='- '.$shaThree['disabilities_desc'];
+			}
+			elseif($v=='sha_smoke')
+			{
+				  $smokingHabbits=smokingHabbits();
+				  if($shaThree['smoker']!='')
+					  $value .= str_replace('&amp;','&',$smokingHabbits[$shaThree['smoker']]);
+				  else
+					  $value .= 'n/a';	
+			}
+			elseif($v=='sha_smoker_inside')
+			{
+				  $smokingHabbits=smokingHabbits();
+				  if($shaThree['family_include_smoker']!='')
+					  $value .= str_replace('&amp;','&',$smokingHabbits[$shaThree['family_include_smoker']]);
+				  else
+					  $value .= 'n/a';	
+			}
+			elseif($v=='sha_other_family_pref')
+			{
+				  if($shaThree['family_pref']!='')
+					  $value .= $shaThree['family_pref'];
+				  else
+					  $value .= 'n/a';
+			}
+			elseif($v=='course_name')
+			{
+				if($shaThree['course_name'] && $shaThree['course_start_date'])
+				{
+				$value = 'Course: '.$shaThree['course_name'].' | Start date: '.date('d M Y',strtotime($shaThree['course_start_date']));
+				}
+				elseif($shaThree['course_start_date']=='0000-00-00' && !$shaThree['course_name'])
+				{
+				$value = 'Course not available | Start date not available';
+				}
+				elseif(!$shaThree['course_name'] && $shaThree['course_start_date'])
+				{
+				$value = 'Course not available'.' | Start Date: '.date('d M Y',strtotime($shaThree['course_start_date']));
+				}
+				if($shaThree['course_start_date']=='0000-00-00' && $shaThree['course_name'])
+				{
+				$value = 'Course: '.$shaThree['course_name'].' | Start date not available';
+				}
+			}
+			elseif($v=='cg_company')
+				$value=$caregiverCompany['name'];
+			elseif($v=='cg_name')
+				$value=$caregiver['fname'].' '.$caregiver['lname'];
+			elseif($v=='cg_mobile')
+				$value=$caregiver['phone'];
+			elseif($v=='cg_email')
+				$value=$caregiver['email'];
+			elseif($v=='holidays_latest' || $v=='holidays')
+			{
+				$bookingHolidays=$this->booking_model->holidaysByBooking($booking['id']);
+				if(empty($bookingHolidays))
+					$value='N/A';
+				else	
+				{
+					if($v=='holidays_latest')
+							$value=dateFormat($bookingHolidays[0]['start']).' - '.dateFormat($bookingHolidays[0]['end']);
+					elseif($v=='holidays')
+					{
+						$holidayArray=array();
+						foreach($bookingHolidays as $holiday)
+							$holidayArray[]=dateFormat($holiday['start']).' - '.dateFormat($holiday['end']);
+						$value=implode(' | ',$holidayArray);	
+					}
+				}
+			}
+			elseif($v=='homestay_change')
+				$value=$this->shaHomestayChangeReportField($shaOne['id']);
 			
 			$this->excel->getActiveSheet()->setCellValue($k.$x, $value);	
 		}
@@ -3571,8 +4305,363 @@ function clients_report()
 		$x++;
 	}
 
+
+		// $this->excel->createSheet();
+		// $this->excel->setActiveSheetIndex(2);
+		// $this->excel->getActiveSheet()->setTitle('test worksheet');
+		// $this->excel->getActiveSheet()->getDefaultStyle()->applyFromArray(array(
+		// 		'font'=>array(
+		// 		'name'      =>  'Arial',
+		// 		'size'      =>  10,
+		// 	)
+		// ));
+		
+		// $fields=array();
+		// $fieldIndex=$lastIndex='A';
+		
+	// 	foreach($data['CaR_field'] as $hr_field)
+	// 	{
+	// 		$fields[$fieldIndex]=$hr_field;
+	// 		$lastIndex=$fieldIndex;
+	// 		$fieldIndex++;
+	// 	}
+	// 	//see($fields);
+	// 	foreach ($fields as $fieldK=>$field){//echo $fieldK.', ';
+	//    	$this->excel->getActiveSheet()->getColumnDimension($fieldK)->setAutosize(true);}
+	   
+	//   $x_start=1;
+	//   $reportFields=bookings_report_fields();
+	//   foreach($fields as $k=>$v)
+	//   {
+	// 	  $colHeading=$reportFields[$v];
+	// 	  $this->excel->getActiveSheet()->setCellValue($k.$x_start, $colHeading);
+	//   }
+		  
+	// 	$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border:: BORDER_THIN);
+	// 	$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getFont()->setSize(10)->setBold(true);  
+		
+	// 	$x=$x_start+1;
+		
+	// $this->load->model('report_model');
+	// $bookings=$this->report_model->bookingListForComparisonReport($data);//echo $this->db->last_query();see($bookings);die('dddd');
 	
-				$filename='client_report.xls'; //save our workbook as this file name
+	// $this->load->model('booking_model');
+	
+	// $stateList=stateList();
+	// $genderList=genderList();
+	// $bookingStatusList=bookingStatusList();
+	// //see($fields);
+	// foreach($bookings as $booking)
+	// {
+	// 	$shaOne=getShaOneAppDetails($booking['student']);
+	// 	$shaTwo=getShaTwoAppDetails($booking['student']);
+	// 	$shaThree=getShaThreeAppDetails($booking['student']);
+	// 	$hfaOne=getHfaOneAppDetails($booking['host']);
+	// 	$caregiver=getCaregiverDetail($shaTwo['guardian_assigned']);
+	// 	$caregiverCompany=getCaregiverCompanyDetail($caregiver['company']);
+	// 	foreach($fields as $k=>$v)
+	// 	{
+	// 		$value='';
+	// 		if($v=='sha_name')
+	// 			$value=ucwords($shaOne['fname'].' '.$shaOne['lname']);
+	// 		elseif($v=='student_college_id')
+	// 			$value=$shaOne['sha_student_no'];
+	// 		elseif($v=='sha_dob')
+	// 			$value=date('d M Y',strtotime($shaOne['dob']));
+	// 		elseif($v=='sha_gender')
+	// 			$value=$genderList[$shaOne['gender']];
+	// 		elseif($v=='sha_age')
+	// 			$value=age_from_dob($shaOne['dob']);
+	// 		elseif($v=='sha_email')
+	// 			$value=$shaOne['email'];
+	// 		elseif($v=='sha_mobile')
+	// 			$value=$shaOne['mobile'].' ';
+	// 		elseif($v=='booking_number')
+	// 			$value=$booking['id'];
+	// 		elseif($v=='booking_status')
+	// 			$value=$bookingStatusList[$booking['status']];
+	// 		elseif($v=='client_name')
+	// 			{	
+	// 				$clientDetail=clientDetail($shaOne['client']);
+	// 				$value=$clientDetail['bname'];
+	// 			}
+	// 		elseif($v=='client_group')
+	// 			{
+	// 				if($shaOne['client']!='0')
+	// 				{
+	// 					$clientGroupList=clientGroupList();
+	// 					$clientDetail=clientDetail($shaOne['client']);
+	// 					if($clientDetail['client_group']!='')
+	// 						$value=$clientGroupList[$clientDetail['client_group']];
+	// 				}
+	// 			}
+	// 		elseif($v=='college_name')
+	// 			$value=$shaThree['college'];
+	// 		elseif($v=='booking_start_date')
+	// 			$value=date('d M Y',strtotime($booking['booking_from']));
+	// 		elseif($v=='booking_end_date')
+	// 		{
+	// 			if($booking['booking_to']!='0000-00-00')
+	// 				$value=date('d M Y',strtotime($booking['booking_to'].' +1 day'));
+	// 			else
+	// 				$value='Not set';	
+	// 		}
+	// 		elseif($v=='hfa_name')
+	// 			$value=ucwords($hfaOne['fname'].' '.$hfaOne['lname']);
+	// 		elseif($v=='hfa_address')
+	// 		{
+	// 			if($hfaOne['street']!='')
+	// 				$value .=$hfaOne['street'].", ";
+	// 			$value .=ucfirst($hfaOne['suburb']).", ".$stateList[$hfaOne['state']].", ".$hfaOne['postcode'];	
+	// 		}
+	// 		elseif($v=='hfa_mobile')
+	// 			$value=$hfaOne['mobile'];
+	// 		elseif($v=='hfa_email')
+	// 			$value=$hfaOne['email'];
+	// 		elseif($v=='apu')
+	// 		{
+	// 			if($shaTwo['airport_pickup']=='1')
+	// 				$value='Yes';
+	// 			else
+	// 				$value='No';	
+	// 		}
+	// 		elseif($v=='apu_company')
+	// 		{
+	// 			if($shaTwo['apu_company']!='0')
+	// 			{
+	// 				$apuCompanyDetail=apuCompanyDetail($shaTwo['apu_company']);
+	// 				if(!empty($apuCompanyDetail))
+	// 					$value=$apuCompanyDetail['company_name'];	 
+	// 			}
+	// 		}
+	// 		elseif($v=='apu_arrival_date')
+	// 		{
+	// 			if($shaOne['arrival_date']!='0000-00-00')
+	// 				$value=dateFormat($shaOne['arrival_date']);
+	// 		}
+	// 		elseif($v=='apu_arrival_time')
+	// 		{
+	// 			if($shaTwo['airport_arrival_time']!='00:00:00')
+	// 				$value=date('h:i A',strtotime($shaTwo['airport_arrival_time']));
+	// 		}
+	// 		elseif($v=='apu_flight_number')
+	// 			$value=$shaTwo['airport_flightno'];
+	// 		elseif($v=='sha_pets')
+	// 		{
+	// 			  if($shaTwo['live_with_pets']=="0")
+	// 				  $value .="No";
+	// 			  elseif($shaTwo['live_with_pets']=="1")
+	// 				  $value .="Yes";
+	// 			  else
+	// 				  $value .="n/a";
+				  
+	// 			  if($shaTwo['live_with_pets']==1)
+	// 			  {
+	// 					$pets=array();
+	// 					if($shaTwo['pet_dog']==1)
+	// 						$pets[]='Dog';
+	// 					if($shaTwo['pet_cat']==1)
+	// 						$pets[]='Cat';
+	// 					if($shaTwo['pet_bird']==1)
+	// 						$pets[]='Bird';
+	// 					if($shaTwo['pet_other']==1 && $shaTwo['pet_other_val']!='')
+	// 						$pets[]=ucfirst ($shaTwo['pet_other_val']);	
+						
+	// 					if(!empty($pets))
+	// 						$value .=' - '.implode(', ',$pets);
+						
+	// 					if($shaTwo['pet_live_inside']==1)
+	// 						$value .= ", can live with pets inside the house";
+	// 					elseif($shaTwo['pet_live_inside']=="0")
+	// 						$value .= ", cannot live with pets inside the house";	
+	// 				}
+	// 		}
+	// 		elseif($v=='sha_kids')
+	// 		{
+	// 			$value .='0-11 years old: ';
+	// 			if($shaThree['live_with_child11']==1)
+	// 				$value .="Yes";
+	// 			elseif($shaThree['live_with_child11']=="0")	
+	// 				$value .="No";
+	// 			else
+	// 				$value .='n/a';	
+	// 			$value .=', ';
+				
+	// 			$value .='12-20 years old: ';
+	// 			if($shaThree['live_with_child20']==1)
+	// 				$value .= "Yes";
+	// 			elseif($shaThree['live_with_child20']=="0")	
+	// 				$value .= "No";
+	// 			else
+	// 				$value .= 'n/a';
+	// 			$value .='';	
+				
+	// 			if(trim($shaThree['live_with_child_reason'])!='')
+	// 				$value .= ', Reason: '.ucfirst ($shaThree['live_with_child_reason']);
+	// 		}
+	// 		elseif($v=='sha_allergy')
+	// 		{
+	// 				if($shaThree['allergy_req']=='0')
+	// 					$value .="No";
+	// 				elseif($shaThree['allergy_req']=='1')
+	// 					$value .="Yes ";
+	// 				else
+	// 					$value .='n/a';
+						
+	// 				if($shaThree['allergy_req']=='1')
+	// 					{
+	// 						$allergy=array();
+	// 						if($shaThree['allergy_hay_fever']==1)
+	// 							$allergy[]='Hay Fever';
+	// 						if($shaThree['allergy_asthma']==1)
+	// 							$allergy[]='Asthma';
+	// 						if($shaThree['allergy_lactose']==1)
+	// 							$allergy[]='Lactose Intolerance';
+	// 						if($shaThree['allergy_gluten']==1)
+	// 							$allergy[]='Gluten Intolerance';	
+	// 						if($shaThree['allergy_peanut']==1)
+	// 							$allergy[]='Peanut Allergies';	
+	// 						if($shaThree['allergy_dust']==1)
+	// 							$allergy[]='Dust Allergies';	
+	// 						if($shaThree['allergy_other']==1 && $shaThree['allergy_other_val']!='')
+	// 							$allergy[]=ucfirst ($shaThree['allergy_other_val']);		
+							
+	// 						if(!empty($allergy))
+	// 							$value .='- '.implode(', ',$allergy);
+	// 					}	
+	// 		}
+	// 		elseif($v=='sha_dietry_requirement')
+	// 		{
+	// 				if($shaThree['diet_req']=='0')
+	// 				  $value .= "No";
+	// 			  elseif($shaThree['diet_req']=='1')
+	// 				  $value .= "Yes ";
+	// 			  else
+	// 				   $value .= 'n/a';
+					  
+	// 			  if($shaThree['diet_req']=='1')
+	// 				  {
+	// 					  $dietReq=array();
+	// 					  if($shaThree['diet_veg']==1)
+	// 						  $dietReq[]='Vegetarian';
+	// 					  if($shaThree['diet_gluten']==1)
+	// 						  $diet[]='Gluten/Lactose Free';
+	// 					  if($shaThree['diet_pork']==1)
+	// 						  $dietReq[]='No Pork';
+	// 					  if($shaThree['diet_food_allergy']==1)
+	// 						  $dietReq[]='Food Allergies';	
+	// 					  if($shaThree['diet_other']==1 && $shaThree['diet_other_val']!='')
+	// 						  $dietReq[]=ucfirst ($shaThree['diet_other_val']);		
+						  
+	// 					  if(!empty($dietReq))
+	// 						  $value .='- '.implode(', ',$dietReq);
+	// 				  }
+	// 		}
+	// 		elseif($v=='sha_medication')
+	// 		{
+	// 			  if($shaThree['medication']=='1')
+	// 				  $value .= 'Yes';
+	// 			  elseif($shaThree['medication']=='0')
+	// 				  $value .= "No";
+	// 			  else 
+	// 				  $value .= 'n/a';	
+					  
+	// 			  if($shaThree['medication']=='1')
+	// 				  $value .='- '.$shaThree['medication_desc'];
+	// 		}
+	// 		elseif($v=='sha_disabilty')
+	// 		{
+	// 			  if($shaThree['disabilities']=='1')
+	// 				  $value .= 'Yes';
+	// 			  elseif($shaThree['disabilities']=='0')
+	// 				  $value .= "No";
+	// 			  else 
+	// 				  $value .= 'n/a';	
+					  
+	// 			  if($shaThree['disabilities']=='1')
+	// 				  $value .='- '.$shaThree['disabilities_desc'];
+	// 		}
+	// 		elseif($v=='sha_smoke')
+	// 		{
+	// 			  $smokingHabbits=smokingHabbits();
+	// 			  if($shaThree['smoker']!='')
+	// 				  $value .= str_replace('&amp;','&',$smokingHabbits[$shaThree['smoker']]);
+	// 			  else
+	// 				  $value .= 'n/a';	
+	// 		}
+	// 		elseif($v=='sha_smoker_inside')
+	// 		{
+	// 			  $smokingHabbits=smokingHabbits();
+	// 			  if($shaThree['family_include_smoker']!='')
+	// 				  $value .= str_replace('&amp;','&',$smokingHabbits[$shaThree['family_include_smoker']]);
+	// 			  else
+	// 				  $value .= 'n/a';	
+	// 		}
+	// 		elseif($v=='sha_other_family_pref')
+	// 		{
+	// 			  if($shaThree['family_pref']!='')
+	// 				  $value .= $shaThree['family_pref'];
+	// 			  else
+	// 				  $value .= 'n/a';
+	// 		}
+	// 		elseif($v=='course_name')
+	// 		{
+	// 			if($shaThree['course_name'] && $shaThree['course_start_date'])
+	// 			{
+	// 			$value = 'Course: '.$shaThree['course_name'].' | Start date: '.date('d M Y',strtotime($shaThree['course_start_date']));
+	// 			}
+	// 			elseif($shaThree['course_start_date']=='0000-00-00' && !$shaThree['course_name'])
+	// 			{
+	// 			$value = 'Course not available | Start date not available';
+	// 			}
+	// 			elseif(!$shaThree['course_name'] && $shaThree['course_start_date'])
+	// 			{
+	// 			$value = 'Course not available'.' | Start Date: '.date('d M Y',strtotime($shaThree['course_start_date']));
+	// 			}
+	// 			if($shaThree['course_start_date']=='0000-00-00' && $shaThree['course_name'])
+	// 			{
+	// 			$value = 'Course: '.$shaThree['course_name'].' | Start date not available';
+	// 			}
+	// 		}
+	// 		elseif($v=='cg_company')
+	// 			$value=$caregiverCompany['name'];
+	// 		elseif($v=='cg_name')
+	// 			$value=$caregiver['fname'].' '.$caregiver['lname'];
+	// 		elseif($v=='cg_mobile')
+	// 			$value=$caregiver['phone'];
+	// 		elseif($v=='cg_email')
+	// 			$value=$caregiver['email'];
+	// 		elseif($v=='holidays_latest' || $v=='holidays')
+	// 		{
+	// 			$bookingHolidays=$this->booking_model->holidaysByBooking($booking['id']);
+	// 			if(empty($bookingHolidays))
+	// 				$value='N/A';
+	// 			else	
+	// 			{
+	// 				if($v=='holidays_latest')
+	// 						$value=dateFormat($bookingHolidays[0]['start']).' - '.dateFormat($bookingHolidays[0]['end']);
+	// 				elseif($v=='holidays')
+	// 				{
+	// 					$holidayArray=array();
+	// 					foreach($bookingHolidays as $holiday)
+	// 						$holidayArray[]=dateFormat($holiday['start']).' - '.dateFormat($holiday['end']);
+	// 					$value=implode(' | ',$holidayArray);	
+	// 				}
+	// 			}
+	// 		}
+	// 		elseif($v=='homestay_change')
+	// 			$value=$this->shaHomestayChangeReportField($shaOne['id']);
+			
+	// 		$this->excel->getActiveSheet()->setCellValue($k.$x, $value);	
+	// 	}
+		
+	// 	$x++;
+	// }
+
+	
+
+	
+				$filename='Booking_comparison.xls'; //save our workbook as this file name
 				header('Content-Type: application/vnd.ms-excel'); //mime type
 				header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
 				header('Cache-Control: max-age=0'); //no cache
@@ -3587,8 +4676,4 @@ function clients_report()
 		//header('location:'.site_url().'reports/hfa');
 	}
 	
-
-
-
-	////------------Clients  Report #Ends---------/////////
 }

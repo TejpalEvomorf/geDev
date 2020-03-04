@@ -47,7 +47,7 @@ $reportFields=clients_report_fields();
 <div class="col-md-6 no-pad">
 	<div class="panel panel-profile panel-bluegraylight">
 	<div class="panel-heading">
-      <h2>Select Employee</h2>
+      <h2>SELECT CLIENT TYPE/GROUP</h2>
   </div>
   <div class="panel-body">
 	  <div>
