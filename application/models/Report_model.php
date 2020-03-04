@@ -676,6 +676,61 @@ else{
 }
 
 
+	function bookingListForComparisonReport($data)
+	{
+		
+		
+		$clgUniOption=$this->clgUniOptionSelected($data);//see($clgUniOption);
+		
+		$sql="select * from `bookings` where `serviceOnlyBooking`='0'";
+		if(isset($data['CaR_fromDate']) && isset($data['CaR_toDate']))
+		{
+			$fromDate=normalToMysqlDate($data['CaR_fromDate']);
+			$toDate=normalToMysqlDate($data['CaR_toDate']);
+			$sql .=" and  `booking_from`>='".$fromDate."' and `booking_from`<='".$toDate."'";
+		}
+		
+		if(isset($data['CaR_activeFromDate']) && isset($data['CaR_activeToDate']))
+		{
+			$fromDate=normalToMysqlDate($data['CaR_activeFromDate']);
+			$toDate=normalToMysqlDate($data['CaR_activeToDate']);
+			
+			$sql .=" and  (";
+			$sql .=" (`booking_from`>='".$fromDate."' and `booking_from`<='".$toDate."')";//start date b/w range
+			$sql .=" OR ( `booking_to`>='".$fromDate."' and `booking_to`<='".$toDate."')";//end date b/w range
+			$sql .=" OR ( `booking_from`<='".$fromDate."' and `booking_to`>='".$toDate."')";// range is b/w the start and end date
+			$sql .=" OR ( `booking_to`='0000-00-00' and `booking_from`<='".$toDate."')";//when booking end date is not set and booking is active in the date range
+			$sql .=" )";
+		}
+		
+		if(!empty($clgUniOption['client']) && $clgUniOption['client']['option']!='all')
+		{
+			if(isset($clgUniOption['client']['clients']))
+			{
+				$shaClientSet="'".implode("','",$clgUniOption['client']['clients'])."'";	
+				$sqlClient=" where `client` IN(".$shaClientSet.")";
+				$sql .=" and `student` IN(select `id` from `sha_one` ".$sqlClient.") ";
+			}
+			else
+				return 	array();
+		}
+		
+		if(!empty($clgUniOption['college']) && $clgUniOption['college']['option']!='all')
+		{
+			$shaClgSet="'".implode("','",$clgUniOption['college']['optionVal'])."'";
+			if($clgUniOption['college']['option']=='clgUni_group')
+				$sqlColg=" where `college_group` IN(".$shaClgSet.")";
+			elseif($clgUniOption['college']['option']=='selective')
+				$sqlColg=" where `college` IN(".$shaClgSet.")";
+				
+			$sql .=" and `student` IN(select `id` from `sha_three` ".$sqlColg.") ";
+		}
+		
+		$sql .="order by `bookings`.`id`";	
+		$query=$this->db->query($sql);// echo $this->db->last_query();
+		$bookings=$query->result_array();//return $this->db->query("select * from `bookings` where `student`='24922'")->result_array();
+		return $bookings;
+	}
 
 
 
