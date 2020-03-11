@@ -1732,30 +1732,33 @@ class Invoice_model extends CI_Model {
 	{
 		//see($data);
 		$item=$data['itemId'];
-		$sqlQty="select `id`,`qty` from `invoice_initial_items` where `invoice_id`='".$data['invoice_id']."' and `unit`='".$data['unit_priceTemp']."' and `type`='".$data['productType']."' ";
-		$qty = $this->db->query($sqlQty);
-		$res = $qty->result_array();
-		foreach($res as $r)
+		if($data['productType'] == ('placement' || 'accomodation'))
 		{
-			$totalP=add_decimal($data['unit_price']*$r['qty']);
-			$sqlUPU = "update `invoice_initial_items` set `unit`='".$data['unit_price']."',`total`='".$totalP."' where `invoice_id`='".$data['invoice_id']."'and `id`='".$r['id']."' and `type`='".$data['productType']."'";
-			$this->db->query($sqlUPU); //echo $this->db->last_query()."<br>";
-		}
-		if(isset($data['invoiceAddDaysAppId']))
-		{
-			if($data['invoiceAddDaysQuantity']!='0')
+			$sqlQty="select `id`,`qty` from `invoice_initial_items` where `invoice_id`='".$data['invoice_id']."' and `unit`='".$data['unit_priceTemp']."' and `type`='".$data['productType']."' ";
+			$qty = $this->db->query($sqlQty);
+			$res = $qty->result_array();
+			foreach($res as $r)
 			{
-				$sqlQty="select `id`,`qty` from `invoice_initial_items` where '".$data['invoiceAddDaysOldUnit_price']."' OR '".$data['invoiceAddDaysUnit_price']."' IN (`unit`) and `invoice_id`='".$data['invoice_id']."' and `type`='accomodation_ed' ";
-				$qty = $this->db->query($sqlQty);
-				$res = $qty->result_array();
-				foreach($res as $r)
-				{
-					$totalP=add_decimal($data['invoiceAddDaysUnit_price']*$r['qty']);
-					$sqlUPU = "update `invoice_initial_items` set `unit`='".$data['invoiceAddDaysUnit_price']."',`total`='".$totalP."' where `invoice_id`='".$data['invoice_id']."'and `id`='".$r['id']."' and `type`='accomodation_ed'";
-					$this->db->query($sqlUPU); //echo $this->db->last_query()."<br>";
-				}		
+				$totalP=add_decimal($data['unit_price']*$r['qty']);
+				$sqlUPU = "update `invoice_initial_items` set `unit`='".$data['unit_price']."',`total`='".$totalP."' where `invoice_id`='".$data['invoice_id']."'and `id`='".$r['id']."' and `type`='".$data['productType']."'";
+				$this->db->query($sqlUPU); //echo $this->db->last_query()."<br>";
 			}
-		}
+			if(isset($data['invoiceAddDaysAppId']))
+			{
+				if($data['invoiceAddDaysQuantity']!='0')
+				{
+					$sqlQty="select `id`,`qty` from `invoice_initial_items` where '".$data['invoiceAddDaysOldUnit_price']."' OR '".$data['invoiceAddDaysUnit_price']."' IN (`unit`) and `invoice_id`='".$data['invoice_id']."' and `type`='accomodation_ed' ";
+					$qty = $this->db->query($sqlQty);
+					$res = $qty->result_array();
+					foreach($res as $r)
+					{
+						$totalP=add_decimal($data['invoiceAddDaysUnit_price']*$r['qty']);
+						$sqlUPU = "update `invoice_initial_items` set `unit`='".$data['invoiceAddDaysUnit_price']."',`total`='".$totalP."' where `invoice_id`='".$data['invoice_id']."'and `id`='".$r['id']."' and `type`='accomodation_ed'";
+						$this->db->query($sqlUPU); //echo $this->db->last_query()."<br>";
+					}		
+				}
+			}
+		}	
 	}
 	
 }
