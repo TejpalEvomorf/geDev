@@ -673,7 +673,7 @@ function ClientsReport($data)
 	return $clients;
 }
 
-<<<<<<< HEAD
+
 
 	function bookingListForComparisonReport($data)
 	{
@@ -864,6 +864,4 @@ function ClientsReport($data)
 		return $count;
 	}
 
-=======
->>>>>>> e5f82e05eebf5abe9fd084abcce96af9b0bb2f4d
 }
