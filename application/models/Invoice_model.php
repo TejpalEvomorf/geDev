@@ -992,9 +992,8 @@ class Invoice_model extends CI_Model {
 				}
 				else
 				{	
-						$sqlDel="update `invoice_initial_items".$tableSuffix."` set `desc`='".$data['description']."', `unit`='".$data['unit_price']."', `qty_unit`='".$data['qty_unit']."', `qty`='".$data['quantity']."', `total`='".$total."' where `id`='".$item."' and `invoice_id`='".$data['invoice_id']."'";
-						$this->db->query($sqlDel);
-					
+					$sqlDel="update `invoice_initial_items".$tableSuffix."` set `desc`='".$data['description']."', `unit`='".$data['unit_price']."', `qty_unit`='".$data['qty_unit']."', `qty`='".$data['quantity']."', `total`='".$total."' where `id`='".$item."' and `invoice_id`='".$data['invoice_id']."'";
+					$this->db->query($sqlDel);
 				}
 		}
 			
@@ -1223,7 +1222,6 @@ class Invoice_model extends CI_Model {
 
 	function invoiceItemAddDays($data, $invoiceType)
 	{
-		
 		//if(isset($data['invoiceAddDays']))
 		if(isset($data['invoiceAddDaysQuantity']))
 			{	
