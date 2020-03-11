@@ -1732,7 +1732,7 @@ class Invoice_model extends CI_Model {
 	{
 		//see($data);
 		$item=$data['itemId'];
-		if($data['productType'] == ('placement' || 'accomodation'))
+		if($data['productType'] == 'placement' || $data['productType'] == 'accomodation')
 		{
 			$sqlQty="select `id`,`qty` from `invoice_initial_items` where `invoice_id`='".$data['invoice_id']."' and `unit`='".$data['unit_priceTemp']."' and `type`='".$data['productType']."' ";
 			$qty = $this->db->query($sqlQty);
