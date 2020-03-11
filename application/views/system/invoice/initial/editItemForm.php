@@ -95,11 +95,14 @@ foreach($items as $item)
     <input type="hidden" name="invoiceType" value="<?=$invoiceType?>">
      <?php if($invoice['study_tour']=='1' && $item['type'] == 'placement' || $item['type'] == 'accomodation' || $item['type'] == 'accomodation_ed'){ ?>
 	    <input type="hidden" name="productType" value="<?=$item['type']?>"/>
-	  	<div class="m-n custom-control custom-checkbox">
-	    <label class="custom-control-label" ><input type="checkbox" class="custom-control-input" id="applytoAll" name="applytoAll" value="1"> 
-	    Apply to all</label>
-		</div>
-   
+        <div class="checkbox" style="clear:both">
+              <div class="checkbox block">
+                  <label><input type="checkbox" id="applytoAll" name="applytoAll" value="1"> 
+                      <span class="checkbox-material"><span class="check"></span></span>
+                      Apply to all
+                  </label>
+              </div>
+          </div>
 <?php }}}?>
 
 <?php if($accomodationField){?>
