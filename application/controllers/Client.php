@@ -46,62 +46,57 @@ class Client extends CI_Controller {
 		$data = array();
 		foreach($list as $clientK=>$clientV)
 		{
-			$agreement=array();
-			$agreement=$this->client_model->clientAgreement($clientV->id);
-			if(!empty($agreement))
-				$clientV->agreement=$agreement;
-			
 			$row = array();
-			if(!empty($clientV->image)){
-			 $row3='<img src="'.static_url().'uploads/client/logo/thumbs/'.$clientV->image.' " height="70" />';
+			if(!empty($clientV['image'])){
+			 $row3='<img src="'.static_url().'uploads/client/logo/thumbs/'.$clientV['image'].' " height="70" />';
 			}else{
 				$row3='<img src="'.static_url().'uploads/client/logo/thumbs/default-clientlogo.jpg " height="70" />';
 			}
 			 
 			 $row[]=$row3;
-			 $row1='<a href="'.site_url().'client/edit/'.$clientV->id.'" target="_blank">'.$clientV->bname.'</a>';
+			 $row1='<a href="'.site_url().'client/edit/'.$clientV['id'].'" target="_blank">'.$clientV['bname'].'</a>';
 			 $row1 .='<br />';
 			  $stringAddress='';
-											  if(trim($clientV->suburb)!='')
-												  $stringAddress .=trim($clientV->suburb);
-											  if(trim($clientV->state)!='')
+											  if(trim($clientV['suburb'])!='')
+												  $stringAddress .=trim($clientV['suburb']);
+											  if(trim($clientV['state'])!='')
 											  {
 												  if($stringAddress!='')
 													  $stringAddress .='*';
-												  $stringAddress .=trim($clientV->state);
+												  $stringAddress .=trim($clientV['state']);
 											  }
-											  if(trim($clientV->postal_code)!='' && $clientV->postal_code!='0')
+											  if(trim($clientV['postal_code'])!='' && $clientV['postal_code']!='0')
 											  {
 												  if($stringAddress!='')
 													  $stringAddress .='*';
-												  $stringAddress .=trim($clientV->postal_code);
+												  $stringAddress .=trim($clientV['postal_code']);
 											  }
 					
 			   $addressForMap='';
-			   $addressForMap .= $clientV->street_address;
-			   if($clientV->street_address!='' && $stringAddress!='')
+			   $addressForMap .= $clientV['street_address'];
+			   if($clientV['street_address']!='' && $stringAddress!='')
 					$addressForMap.=',';
 			   $addressForMap.=str_replace('*',', ',$stringAddress);
 			   $row1.=getMapLocationLink($addressForMap);	
 			//1st Column: HOST #ENDS
 			
 			$row[]=$row1;
-			$row2=ucwords($clientV->primary_contact_name.' '.$clientV->primary_contact_lname);
+			$row2=ucwords($clientV['primary_contact_name'].' '.$clientV['primary_contact_lname']);
 			$row2.="<br/>";
-			$row2.='<a class="mailto" href="mailto:'.$clientV->primary_email.'">'.$clientV->primary_email.'</a>';
+			$row2.='<a class="mailto" href="mailto:'.$clientV['primary_email'].'">'.$clientV['primary_email'].'</a>';
 			 $row2.="<br/>";
-			 $row2.=$clientV->primary_phone;
+			 $row2.=$clientV['primary_phone'];
 			 $row[]=$row2;
-			 $row4=$clientCategories[$clientV->category];
-			if($clientV->category==2 && $clientV->commission=='1'){
+			 $row4=$clientCategories[$clientV['category']];
+			if($clientV['category']==2 && $clientV['commission']=='1'){
 				$row4.="<br/>";
-				$row4.='<span style="color:#b0b0b0;">Commission: $'.$clientV->commission_val.'</span>';
+				$row4.='<span style="color:#b0b0b0;">Commission: $'.$clientV['commission_val'].'</span>';
 				
 			}
 			$row[]=$row4;
 			$row6='';
-			if(isset($clientV->agreement)){
-                                            foreach($clientV->agreement as $agree)
+			if(isset($clientV['agreement'])){
+                                            foreach($clientV['agreement'] as $agree)
               								{
                   								$row6.="<p>";
 												$row6.='<a  href="'.static_url().'uploads/client/'.$agree['name'].'" target="_blank">'.getFileTypeIcon($agree['name']).' '.$agree['name'].'</a>';
@@ -123,10 +118,10 @@ class Client extends CI_Controller {
 												$row5.='</button>';
 												$row5 .='<ul class="dropdown-menu" role="menu">';
 					  $row5 .='<li>';
-					  $row5 .='<a href="'.site_url().'client/edit/'.$clientV->id.'" ><i class="font16 material-icons">edit</i>&nbsp;&nbsp;Edit</a>';
+					  $row5 .='<a href="'.site_url().'client/edit/'.$clientV['id'].'" ><i class="font16 material-icons">edit</i>&nbsp;&nbsp;Edit</a>';
 					  $row5 .='</li>';
 					  $row5 .='<li>';
-					  	$row5 .='<a href="javascript:;" class="clientDelete" id="clientDelete-'.$clientV->id.'" data-toggle="modal" data-target="#model_deleteClientProcess"><i class="font16 material-icons">delete</i>&nbsp;&nbsp;Delete</a>';
+					  	$row5 .='<a href="javascript:;" class="clientDelete" id="clientDelete-'.$clientV['id'].'" data-toggle="modal" data-target="#model_deleteClientProcess"><i class="font16 material-icons">delete</i>&nbsp;&nbsp;Delete</a>';
 					  	$row5 .='</li>';
 					 
 					   $row5 .='</ul>';

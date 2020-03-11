@@ -89,9 +89,6 @@ var $column_search = array("CONCAT(`primary_contact_name`,' ',`primary_contact_l
 		$this->db->select('clients.*');
 		$this->db->from($this->table);
 		
-		if(!empty($_POST['clientCategory']))
-			$this->db->where('category', $_POST['clientCategory']);
-		
 			$i = 0;
 
 	
@@ -133,21 +130,61 @@ var $column_search = array("CONCAT(`primary_contact_name`,' ',`primary_contact_l
 		if($_POST['length'] != -1)
 		$this->db->limit($_POST['length'], $_POST['start']);
 		$query = $this->db->get();
-		//echo $this->db->last_query(); //die;
-		return $query->result();
+		
+		$list=$query->result_array();
+		
+		foreach($list as $cK=>$cV)
+			{
+				$agreement=array();
+				$agreement=$this->clientAgreement($cV['id']);
+				if(!empty($agreement))
+					$list[$cK]['agreement']=$agreement;
+			}
+			if(isset($_POST['clientCategory']) && ($_POST['clientCategory']!=''))
+				{
+					$tmp=array();
+					foreach($list as $listK=>$listV)
+					{
+							if($listV['category']==$_POST['clientCategory'])
+								$tmp[]=$listV;
+					}
+				}
+				else
+				$tmp=$list;
+			return $tmp;
+		
 	}
 	function count_filtered()
 	{
 		$this->_get_datatables_query();
 		$query = $this->db->get();
-		return $query->num_rows();
+		$list=$query->result_array();
+		
+		foreach($list as $cK=>$cV)
+			{
+				$agreement=array();
+				$agreement=$this->clientAgreement($cV['id']);
+				if(!empty($agreement))
+					$list[$cK]['agreement']=$agreement;
+			}
+			if(isset($_POST['clientCategory']) && ($_POST['clientCategory']!=''))
+				{
+					$tmp=array();
+					foreach($list as $listK=>$listV)
+					{
+							if($listV['category']==$_POST['clientCategory'])
+								$tmp[]=$listV;
+					}
+				}
+				else
+				$tmp=$list;
+			return count($tmp);
 	}
 
 	public function count_all()
 	{
 		$this->_get_datatables_query();
 		$query = $this->db->get();
-		//echo $this->db->last_query(); //die;
 		return $query->num_rows();
 		}
 			

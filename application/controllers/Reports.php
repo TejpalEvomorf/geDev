@@ -3460,35 +3460,149 @@ class Reports extends CI_Controller {
 	}
 
 
-	////-----------training event #ends---------//////
+	function clients_report()
+		{
+				if(checkLogin())
+				{
+					recentActionsAddData('report','clients_report','view');
+					$data['page']='reports-clients_report';
+					$this->load->view('system/header',$data);
+					$this->load->view('system/reports/clients_report');
+					$this->load->view('system/footer');
+				}
+				else
+					redirectToLogin();
+		}
+		
+		function clients_report_submit()
+		{
+			$data=$_POST;
+			//see($data);die('1');
+			$this->load->library('excel');
+			$this->excel->setActiveSheetIndex(0);
+			$this->excel->getActiveSheet()->setTitle('Client List');
+			
+			$this->excel->getActiveSheet()->getDefaultStyle()->applyFromArray(array(
+					'font'=>array(
+					'name'      =>  'Arial',
+					'size'      =>  10,
+				)
+			));
+			
+			$fields=array();
+			$fieldIndex=$lastIndex='A';
+			
+			foreach($data['CaR_field'] as $hr_field)
+			{
+				$fields[$fieldIndex]=$hr_field;
+				$lastIndex=$fieldIndex;
+				$fieldIndex++;
+			}
+			//see($fields);
+			foreach ($fields as $fieldK=>$field){//echo $fieldK.', ';
+		   	$this->excel->getActiveSheet()->getColumnDimension($fieldK)->setAutosize(true);}
+		   
+		  $x_start=1;
+		  $reportFields=clients_report_fields();
+		  foreach($fields as $k=>$v)
+		  {
+			  $colHeading=$reportFields[$v];
+			  $this->excel->getActiveSheet()->setCellValue($k.$x_start, $colHeading);
+		  }
+			  
+			$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border:: BORDER_THIN);
+			$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getFont()->setSize(10)->setBold(true);  
+			
+			$x=$x_start+1;
+			
+		$this->load->model('report_model');
+		$clients=$this->report_model->ClientsReport($data);//echo $this->db->last_query();see($data);see($clients);//die('dddd');
+		
+		$this->load->model('Client_model');
+		
+		$stateList=stateList();
+		
+		//see($fields);
+		foreach($clients as $client)
+		{
+			 $stringAddress='';
+			 if(trim($client['street_address'])!='')
+			 	$stringAddress.=trim($client['street_address']);
+			  if(trim($client['suburb'])!='')
+			  		$stringAddress .=', ';
+				  $stringAddress .=trim($client['suburb']);
+			  if(trim($client['state'])!='')
+			  {
+				  if($stringAddress!='')
+					  $stringAddress .=', ';
+				  $stringAddress .=trim($client['state']);
+			  }
+			  if(trim($client['postal_code'])!='' && $client['postal_code']!='0')
+			  {
+				  if($stringAddress!='')
+					  $stringAddress .=', ';
+				  $stringAddress .=trim($client['postal_code']);
+			  }
+			foreach($fields as $k=>$v)
+			{
+				$value='';
+				if($v=='bname')
+					$value=ucwords($client['bname']);
+				elseif($v=='client_address'){
+						$value=$stringAddress;
+				}
+				elseif($v=='primary_contact_name')
+					$value=ucwords($client['primary_contact_name']." ".$client['primary_contact_lname']);
+				elseif($v=='primary_email')
+					$value=$client['primary_email'];
+				elseif($v=='primary_phone')
+					$value=$client['primary_phone'];
 
-	////-------------Clents Report #Starts-------/////////
+		
+				
+				$this->excel->getActiveSheet()->setCellValue($k.$x, $value);	
+			}
+			
+			$x++;
+		}
 
+		
+					$filename='client_report.xls'; //save our workbook as this file name
+					header('Content-Type: application/vnd.ms-excel'); //mime type
+					header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+					header('Cache-Control: max-age=0'); //no cache
+								 
+					//save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
+					//if you want to save it as .XLSX Excel 2007 format
+					$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');  
+					//force user to download the Excel file without writing it to server's HD
+					//$objWriter->save('php://output');
+					$objWriter->save('static/report/'.$filename);
+					//$mpdf->Output('static/pdf/invoice.pdf','F');
+			//header('location:'.site_url().'reports/hfa');
+		}
+	
 
-function clients_report()
+	function booking_comparison()
 	{
 			if(checkLogin())
 			{
-				recentActionsAddData('report','clients_report','view');
-				$data['page']='reports-clients_report';
+				recentActionsAddData('report','booking_comparison','view');
+				$data['page']='reports-booking_comparison';
 				$this->load->view('system/header',$data);
-				$this->load->view('system/reports/clients_report');
+				$this->load->view('system/reports/booking_comparison_report');
 				$this->load->view('system/footer');
 			}
 			else
 				redirectToLogin();
 	}
 	
-	function clients_report_submit()
+	function booking_comparison_submit()
 	{
 		$data=$_POST;
-<<<<<<< HEAD
 		// see($data);die(1);
 		$sheet1Title=date('M Y',strtotime($data['CaR_fromDate']));
 		$sheet2Title=date('M Y',strtotime($data['CaR_fromDate_two']));
-=======
-		//see($data);die('1');
->>>>>>> e5f82e05eebf5abe9fd084abcce96af9b0bb2f4d
 		$this->load->library('excel');
 		$this->excel->setActiveSheetIndex(0);
 		$this->excel->getActiveSheet()->setTitle($sheet1Title);
@@ -3514,7 +3628,7 @@ function clients_report()
 	   	$this->excel->getActiveSheet()->getColumnDimension($fieldK)->setAutosize(true);}
 	   
 	  $x_start=1;
-	  $reportFields=clients_report_fields();
+	  $reportFields=bookings_report_fields();
 	  foreach($fields as $k=>$v)
 	  {
 		  $colHeading=$reportFields[$v];
@@ -3527,21 +3641,14 @@ function clients_report()
 		$x=$x_start+1;
 		
 	$this->load->model('report_model');
-<<<<<<< HEAD
 	$bookings=$this->report_model->bookingListForComparisonReport($data);//echo $this->db->last_query();see($bookings);die('dddd');
 	$count=$this->report_model->countBookings($data);
 	$bookings1 = $bookings['Sheet 1'];
 	$this->load->model('booking_model');
-=======
-	$clients=$this->report_model->ClientsReport($data);//echo $this->db->last_query();see($data);see($clients);//die('dddd');
-	
-	$this->load->model('Client_model');
-	
->>>>>>> e5f82e05eebf5abe9fd084abcce96af9b0bb2f4d
 	$stateList=stateList();
-	
+	$genderList=genderList();
+	$bookingStatusList=bookingStatusList();
 	//see($fields);
-<<<<<<< HEAD
 	foreach($bookings1 as $booking)
 	{	
 		$shaOne=getShaOneAppDetails($booking['student']);
@@ -4193,44 +4300,6 @@ function clients_report()
 			}
 			elseif($v=='homestay_change')
 				$value=$this->shaHomestayChangeReportField($shaOne['id']);
-=======
-	foreach($clients as $client)
-	{
-		 $stringAddress='';
-		 if(trim($client['street_address'])!='')
-		 	$stringAddress.=trim($client['street_address']);
-		  if(trim($client['suburb'])!='')
-		  		$stringAddress .=', ';
-			  $stringAddress .=trim($client['suburb']);
-		  if(trim($client['state'])!='')
-		  {
-			  if($stringAddress!='')
-				  $stringAddress .=', ';
-			  $stringAddress .=trim($client['state']);
-		  }
-		  if(trim($client['postal_code'])!='' && $client['postal_code']!='0')
-		  {
-			  if($stringAddress!='')
-				  $stringAddress .=', ';
-			  $stringAddress .=trim($client['postal_code']);
-		  }
-		foreach($fields as $k=>$v)
-		{
-			$value='';
-			if($v=='bname')
-				$value=ucwords($client['bname']);
-			elseif($v=='client_address'){
-					$value=$stringAddress;
-			}
-			elseif($v=='primary_contact_name')
-				$value=ucwords($client['primary_contact_name']." ".$client['primary_contact_lname']);
-			elseif($v=='primary_email')
-				$value=$client['primary_email'];
-			elseif($v=='primary_phone')
-				$value=$client['primary_phone'];
-
-	
->>>>>>> e5f82e05eebf5abe9fd084abcce96af9b0bb2f4d
 			
 			$this->excel->getActiveSheet()->setCellValue($k.$x, $value);	
 		}
@@ -4238,7 +4307,6 @@ function clients_report()
 		$x++;
 	}
 
-<<<<<<< HEAD
 		$this->excel->createSheet();
 		$this->excel->setActiveSheetIndex(2);
 		$this->excel->getActiveSheet(2)->setTitle('Comparison');
@@ -4284,10 +4352,6 @@ function clients_report()
 			$this->excel->getActiveSheet()->getStyle('C'.$y.':E'.$y)->getFont()->setSize(10)->setBold(true);
 
 				$filename='Booking_comparison_test.xls'; //save our workbook as this file name
-=======
-	
-				$filename='client_report.xls'; //save our workbook as this file name
->>>>>>> e5f82e05eebf5abe9fd084abcce96af9b0bb2f4d
 				header('Content-Type: application/vnd.ms-excel'); //mime type
 				header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
 				header('Cache-Control: max-age=0'); //no cache
@@ -4301,10 +4365,5 @@ function clients_report()
 				//$mpdf->Output('static/pdf/invoice.pdf','F');
 		//header('location:'.site_url().'reports/hfa');
 	}
-	
-
-
-
-	////------------Clients  Report #Ends---------/////////
 	
 }
