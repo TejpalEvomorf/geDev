@@ -58,7 +58,14 @@ foreach($items as $item)
         <input type="text" class="form-control" id="addNewItem_unit_price" name="unit_price" value="<?=$item['unit']?>" required  data-parsley-type="number" >
     </div>
 
+    <?php if($item['type'] == 'placement'){ ?>
+	    <input type="hidden" name="productType" value="<?=$item['type']?>"/>
+	  	<div class="m-n custom-control custom-checkbox">
+	    <input type="checkbox" class="custom-control-input" id="applytoAll" name="applytoAll" value="1">
+	    <label class="custom-control-label" >Apply to all</label>
+		</div>
    
+    <?php }	?> 
     
 <!--1111111111111111111-->
 <?php if($invoice['study_tour']=='1' && $item['type']=='accomodation')
@@ -66,7 +73,7 @@ foreach($items as $item)
 	<input type="hidden" name="invoiceAddDaysAppId" value="<?=$item['application_id']?>" />
     <input type="hidden" name="invoiceAddDaysGst" value="<?=$item['gst']?>" />
      <input type="hidden" name="invoiceAddDaysXero_code" value="<?=$item['xero_code']?>" />
-
+    
     <div class="m-n form-group col-xs-4" style="padding-left:0;">
         <label class="control-label">Quantity</label>
         <input type="text" class="form-control" id="invoiceAddDaysQuantity" value="<?php if(!empty($invoice['dayItemDetails'])){echo $invoice['dayItemDetails']['qty'];}else{echo '0';}?>"  name="invoiceAddDaysQuantity" required data-parsley-type="number">
@@ -83,9 +90,15 @@ foreach($items as $item)
     <div class="m-n form-group col-xs-4" style="padding-right:0;">
         <label class="control-label">Unit price</label>
         <input type="text" class="form-control" id="invoiceAddDaysUnit_price" name="invoiceAddDaysUnit_price" value="<?php if(!empty($invoice['dayItemDetails'])){echo $invoice['dayItemDetails']['unit'];}else{echo add_decimal($item['unit']/7);}?>" required  data-parsley-type="number" >
-        <input type="hidden" class="form-control" id="invoiceAddDaysOldUnit_price" name="invoiceAddDaysOldUnit_price" value="<?php if(!empty($invoice['dayItemDetails'])){echo $invoice['dayItemDetails']['unit'];}else{echo add_decimal($item['unit']/7);}?>" required  data-parsley-type="number" >
     </div>
-
+    <?php if($item['type'] == ('accomodation' || 'accomodation_ed')){ ?>
+	    <input type="hidden" name="productType" value="<?=$item['type']?>"/>
+	  	<div class="m-n custom-control custom-checkbox">
+	    <input type="checkbox" class="custom-control-input" id="applytoAll" name="applytoAll" value="1">
+	    <label class="custom-control-label" >Apply to all</label>
+		</div>
+   
+    <?php }	?> 
 <?php } ?>    
 <!--1111111111111111111-->
 
@@ -93,14 +106,7 @@ foreach($items as $item)
     <input type="hidden" name="invoice_id" id="invoice_id" value="<?=$invoice['id']?>" />
     <input type="hidden" name="itemId" value="<?=$item['id']?>">
     <input type="hidden" name="invoiceType" value="<?=$invoiceType?>">
-     <?php if($invoice['study_tour']=='1' && $item['type'] == ('placement' || 'accomodation' || 'accomodation_ed')){ ?>
-	    <input type="hidden" name="productType" value="<?=$item['type']?>"/>
-	  	<div class="m-n custom-control custom-checkbox">
-	    <label class="custom-control-label" ><input type="checkbox" class="custom-control-input" id="applytoAll" name="applytoAll" value="1"> 
-	    Apply to all</label>
-		</div>
-   
-<?php }}}?>
+<?php }}?>
 
 <?php if($accomodationField){?>
     <p class="changeStatusWarningMsg">To change the duration of this invoice item you have to change the invoice duration.</p>

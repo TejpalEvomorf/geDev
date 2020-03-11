@@ -280,7 +280,6 @@ else
                <li><a  class="withripple" href="<?=site_url()?>reports/training_event"><span>Training event</span></a></li>
                 <li><a  class="withripple" href="<?=site_url()?>reports/tour_groups"><span>Tour groups</span></a></li>
                <li><a  class="withripple" href="<?=site_url()?>reports/wwcc"><span>WWCC</span></a></li>
-               <li><a  class="withripple" href="<?=site_url()?>reports/booking_comparison"><span>Booking comparison</span></a></li>
             </ul>
     </li>
     

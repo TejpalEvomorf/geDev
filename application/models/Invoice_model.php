@@ -968,7 +968,7 @@ class Invoice_model extends CI_Model {
 	}
 	
 	function editInvoiceItem($data)
-	{	//see($data);die();
+	{	//see($data);
 			$tableSuffix="";
 			if($data['invoiceType']=='standard')
 			$tableSuffix="_standard";
@@ -992,15 +992,29 @@ class Invoice_model extends CI_Model {
 				}
 				else
 				{	
-						$sqlDel="update `invoice_initial_items".$tableSuffix."` set `desc`='".$data['description']."', `unit`='".$data['unit_price']."', `qty_unit`='".$data['qty_unit']."', `qty`='".$data['quantity']."', `total`='".$total."' where `id`='".$item."' and `invoice_id`='".$data['invoice_id']."'";
-						$this->db->query($sqlDel);
-					
+					if(isset($data['applytoAll'])){
+					if($data['applytoAll']=='1'){
+						if($data['productType']=='placement' ){
+							$sqlDel = "update `invoice_initial_items".$tableSuffix."` set `unit`='".$data['unit_price']."', `qty_unit`='".$data['qty_unit']."', `qty`='".$data['quantity']."', `total`='".$total."'  where '".$data['unit_priceTemp']."' IN (`unit`) and `invoice_id`='".$data['invoice_id']."' and `type`='placement'";
+							$this->db->query($sqlDel);//echo $this->db->last_query();
+						}
+						elseif( $data['productType']==('accomodation' || 'accomodation_ed')){
+							$total1=add_decimal($data['invoiceAddDaysUnit_price']*$data['invoiceAddDaysQuantity']);
+							$sqlDel = "update `invoice_initial_items".$tableSuffix."` set `unit`='".$data['unit_price']."', `qty_unit`='".$data['qty_unit']."', `qty`='".$data['quantity']."', `total`='".$total."' where '".$data['unit_priceTemp']."' IN (`unit`) and `invoice_id`='".$data['invoice_id']."' and `type`='accomodation'";
+							$sqlDel1 = "update `invoice_initial_items".$tableSuffix."` set `unit`= '".$data['invoiceAddDaysUnit_price']."', `qty_unit`='".$data['invoiceAddDaysQty_unit']."', `qty`='".$data['invoiceAddDaysQuantity']."', `total`='".$total1."' where `invoice_id`='".$data['invoice_id']."' and `type`='accomodation_ed'";
+							$this->db->query($sqlDel);//echo $this->db->last_query();
+							$this->db->query($sqlDel1);//echo $this->db->last_query();
+						}
+					}
 				}
-		}
+				else{
+					$sqlDel="update `invoice_initial_items".$tableSuffix."` set `desc`='".$data['description']."', `unit`='".$data['unit_price']."', `qty_unit`='".$data['qty_unit']."', `qty`='".$data['quantity']."', `total`='".$total."' where `id`='".$item."' and `invoice_id`='".$data['invoice_id']."'";
+					$this->db->query($sqlDel);
+				}
+				}
+			}
 			
 			$this->invoiceItemAddDays($data,'initial');
-			if(isset($data['applytoAll']))
-				$this->editInvoiceitemATA($data);
 	}
 	
 	function initialInvoiceByShaId($id)
@@ -1220,26 +1234,18 @@ class Invoice_model extends CI_Model {
 		$sqlDel="delete from `invoice_ongoing_items` where `id`='".$item."' and `invoice_id`='".$data['id']."'";
 		$this->db->query($sqlDel);
 	}*/
-
+	
+	
 	function invoiceItemAddDays($data, $invoiceType)
 	{
-		
 		//if(isset($data['invoiceAddDays']))
 		if(isset($data['invoiceAddDaysQuantity']))
-			{	
+			{
 				$getTextBetweenBrackets=getTextBetweenBrackets($data['description']);
-				$date=substr($getTextBetweenBrackets, 15,11);
-				$date1=$data['invoiceAddDaysQuantity']-1;
-				$from=date('d M Y', strtotime($date. ' + 1 days'));
-				$to=date('d M Y', strtotime($from. ' + '.$date1.' days'));
-				$checkOutDate='';
-				if($data['invoiceAddDaysQuantity'] > 1)
-					$checkOutDate='('.$from.' to '.$to.')';
-				else
-					$checkOutDate='('.$from.')';
-				$dayDesc=str_replace('('.$getTextBetweenBrackets.')',$checkOutDate,$data['description']);
+				$dayDesc=str_replace('('.$getTextBetweenBrackets.')','',$data['description']);
 				$dayTotal=add_decimal($data['invoiceAddDaysUnit_price']*$data['invoiceAddDaysQuantity']);
 				$dayType='accomodation_ed';
+				
 				$this->db->query('delete from `invoice_'.$invoiceType.'_items` where `application_id`=? and `type`=?', array($data['invoiceAddDaysAppId'],$dayType));
 				if($data['invoiceAddDaysQuantity']!='0')				
 				{
@@ -1249,7 +1255,7 @@ class Invoice_model extends CI_Model {
 				}
 			}
 	}
-
+	
 	function editOngoingInvoiceItem($data)
 	{
 			$item=$data['itemId'];
@@ -1724,36 +1730,6 @@ class Invoice_model extends CI_Model {
 				$discountData['bookingHoliday_invoiceId']=$holiday['invoice_id'];
 				$this->load->model('booking_model');
 				$this->booking_model->addDiscountForHolidayInInvoice($discountData);
-			}
-		}
-	}
-
-	function editInvoiceitemATA($data)
-	{
-		//see($data);
-		$item=$data['itemId'];
-		$sqlQty="select `id`,`qty` from `invoice_initial_items` where `invoice_id`='".$data['invoice_id']."' and `unit`='".$data['unit_priceTemp']."' and `type`='".$data['productType']."' ";
-		$qty = $this->db->query($sqlQty);
-		$res = $qty->result_array();
-		foreach($res as $r)
-		{
-			$totalP=add_decimal($data['unit_price']*$r['qty']);
-			$sqlUPU = "update `invoice_initial_items` set `unit`='".$data['unit_price']."',`total`='".$totalP."' where `invoice_id`='".$data['invoice_id']."'and `id`='".$r['id']."' and `type`='".$data['productType']."'";
-			$this->db->query($sqlUPU); //echo $this->db->last_query()."<br>";
-		}
-		if(isset($data['invoiceAddDaysAppId']))
-		{
-			if($data['invoiceAddDaysQuantity']!='0')
-			{
-				$sqlQty="select `id`,`qty` from `invoice_initial_items` where '".$data['invoiceAddDaysOldUnit_price']."' OR '".$data['invoiceAddDaysUnit_price']."' IN (`unit`) and `invoice_id`='".$data['invoice_id']."' and `type`='accomodation_ed' ";
-				$qty = $this->db->query($sqlQty);
-				$res = $qty->result_array();
-				foreach($res as $r)
-				{
-					$totalP=add_decimal($data['invoiceAddDaysUnit_price']*$r['qty']);
-					$sqlUPU = "update `invoice_initial_items` set `unit`='".$data['invoiceAddDaysUnit_price']."',`total`='".$totalP."' where `invoice_id`='".$data['invoice_id']."'and `id`='".$r['id']."' and `type`='accomodation_ed'";
-					$this->db->query($sqlUPU); //echo $this->db->last_query()."<br>";
-				}		
 			}
 		}
 	}
