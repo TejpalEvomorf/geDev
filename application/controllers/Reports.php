@@ -3601,8 +3601,8 @@ class Reports extends CI_Controller {
 	{
 		$data=$_POST;
 		// see($data);die(1);
-		$sheet1Title=date('M Y',strtotime($data['CaR_fromDate']));
-		$sheet2Title=date('M Y',strtotime($data['CaR_fromDate_two']));
+		$sheet1Title=date('M-y',$data['CaR_fromDate']);
+		$sheet2Title=date('M-y',$data['CaR_fromDate_two']);
 		$this->load->library('excel');
 		$this->excel->setActiveSheetIndex(0);
 		$this->excel->getActiveSheet()->setTitle($sheet1Title);
@@ -3642,8 +3642,8 @@ class Reports extends CI_Controller {
 		
 	$this->load->model('report_model');
 	$bookings=$this->report_model->bookingListForComparisonReport($data);//echo $this->db->last_query();see($bookings);die('dddd');
-	$count=$this->report_model->countBookings($data);
-	$bookings1 = $bookings['Sheet 1'];
+	$count=$this->report_model->countBookings($data);//echo $this->db->last_query();see($count);die(11);
+	$bookings1 = $bookings['sheet1'];
 	$this->load->model('booking_model');
 	$stateList=stateList();
 	$genderList=genderList();
@@ -3992,8 +3992,7 @@ class Reports extends CI_Controller {
 		$x=$x_start+1;
 		
 	$this->load->model('report_model');
-	//$bookings=$this->report_model->bookingListForComparisonReport($data);//echo $this->db->last_query();see($bookings);die('dddd');
-	$bookings2 = $bookings['Sheet 2'];
+	$bookings2 = $bookings['sheet2'];
 	$this->load->model('booking_model');
 	
 	$stateList=stateList();
@@ -4310,26 +4309,16 @@ class Reports extends CI_Controller {
 		$this->excel->createSheet();
 		$this->excel->setActiveSheetIndex(2);
 		$this->excel->getActiveSheet(2)->setTitle('Comparison');
-		$this->excel->getActiveSheet(2)->getDefaultStyle()->applyFromArray(array(
-				'font'=>array(
-				'name'      =>  'Arial',
-				'size'      =>  10,
-			)
-		));
-
 		$this->excel->setActiveSheetIndex(2)->setCellValue('B2', 'Bname');
 		$this->excel->setActiveSheetIndex(2)->setCellValue('C2', $sheet1Title);
 		$this->excel->setActiveSheetIndex(2)->setCellValue('D2', $sheet2Title);
 		$this->excel->setActiveSheetIndex(2)->setCellValue('E2', 'Difference');
 		$this->excel->getActiveSheet()->getStyle('B2:E2')->getFont()->setSize(10)->setBold(true);
-		$this->excel->getActiveSheet()->getStyle()->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border:: BORDER_THICK);  
-
-		$count1=$count['Year 1'];
-		$count2=$count['Year 2'];
-		//see($count1);
+		$clientbookings1=$count['client']['clientbookings1'];
+		$clientbookings2=$count['client']['clientbookings2'];
 		$x=3;
-		foreach($count1 as $k=>$v){
-			$bname = $k;
+		foreach($clientbookings1 as $k=>$v){
+			$bname = $v['bname'];
 			$totalbookings=$v['count(*)'];
 			$this->excel->setActiveSheetIndex(2)->setCellValue('B'.$x,$bname);
 			$this->excel->getActiveSheet()->getColumnDimension('B')->setAutosize(true);
@@ -4339,26 +4328,49 @@ class Reports extends CI_Controller {
 		$a=$x-1;
 		$this->excel->setActiveSheetIndex(2)->setCellValue('C'.$x,'=SUM(C3:C'.$a.')');
 		$y=3;
-		foreach($count2 as $k=>$v )
+		foreach($clientbookings2 as $k=>$v )
 		{
 			$totalbookings=$v['count(*)'];
 			$this->excel->setActiveSheetIndex(2)->setCellValue('D'.$y,$totalbookings);
+			$this->excel->getActiveSheet()->getColumnDimension('E')->setAutosize(true);
 			$this->excel->setActiveSheetIndex(2)->setCellValue('E'.$y,'=D'.$y.'-C'.$y);
 			$y++;
 		}
 			$z=$y-1;
 			$this->excel->setActiveSheetIndex(2)->setCellValue('D'.$y,'=SUM(D3:D'.$z.')');
 			$this->excel->setActiveSheetIndex(2)->setCellValue('E'.$y,'=SUM(E3:E'.$z.')');
-			$this->excel->getActiveSheet()->getStyle('C'.$y.':E'.$y)->getFont()->setSize(10)->setBold(true);
+			$objConditionalStyle = new PHPExcel_Style_Conditional();
+			$objConditionalStyle->setConditionType(PHPExcel_Style_Conditional::CONDITION_CELLIS)
+		    ->setOperatorType(PHPExcel_Style_Conditional::OPERATOR_LESSTHAN)
+		    ->addCondition(0);
+			$objConditionalStyle->getStyle()->getFont()->getColor()->setRGB('FF0000');
+			$conditionalStyles = $this->excel->getActiveSheet()->getStyle('E3:E'.$y)
+				->getConditionalStyles();
+			array_push($conditionalStyles, $objConditionalStyle);
+			$this->excel->getActiveSheet()->getStyle('E3:E'.$y)
+				->setConditionalStyles($conditionalStyles);
 
-				$filename='Booking_comparison_test.xls'; //save our workbook as this file name
+			$this->excel->getActiveSheet()->getStyle('B2:E'.$y)->applyFromArray(array(
+				'font'=>array(
+				'name'      =>  'Arial',
+				'size'      =>  10,
+				),
+				'borders' => array(
+					'allborders' => array(
+					  'style' => PHPExcel_Style_Border::BORDER_THIN
+					)
+				  )
+			));
+			$this->excel->getActiveSheet()->getStyle('E3:E'.$y)->getNumberFormat()->setFormatCode('#,##0.00');
+
+				$filename='Booking_comparison_test.xlsx'; //save our workbook as this file name
 				header('Content-Type: application/vnd.ms-excel'); //mime type
 				header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
 				header('Cache-Control: max-age=0'); //no cache
 							 
 				//save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
 				//if you want to save it as .XLSX Excel 2007 format
-				$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');  
+				$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');  
 				//force user to download the Excel file without writing it to server's HD
 				//$objWriter->save('php://output');
 				$objWriter->save('static/report/'.$filename);

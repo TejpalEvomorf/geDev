@@ -20,7 +20,7 @@ class Report_model extends CI_Model {
 	{
 		//see($data);
 		
-		$res=['client'=>'','college'=>''];
+		$res=['client'=>[],'college'=>[]];
 		if(!empty($data['reportSelectClientClg']))
 		{
 			if(in_array('clients',$data['reportSelectClientClg']))
@@ -719,55 +719,82 @@ function ClientsReport($data)
 		$sql1 .="order by `bookings`.`id`";	
 		$query=$this->db->query($sql);//echo $this->db->last_query();
 		$query1=$this->db->query($sql1);//echo $this->db->last_query();
-		$bookings['Sheet 1']=$query->result_array();
-		$bookings['Sheet 2']=$query1->result_array();
+		$bookings['sheet1']=$query->result_array();
+		$bookings['sheet2']=$query1->result_array();
 		return $bookings;
+
 	}
 
 	function countBookings($data)
-	{
-		$clgUniOption=$this->clgUniOptionSelected($data);//see($clgUniOption);
+	{	$count = [];
+		$clgUniOption=$this->clgUniOptionSelected($data);//see($clgUniOption);//die();
 		if(!empty($clgUniOption['client']) && $clgUniOption['client']['option']!='all')
 		{
-			if(isset($clgUniOption['client']['clients']))
-			{
-				$getIds ="select `id`,`bname` from `clients` where `id` IN ('".implode("','",$clgUniOption['client']['clients'])."')";
-				$idQuery = $this->db->query($getIds);
-				$ids=$idQuery->result_array();
-			foreach($ids as $k )
-			{
-				$sql="select count(*), `clients`.`bname` from `bookings` left JOIN `sha_one` on `bookings`.`student` = `sha_one`.`id` left join `clients` on `sha_one`.`client`=`clients`.`id` where `serviceOnlyBooking`='0'";
-				$sql1="select count(*), `clients`.`bname` from `bookings` left JOIN `sha_one` on `bookings`.`student` = `sha_one`.`id` left join `clients` on `sha_one`.`client`=`clients`.`id` where `serviceOnlyBooking`='0'";
-				if(isset($data['CaR_fromDate']) && isset($data['CaR_toDate']) && isset($data['CaR_fromDate_two']) && isset($data['CaR_toDate_two']))
+			if($clgUniOption['client']['option']=='client_group')
+			{	
+				if(isset($clgUniOption['client']['clients']))
 				{
-					$fromDate=normalToMysqlDate($data['CaR_fromDate']);
-					$fromDate1=normalToMysqlDate($data['CaR_fromDate_two']);
-					$toDate=normalToMysqlDate($data['CaR_toDate']);
-					$toDate1=normalToMysqlDate($data['CaR_toDate_two']);
-					$sql .=" and  `bookings`.`booking_from`>='".$fromDate."' and `bookings`.`booking_from`<='".$toDate."'";
-					$sql1 .=" and  `bookings`.`booking_from`>='".$fromDate1."' and `bookings`.`booking_from`<='".$toDate1."'";
-				$sql .="and  `sha_one`.`client` in ('".$k['id']."')"	;
-				$sql1 .="and  `sha_one`.`client` in ('".$k['id']."')";	
+				foreach($clgUniOption['client']['clients'] as $k )
+				{
+					$sql="select count(*),`clients`.`bname` from `bookings` left JOIN `sha_one` on `bookings`.`student` = `sha_one`.`id` left join `clients` on `sha_one`.`client`=`clients`.`id` where `serviceOnlyBooking`='0'";
+					$sql1="select count(*),`clients`.`bname` from `bookings` left JOIN `sha_one` on `bookings`.`student` = `sha_one`.`id` left join `clients` on `sha_one`.`client`=`clients`.`id` where `serviceOnlyBooking`='0'";
+					if(isset($data['CaR_fromDate']) && isset($data['CaR_toDate']) && isset($data['CaR_fromDate_two']) && isset($data['CaR_toDate_two']))
+					{
+						$fromDate=normalToMysqlDate($data['CaR_fromDate']);
+						$fromDate1=normalToMysqlDate($data['CaR_fromDate_two']);
+						$toDate=normalToMysqlDate($data['CaR_toDate']);
+						$toDate1=normalToMysqlDate($data['CaR_toDate_two']);
+						$sql .=" and  `bookings`.`booking_from`>='".$fromDate."' and `bookings`.`booking_from`<='".$toDate."'";
+						$sql1 .=" and  `bookings`.`booking_from`>='".$fromDate1."' and `bookings`.`booking_from`<='".$toDate1."'";
+					$sql .="and  `clients`.`id` in ('".$k."')"	;
+					$sql1 .="and  `clients`.`id` in ('".$k."')";	
+					}
+					else
+						return 	array();
+				
+					$query=$this->db->query($sql);//echo $this->db->last_query();
+					$query1=$this->db->query($sql1);//echo $this->db->last_query();
+					$count['client']['clientbookings1'][]=$query->row_array();
+					$count['client']['clientbookings2'][]=$query1->row_array();
 				}
-				else
-					return 	array();
-			
-				$query=$this->db->query($sql);//echo $this->db->last_query();
-				$query1=$this->db->query($sql1);//echo $this->db->last_query();
-				$count['Year 1'][$k['bname']]=$query->row_array();
-				$count['Year 2'][$k['bname']]=$query1->row_array();
+				}	
 			}
+			elseif($clgUniOption['client']['option']=='selective')
+			{
+				foreach($clgUniOption['client']['clients'] as $k )
+				{
+					$sql="select count(*),`clients`.`bname` from `bookings` left JOIN `sha_one` on `bookings`.`student` = `sha_one`.`id` left join `clients` on `sha_one`.`client`=`clients`.`id` where `serviceOnlyBooking`='0'";
+					$sql1="select count(*),`clients`.`bname` from `bookings` left JOIN `sha_one` on `bookings`.`student` = `sha_one`.`id` left join `clients` on `sha_one`.`client`=`clients`.`id` where `serviceOnlyBooking`='0'";
+					if(isset($data['CaR_fromDate']) && isset($data['CaR_toDate']) && isset($data['CaR_fromDate_two']) && isset($data['CaR_toDate_two']))
+					{
+						$fromDate=normalToMysqlDate($data['CaR_fromDate']);
+						$fromDate1=normalToMysqlDate($data['CaR_fromDate_two']);
+						$toDate=normalToMysqlDate($data['CaR_toDate']);
+						$toDate1=normalToMysqlDate($data['CaR_toDate_two']);
+						$sql .=" and  `bookings`.`booking_from`>='".$fromDate."' and `bookings`.`booking_from`<='".$toDate."'";
+						$sql1 .=" and  `bookings`.`booking_from`>='".$fromDate1."' and `bookings`.`booking_from`<='".$toDate1."'";
+					$sql .="and  `clients`.`id` in ('".$k."')"	;
+					$sql1 .="and  `clients`.`id` in ('".$k."')";	
+					}
+					else
+						return 	array();
+				
+					$query=$this->db->query($sql);//echo $this->db->last_query();
+					$query1=$this->db->query($sql1);//echo $this->db->last_query();
+					$count['client']['clientbookings1'][]=$query->row_array();
+					$count['client']['clientbookings2'][]=$query1->row_array();
+				}	
 			}
 		}
 		elseif(!empty($clgUniOption['client']) && $clgUniOption['client']['option']=='all')
 		{
-			$getIds ="select `id`,`bname` from `clients`";
-			$idQuery = $this->db->query($getIds);
-			$ids=$idQuery->result_array();
-			foreach($ids as $k )
+			// $sqlClient="select `id` from `clients` where `category` IN ('1','2')";
+			$sqlClient="select `id` from `clients` ";
+			$clgUniOption['client']['clients']=$this->db->query($sqlClient)->result_array();
+			foreach($clgUniOption['client']['clients'] as $k )
 			{
-				$sql="select count(*), `clients`.`bname` from `bookings` left JOIN `sha_one` on `bookings`.`student` = `sha_one`.`id` left join `clients` on `sha_one`.`client`=`clients`.`id` where `serviceOnlyBooking`='0'";
-				$sql1="select count(*), `clients`.`bname` from `bookings` left JOIN `sha_one` on `bookings`.`student` = `sha_one`.`id` left join `clients` on `sha_one`.`client`=`clients`.`id` where `serviceOnlyBooking`='0'";
+				$sql="select count(*),`clients`.`bname` from `bookings` left JOIN `sha_one` on `bookings`.`student` = `sha_one`.`id` left join `clients` on `sha_one`.`client`=`clients`.`id` where `serviceOnlyBooking`='0'";
+				$sql1="select count(*),`clients`.`bname` from `bookings` left JOIN `sha_one` on `bookings`.`student` = `sha_one`.`id` left join `clients` on `sha_one`.`client`=`clients`.`id` where `serviceOnlyBooking`='0'";
 				if(isset($data['CaR_fromDate']) && isset($data['CaR_toDate']) && isset($data['CaR_fromDate_two']) && isset($data['CaR_toDate_two']))
 				{
 					$fromDate=normalToMysqlDate($data['CaR_fromDate']);
@@ -776,78 +803,110 @@ function ClientsReport($data)
 					$toDate1=normalToMysqlDate($data['CaR_toDate_two']);
 					$sql .=" and  `bookings`.`booking_from`>='".$fromDate."' and `bookings`.`booking_from`<='".$toDate."'";
 					$sql1 .=" and  `bookings`.`booking_from`>='".$fromDate1."' and `bookings`.`booking_from`<='".$toDate1."'";
-				}
-				$sql .="and  `sha_one`.`client` in ('".$k['id']."')"	;
-				$sql1 .="and  `sha_one`.`client` in ('".$k['id']."')";	
-
-				$query=$this->db->query($sql);//echo $this->db->last_query();
-				$query1=$this->db->query($sql1);//echo $this->db->last_query();
-				$count['Year 1'][$k['bname']]=$query->row_array();
-				$count['Year 2'][$k['bname']]=$query1->row_array();
-			}
-		}
-
-
-		elseif(!empty($clgUniOption['college']) && $clgUniOption['college']['option']!='all')
-		{
-			if(isset($clgUniOption['client']['clients']))
-			{
-				$getIds ="select `id`,`bname` from `clients` where `id` IN ('".implode("','",$clgUniOption['college']['optionVal'])."')";
-				$idQuery = $this->db->query($getIds);
-				$ids=$idQuery->result_array();
-			foreach($ids as $k )
-			{
-				$sql="select count(*), `clients`.`bname` from `bookings` left JOIN `sha_one` on `bookings`.`student` = `sha_one`.`id` left join `clients` on `sha_one`.`college`=`clients`.`id` where `serviceOnlyBooking`='0'";
-				$sql1="select count(*), `clients`.`bname` from `bookings` left JOIN `sha_one` on `bookings`.`student` = `sha_one`.`id` left join `clients` on `sha_one`.`college`=`clients`.`id` where `serviceOnlyBooking`='0'";
-				if(isset($data['CaR_fromDate']) && isset($data['CaR_toDate']) && isset($data['CaR_fromDate_two']) && isset($data['CaR_toDate_two']))
-				{
-					$fromDate=normalToMysqlDate($data['CaR_fromDate']);
-					$fromDate1=normalToMysqlDate($data['CaR_fromDate_two']);
-					$toDate=normalToMysqlDate($data['CaR_toDate']);
-					$toDate1=normalToMysqlDate($data['CaR_toDate_two']);
-					$sql .=" and  `bookings`.`booking_from`>='".$fromDate."' and `bookings`.`booking_from`<='".$toDate."'";
-					$sql1 .=" and  `bookings`.`booking_from`>='".$fromDate1."' and `bookings`.`booking_from`<='".$toDate1."'";
-				$sql .="and  `sha_one`.`client` in ('".$k['id']."')"	;
-				$sql1 .="and  `sha_one`.`client` in ('".$k['id']."')";	
+				$sql .="and  `clients`.`id` in ('".$k['id']."')"	;
+				$sql1 .="and  `clients`.`id` in ('".$k['id']."')";	
 				}
 				else
 					return 	array();
 			
 				$query=$this->db->query($sql);//echo $this->db->last_query();
 				$query1=$this->db->query($sql1);//echo $this->db->last_query();
-				$count['Year 1'][$k['bname']]=$query->row_array();
-				$count['Year 2'][$k['bname']]=$query1->row_array();
-			}
-			}
-		}
-		elseif(!empty($clgUniOption['college']) && $clgUniOption['college']['option']=='all')
-		{
-			$getIds ="select `id`,`bname` from `clients` left join `sha_one` on `sha_one`.`college` = `clients`.`id` where `sha_one`.`college` = `clients`.`id`";
-			$idQuery = $this->db->query($getIds);
-			$ids=$idQuery->result_array();
-			foreach($ids as $k )
-			{
-				$sql="select count(*), `clients`.`bname` from `bookings` left JOIN `sha_one` on `bookings`.`student` = `sha_one`.`id` left join `clients` on `sha_one`.`client`=`clients`.`id` where `serviceOnlyBooking`='0'";
-				$sql1="select count(*), `clients`.`bname` from `bookings` left JOIN `sha_one` on `bookings`.`student` = `sha_one`.`id` left join `clients` on `sha_one`.`client`=`clients`.`id` where `serviceOnlyBooking`='0'";
-				if(isset($data['CaR_fromDate']) && isset($data['CaR_toDate']) && isset($data['CaR_fromDate_two']) && isset($data['CaR_toDate_two']))
-				{
-					$fromDate=normalToMysqlDate($data['CaR_fromDate']);
-					$fromDate1=normalToMysqlDate($data['CaR_fromDate_two']);
-					$toDate=normalToMysqlDate($data['CaR_toDate']);
-					$toDate1=normalToMysqlDate($data['CaR_toDate_two']);
-					$sql .=" and  `bookings`.`booking_from`>='".$fromDate."' and `bookings`.`booking_from`<='".$toDate."'";
-					$sql1 .=" and  `bookings`.`booking_from`>='".$fromDate1."' and `bookings`.`booking_from`<='".$toDate1."'";
-				}
-				$sql .="and  `sha_one`.`client` in ('".$k['id']."')"	;
-				$sql1 .="and  `sha_one`.`client` in ('".$k['id']."')";	
-
-				$query=$this->db->query($sql);//echo $this->db->last_query();
-				$query1=$this->db->query($sql1);//echo $this->db->last_query();
-				$count['Year 1'][$k['bname']]=$query->row_array();
-				$count['Year 2'][$k['bname']]=$query1->row_array();
-			}
+				$count['client']['clientbookings1'][]=$query->row_array();
+				$count['client']['clientbookings2'][]=$query1->row_array();
+			}		
 		}
 
+		// if(!empty($clgUniOption['college']) && $clgUniOption['college']['option']!='all')
+		// {
+		// 	if($clgUniOption['college']['option']=='clgUni_group')
+		// 	{
+		// 		$optionVal=array_filter($clgUniOption['college']['optionVal']);
+		// 		$sqlCollegeGroup="select `id` from `clients` where `client_group` ";
+		// 		$sqlCollegeGroup .="IN('".implode("','",$optionVal)."')";
+		// 		$clgUniOption['college']['colleges']=$this->db->query($sqlCollegeGroup)->result_array();
+		// 		foreach($clgUniOption['college']['colleges'] as $k )
+		// 		{
+		// 			$sqlclg="select count(*),`clients`.`bname` from `bookings` left JOIN `sha_one` on `bookings`.`student` = `sha_one`.`id` left join `clients` on `sha_one`.`college`=`clients`.`id` where `serviceOnlyBooking`='0'";
+		// 			$sqlclg1="select count(*), `clients`.`bname` from `bookings` left JOIN `sha_one` on `bookings`.`student` = `sha_one`.`id` left join `clients` on `sha_one`.`college`=`clients`.`id` where `serviceOnlyBooking`='0'";
+		// 			if(isset($data['CaR_fromDate']) && isset($data['CaR_toDate']) && isset($data['CaR_fromDate_two']) && isset($data['CaR_toDate_two']))
+		// 			{
+		// 				$fromDate=normalToMysqlDate($data['CaR_fromDate']);
+		// 				$fromDate1=normalToMysqlDate($data['CaR_fromDate_two']);
+		// 				$toDate=normalToMysqlDate($data['CaR_toDate']);
+		// 				$toDate1=normalToMysqlDate($data['CaR_toDate_two']);
+		// 				$sqlclg .=" and  `bookings`.`booking_from`>='".$fromDate."' and `bookings`.`booking_from`<='".$toDate."'";
+		// 				$sqlclg1 .=" and  `bookings`.`booking_from`>='".$fromDate1."' and `bookings`.`booking_from`<='".$toDate1."'";
+		// 			$sqlclg .="and  `clients`.`id` in ('".$k['id']."')";
+		// 			$sqlclg1 .="and  `clients`.`id` in ('".$k['id']."')";	
+		// 			}
+		// 			else
+		// 				return 	array();
+				
+		// 			$query=$this->db->query($sqlclg);//echo $this->db->last_query();
+		// 			$query1=$this->db->query($sqlclg1);//echo $this->db->last_query();
+		// 			$count['college']['clgbookings1'][]=$query->row_array();
+		// 			$count['college']['clgbookings2'][]=$query1->row_array();
+		// 		}		
+		// 	}
+		// 	elseif($clgUniOption['college']['option']=='selective')
+		// 	{
+		// 		$optionVal=array_filter($clgUniOption['college']['optionVal']);
+		// 		$sqlCollegeGroup="select `id` from `clients` where `bname` ";
+		// 		$sqlCollegeGroup .="IN('".implode("','",$optionVal)."')";
+		// 		$clgUniOption['college']['colleges']=$this->db->query($sqlCollegeGroup)->result_array();see($clgUniOption['college']['colleges']);
+		// 		foreach($clgUniOption['college']['colleges'] as $k )
+		// 		{
+		// 			$sqlclg="select count(*),`clients`.`bname` from `bookings`left JOIN `sha_one` on `bookings`.`student` = `sha_one`.`id` left join `clients` on `sha_one`.`college`=`clients`.`id` where `serviceOnlyBooking`='0'";
+		// 			$sqlclg1="select count(*), `clients`.`bname` from `bookings` left JOIN `sha_one` on `bookings`.`student` = `sha_one`.`id` left join `clients` on `sha_one`.`college`=`clients`.`id` where `serviceOnlyBooking`='0'";
+		// 			if(isset($data['CaR_fromDate']) && isset($data['CaR_toDate']) && isset($data['CaR_fromDate_two']) && isset($data['CaR_toDate_two']))
+		// 			{
+		// 				$fromDate=normalToMysqlDate($data['CaR_fromDate']);
+		// 				$fromDate1=normalToMysqlDate($data['CaR_fromDate_two']);
+		// 				$toDate=normalToMysqlDate($data['CaR_toDate']);
+		// 				$toDate1=normalToMysqlDate($data['CaR_toDate_two']);
+		// 				$sqlclg .=" and  `bookings`.`booking_from`>='".$fromDate."' and `bookings`.`booking_from`<='".$toDate."'";
+		// 				$sqlclg1 .=" and  `bookings`.`booking_from`>='".$fromDate1."' and `bookings`.`booking_from`<='".$toDate1."'";
+		// 			$sqlclg .="and  `clients`.`id` in ('".$k['id']."')"	;
+		// 			$sqlclg1 .="and  `clients`.`id` in ('".$k['id']."')";	
+		// 			}
+		// 			else
+		// 				return 	array();
+				
+		// 			$query=$this->db->query($sqlclg);//echo $this->db->last_query();
+		// 			$query1=$this->db->query($sqlclg1);//echo $this->db->last_query();
+		// 			$count['college']['clgbookings1'][]=$query->row_array();
+		// 			$count['college']['clgbookings2'][]=$query1->row_array();
+		// 		}		
+		// 	}
+		// }
+		// elseif(!empty($clgUniOption['college']) && $clgUniOption['college']['option']=='all')
+		// {
+		// 	$sqlClient="select `id` from `clients` where `category` IN ('3','4')";
+		// 	$clgUniOption['college']['colleges']=$this->db->query($sqlClient)->result_array();
+		// 	foreach($clgUniOption['college']['colleges'] as $k )
+		// 	{
+		// 		$sqlclg="select count(*),`clients`.`bname` from `bookings`left JOIN `sha_one` on `bookings`.`student` = `sha_one`.`id` left join `clients` on `sha_one`.`college`=`clients`.`id` where `serviceOnlyBooking`='0'";
+		// 		$sqlclg1="select count(*),`clients`.`bname` from `bookings` left JOIN `sha_one` on `bookings`.`student` = `sha_one`.`id` left join `clients` on `sha_one`.`college`=`clients`.`id` where `serviceOnlyBooking`='0'";
+		// 		if(isset($data['CaR_fromDate']) && isset($data['CaR_toDate']) && isset($data['CaR_fromDate_two']) && isset($data['CaR_toDate_two']))
+		// 		{
+		// 			$fromDate=normalToMysqlDate($data['CaR_fromDate']);
+		// 			$fromDate1=normalToMysqlDate($data['CaR_fromDate_two']);
+		// 			$toDate=normalToMysqlDate($data['CaR_toDate']);
+		// 			$toDate1=normalToMysqlDate($data['CaR_toDate_two']);
+		// 			$sql .=" and  `bookings`.`booking_from`>='".$fromDate."' and `bookings`.`booking_from`<='".$toDate."'";
+		// 			$sql1 .=" and  `bookings`.`booking_from`>='".$fromDate1."' and `bookings`.`booking_from`<='".$toDate1."'";
+		// 		$sqlclg .="and  `clients`.`id` in ('".$k['id']."')"	;
+		// 		$sqlclg1 .="and  `clients`.`id` in ('".$k['id']."')";	
+		// 		}
+		// 		else
+		// 			return 	array();
+			
+		// 		$query=$this->db->query($sqlclg);//echo $this->db->last_query();
+		// 		$query1=$this->db->query($sqlclg1);//echo $this->db->last_query();
+		// 		$count['college']['clgbookings1'][]=$query->row_array();
+		// 		$count['college']['clgbookings2'][]=$query1->row_array();
+		// 	}		
+		// }
 		return $count;
 	}
 

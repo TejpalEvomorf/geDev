@@ -188,7 +188,7 @@ $(document).ready(function(){
 						$('#CaR_submitProcess').hide();
 						$('#CaR_submit').show();
 						backBtn.show();
-						window.open('<?=site_url()?>static/report/Booking_comparison_test.xls');	
+						window.open('<?=site_url()?>static/report/Booking_comparison_test.xlsx');	
 					}
 				});
 		});
