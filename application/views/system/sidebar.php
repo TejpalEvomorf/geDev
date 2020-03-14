@@ -261,9 +261,10 @@ else
         	<ul class="acc-menu">
                  <li><a  class="withripple" href="<?=site_url()?>reports/bookings"><span>Bookings</span></a></li>
                   <li><a  class="withripple" href="<?=site_url()?>reports/booking_allocation"><span>Booking allocation</span></a></li>
+                  <li><a  class="withripple" href="<?=site_url()?>reports/booking_comparison"><span>Booking comparison</span></a></li>
                 <?php if(userAuthorisations('booking_duration_report')){?>
                     <li><a  class="withripple" href="<?=site_url()?>reports/booking_duration"><span>Booking duration</span></a></li>
-                <?php } ?>
+                    <?php } ?>
                  <li><a  class="withripple" href="<?=site_url()?>reports/caregiving_service"><span>Caregiving service report</span></a></li>
                  <li><a  class="withripple" href="<?=site_url()?>reports/clients_report"><span>Clients</span></a></li>
                  <li><a  class="withripple" href="<?=site_url()?>reports/college_auditing"><span>College audit</span></a></li>
@@ -280,7 +281,6 @@ else
                <li><a  class="withripple" href="<?=site_url()?>reports/training_event"><span>Training event</span></a></li>
                 <li><a  class="withripple" href="<?=site_url()?>reports/tour_groups"><span>Tour groups</span></a></li>
                <li><a  class="withripple" href="<?=site_url()?>reports/wwcc"><span>WWCC</span></a></li>
-               <li><a  class="withripple" href="<?=site_url()?>reports/booking_comparison"><span>Booking comparison</span></a></li>
             </ul>
     </li>
     

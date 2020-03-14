@@ -8,13 +8,18 @@ $clientGroupList=clientGroupList();
   </div>
   <div class="panel-body">
 		  <label  class="mt-n control-label filterItemLabel">Selelct whether you want to export for clients or colleges/universities or both</label>
-          <div class="checkbox">
-                <div class="checkbox block">
-                    <label><input type="checkbox" class="reportSelectClientClg" name="reportSelectClientClg[]"  value="clients" >Clients</label>
+          <div class="radio">
+                <div class="radio block">
+					<label>
+						<input type="radio" class="reportSelectClientClg clientradiobtn" name="reportSelectClientClg[]"  value="clients" >
+						<span class="circle"></span>
+						<span class="check"></span>
+						Clients
+					</label>
                 </div>
                 
                     <!--clients starts-->
-                          <div id="reportClientSelectDiv" style="display:none;">
+                          <div id="reportClientSelectDiv" style="display:none;margin-left:45px;">
                           <label  class="mt-n control-label filterItemLabel">Is this report for all clients or selective clients?</label>
                           <div class="radio block">
                               <label>
@@ -61,13 +66,18 @@ $clientGroupList=clientGroupList();
                     <!--clients ends-->
                 
             </div>
-            <div class="checkbox">
-                <div class="checkbox block">
-                    <label><input type="checkbox" class="reportSelectClientClg" name="reportSelectClientClg[]"  value="colleges" >Colleges/Universities</label>
+            <div class="radio">
+                <div class="radio block">
+                    <label>
+						<input type="radio" class="reportSelectClientClg clgradiobtn" name="reportSelectClientClg[]"  value="colleges" >
+						<span class="circle"></span>
+						<span class="check"></span>
+						Colleges/Universities
+					</label>
                 </div>
                 
                     <!--Clg/uni starts-->
-                          <div id="reportClgUniSelectDiv" style="display:none;">
+                          <div id="reportClgUniSelectDiv" style="display:none;margin-left:45px;">
                           <label  class="mt-n control-label filterItemLabel">Is this report for all colleges/universities or selective ones?</label>
                           <div class="radio block">
                               <label>
@@ -119,6 +129,13 @@ $clientGroupList=clientGroupList();
 
 <script type="text/javascript">
 $(document).ready(function(){
+
+	$('.clientradiobtn').click(function(){
+		$('#reportClgUniSelectDiv').hide();
+	});
+	$('.clgradiobtn').click(function(){
+		$('#reportClientSelectDiv').hide();
+	})
 	
 	/////Client #STARTS
 	collegeDropdownHtml();

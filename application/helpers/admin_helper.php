@@ -2175,7 +2175,8 @@ function shaActivityDesc($activity)
 			'profit'=>'Profit'.$reportText,
 			'booking_holidayCheckup'=>'Holiday check-up'.$reportText,
 			'clients_report'=>'Clients'.$reportText,
-			'training_event'=>'Training Event'.$reportText
+			'training_event'=>'Training Event'.$reportText,
+			'booking_comparison'=>'Booking Comparison'.$reportText
 		);
 	
 		$desc=$report[$activity['action_on']];
