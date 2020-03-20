@@ -7,7 +7,7 @@ $clientGroupList=clientGroupList();
       <h2>Select Client / College / University</h2>
   </div>
   <div class="panel-body">
-		  <label  class="mt-n control-label filterItemLabel">Selelct whether you want to export for clients or colleges/universities or both</label>
+		  <label  class="mt-n control-label filterItemLabel">Selelct whether you want to export for clients or colleges/universities</label>
           <div class="radio">
                 <div class="radio block">
 					<label>

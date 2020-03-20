@@ -3256,78 +3256,6 @@ class Reports extends CI_Controller {
 		//header('location:'.site_url().'reports/hfa');
 	}
 
-	function training_event()
-	{
-			if(checkLogin())
-			{
-				recentActionsAddData('report','training_event','view');
-				$data['page']='reports-training_event';
-				$this->load->view('system/header',$data);
-				$this->load->view('system/reports/training_event');
-				$this->load->view('system/footer');
-			}
-			else
-				redirectToLogin();
-	}
-	
-	function training_event_submit()
-	{
-		$data=$_POST;//see($data);die(111);
-		$this->load->library('excel');
-		$this->excel->setActiveSheetIndex(0);
-		$this->excel->getActiveSheet()->setTitle('Family Training Attendence');
-		$this->excel->getActiveSheet()->getDefaultStyle()->applyFromArray(array(
-				'font'=>array(
-				'name'      =>  'Arial',
-				'size'      =>  10,
-			)
-		));
-
-		$trainingreportFields=array(
-			'hfaname'=>'Host family name',
-			'hfamobile'=>'Mobile number',
-			'hfaemail'=>'Email address',
-			'shaname'=>'Student name',
-			'shaage'=>'Student age',
-			'shacolege'=>'Student college',
-			'pastevent'=>'Past event attendence',
-			'currentevent'=>'Current event attendence'
-		);
-		$fields=array();
-		$fieldIndex=$lastIndex='A';
-		foreach($data['HR_field'] as $hr_field)
-		{
-			$fields[$fieldIndex]=$hr_field;
-			$lastIndex=$fieldIndex;
-			$fieldIndex++;
-		}
-		//see($fields);
-		foreach ($fields as $fieldK=>$field){//echo $fieldK.', ';
-		   $this->excel->getActiveSheet()->getColumnDimension($fieldK)->setAutosize(true);}
-	  $x_start=1;
-	  $reportFields=$trainingreportFields;
-	  foreach($fields as $k=>$v)
-	  {
-		$colHeading=$reportFields[$v];
-		$this->excel->getActiveSheet()->setCellValue($k.$x_start, $colHeading);
-	  }
-		$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border:: BORDER_THIN);
-		$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getFont()->setSize(10)->setBold(true);  
-		$x=$x_start+1;
-
-		$this->load->model('report_model');
-		$attendence=$this->report_model->familyTrainingAttendenceReport($data);//echo $this->db->last_query();see($data);see($clients);//die('dddd');
-		
-
-				$filename='family_training_attendence.xls'; //save our workbook as this file name
-				header('Content-Type: application/vnd.ms-excel'); //mime type
-				header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
-				header('Cache-Control: max-age=0'); //no cache
-				$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');  
-				$objWriter->save('static/report/'.$filename);
-	}
-
-
 	function clients_report()
 		{
 				if(checkLogin())
@@ -3460,8 +3388,8 @@ class Reports extends CI_Controller {
 	{
 		$data=$_POST;
 		// see($data);die(1);
-		$sheet1Title=date('M-y',$data['CaR_fromDate']);
-		$sheet2Title=date('M-y',$data['CaR_fromDate_two']);
+		$sheet1Title=date('d M Y',strtotime($data['CaR_fromDate']))." to ".date('d M Y',strtotime($data['CaR_toDate']));
+		$sheet2Title=date('d M Y',strtotime($data['CaR_fromDate_two']))." to ".date('d M Y',strtotime($data['CaR_toDate_two']));
 		$this->load->library('excel');
 		$this->excel->setActiveSheetIndex(0);
 		$this->excel->getActiveSheet()->setTitle($sheet1Title);
@@ -4219,7 +4147,6 @@ class Reports extends CI_Controller {
 					)
 				  )
 			));
-			$this->excel->getActiveSheet()->getStyle('E3:E'.$y)->getNumberFormat()->setFormatCode('#,##0.00');
 
 				$filename='Booking_comparison_test.xlsx'; //save our workbook as this file name
 				header('Content-Type: application/vnd.ms-excel'); //mime type
@@ -4228,6 +4155,178 @@ class Reports extends CI_Controller {
 				$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');  
 				$objWriter->save('static/report/'.$filename);
 				
+	}
+
+	function training_event()
+	{
+			if(checkLogin())
+			{
+				recentActionsAddData('report','training_event','view');
+				$data['page']='reports-training_event';
+				$this->load->view('system/header',$data);
+				$this->load->view('system/reports/training_event');
+				$this->load->view('system/footer');
+			}
+			else
+				redirectToLogin();
+	}
+	
+	function training_event_submit()
+	{
+		$data=$_POST;//see($data);die(111);
+		$this->load->library('excel');
+		$this->excel->setActiveSheetIndex(0);
+		$this->excel->getActiveSheet()->setTitle('Family Training Attendence');
+		$this->excel->getActiveSheet()->getDefaultStyle()->applyFromArray(array(
+				'font'=>array(
+				'name'      =>  'Arial',
+				'size'      =>  10,
+			)
+		));
+
+		$fields=array();
+		$fieldIndex=$lastIndex='A';
+		foreach($data['HR_field'] as $hr_field)
+		{
+			$fields[$fieldIndex]=$hr_field;
+			$lastIndex=$fieldIndex;
+			$fieldIndex++;
+		}
+		//see($fields);
+		foreach ($fields as $fieldK=>$field){//echo $fieldK.', ';
+		   $this->excel->getActiveSheet()->getColumnDimension($fieldK)->setAutosize(true);}
+	  $x_start=1;
+	  $reportFields=trainingreportFields();
+	  foreach($fields as $k=>$v)
+	  {
+		$colHeading=$reportFields[$v];
+		$this->excel->getActiveSheet()->setCellValue($k.$x_start, $colHeading);
+	  }
+		$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border:: BORDER_THIN);
+		$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getFont()->setSize(10)->setBold(true);  
+		$x=$x_start+1;
+
+		$this->load->model('report_model');
+		$attendence=$this->report_model->familyTrainingAttendenceReport($data);//see($attendence);echo $this->db->last_query();die();
+		$x=2;
+		foreach($attendence as $attd)
+		{
+			foreach($fields as $k=>$v)
+			{
+				$value='';
+				if($v=='hfa_id')
+					$value=$attd['host'];
+				elseif($v=='hfa_name')
+					$value=ucwords($attd['fname'].' '.$attd['lname']);
+				elseif($v=='hfa_mobile')
+					$value=$attd['mobile'];
+				elseif($v=='hfa_email')
+					$value=$attd['email'];
+				elseif($v=='sha_name')
+					$value=ucwords($attd['shafname'].' '.$attd['shalname']);
+				elseif($v=='sha_age')
+					$value=age_from_dob($attd['shadob']);
+				elseif($v=='sha_college')
+					$value=$attd['college'];
+				elseif($v=='past_event')
+				{	$value='';
+					$dates = gethfaTrainingDates($attd['host']);
+					$len=count($dates);
+					foreach($dates as $d=>$date)
+					{	
+						$value.=date('d M Y',strtotime($date['training_date']));
+						if($d !== $len-1)
+							$value.=', ';
+					}
+				}
+				$this->excel->getActiveSheet()->setCellValue($k.$x, $value);
+
+			}
+			$x++;
+		}
+				$this->excel->getActiveSheet()->getStyle("I2:I".$x)->getNumberFormat()->setFormatCode('dd-mm-yyyy'); 
+				$filename='family_training_attendence.xlsx'; //save our workbook as this file name
+				header('Content-Type: application/vnd.ms-excel'); //mime type
+				header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+				header('Cache-Control: max-age=0'); //no cache
+				$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');  
+				$objWriter->save('static/report/'.$filename);
+	}
+
+	function uploadExcel()
+	{
+		if(checkLogin())
+		{
+			$data=$_POST;
+			$file=$_FILES['importTrainingAttendenceFile']['tmp_name'];
+			$this->load->library('excel');
+			$objReader = PHPExcel_IOFactory::createReader('Excel2007');
+			$objPHPExcel = $objReader->load($file);
+			$res = array();
+			foreach($objPHPExcel->getWorksheetIterator() as $worksheetK=>$worksheet)
+			{
+				//print_r($worksheet);
+				if($worksheetK==0)
+				{
+					$group = $worksheet->toArray();
+					// see($group);die();
+					if(!empty($group))
+					{
+						foreach ($group as $key=>$line)
+						{
+							$len = count($line)-1;
+							if(empty($line[$len]) || $line[$len]=='Current event attendence')
+								continue;
+							else
+							{	
+								$dates= explode(",",$line[$len]);
+								foreach($dates as $date)
+								{	$date=trim($date);
+									$d = date('d-m-Y',strtotime($date));
+									if($d != $date)
+									{
+										$res[$line[1]][]=$date;
+									}
+									else 
+										continue;
+								}
+							}
+						}
+						if(empty($res))
+						{	
+							foreach ($group as $key=>$line){
+								$len = count($line)-1;
+								if(empty($line[$len]) || $line[$len]=='Current event attendence')
+									continue;
+								else
+								{
+									$this->load->model('report_model');
+									$this->report_model->uploadTrainingAttendence($line[0],$line[$len]);//echo $this->db->last_query();
+								}
+							}
+						}	
+						else
+						{	
+							foreach($res as $k=>$V){
+								echo "<tr>
+								<td style='width:auto'>".$k."</td>
+								<td>";
+								foreach($V as $a=>$v){
+									if($a !== count($V)-1)
+									$v.=', ';
+									echo 
+									$v;
+								}
+								echo "</td></tr>";
+								
+							}
+							
+						}
+					}
+				}
+			}
+
+		}
 	}
 	
 }

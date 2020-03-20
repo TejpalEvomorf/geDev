@@ -35,7 +35,7 @@ $reportFields=bookings_report_fields();
                                                           <h2>Booking Date Range</h2>
                                                       </div>
                                                       <div class="panel-body">
-                                                      <p style="margin-bottom:0;">Only the bookings that have booking start date between the selected date range will be exported.</p>
+                                                      <p style="margin-bottom:0;">Only the bookings that have booking start date between the selected date ranges will be exported.</p>
                                                           
                                                               <div class="m-n form-group col-xs-6" style="padding-left:0;">
                                                                   <label class="control-label" style="margin-top:0;">From date</label>

@@ -825,7 +825,7 @@ function ClientsReport($data)
 				if($clgUniOption['college']['option']=='clgUni_group')
 				{
 					$optionVal=array_filter($clgUniOption['college']['optionVal']);
-					$sqlCollegeGroup="select `id` from `clients` where `client_group` ";
+					$sqlCollegeGroup="select `id`,`bname` from `clients` where `client_group` ";
 					$sqlCollegeGroup .="IN('".implode("','",$optionVal)."')";
 					$clgUniOption['college']['colleges']=$this->db->query($sqlCollegeGroup)->result_array();
 					foreach($clgUniOption['college']['colleges'] as $k )
@@ -840,14 +840,14 @@ function ClientsReport($data)
 							$toDate1=normalToMysqlDate($data['CaR_toDate_two']);
 							$sqlclg .=" and  `bookings`.`booking_from`>='".$fromDate."' and `bookings`.`booking_from`<='".$toDate."'";
 							$sqlclg1 .=" and  `bookings`.`booking_from`>='".$fromDate1."' and `bookings`.`booking_from`<='".$toDate1."'";
-						$sqlclg .="and  `clients`.`id` in ('".$k['id']."') order by `clients`.`bname`";
-						$sqlclg1 .="and  `clients`.`id` in ('".$k['id']."') order by `clients`.`bname`";	
+						$sqlclg .="and   `bookings`.`student` IN(select `id` from `sha_three` where `college` IN(?))";
+						$sqlclg1 .="and  `bookings`.`student` IN(select `id` from `sha_three` where `college` IN(?))";	
 						}
 						else
 							return 	array();
 					
-						$query=$this->db->query($sqlclg);//echo $this->db->last_query();
-						$query1=$this->db->query($sqlclg1);//echo $this->db->last_query();
+						$query=$this->db->query($sqlclg,$k['bname']);//echo $this->db->last_query();
+						$query1=$this->db->query($sqlclg1,$k['bname']);//echo $this->db->last_query();
 						$count['year1'][]=$query->row_array();
 						$count['year2'][]=$query1->row_array();
 					}		
@@ -855,7 +855,7 @@ function ClientsReport($data)
 				elseif($clgUniOption['college']['option']=='selective')
 				{
 					$optionVal=array_filter($clgUniOption['college']['optionVal']);
-					$sqlCollegeGroup="select `id` from `clients` where `bname` ";
+					$sqlCollegeGroup="select `id`,`bname` from `clients` where `bname` ";
 					$sqlCollegeGroup .="IN('".implode("','",$optionVal)."')";
 					$clgUniOption['college']['colleges']=$this->db->query($sqlCollegeGroup)->result_array();see($clgUniOption['college']['colleges']);
 					foreach($clgUniOption['college']['colleges'] as $k )
@@ -870,8 +870,8 @@ function ClientsReport($data)
 							$toDate1=normalToMysqlDate($data['CaR_toDate_two']);
 							$sqlclg .=" and  `bookings`.`booking_from`>='".$fromDate."' and `bookings`.`booking_from`<='".$toDate."'";
 							$sqlclg1 .=" and  `bookings`.`booking_from`>='".$fromDate1."' and `bookings`.`booking_from`<='".$toDate1."'";
-						$sqlclg .="and  `clients`.`id` in ('".$k['id']."') order by `clients`.`bname`"	;
-						$sqlclg1 .="and  `clients`.`id` in ('".$k['id']."') order by `clients`.`bname`";	
+							$sqlclg .="and `bookings`.`student` IN(select `id` from `sha_three` where `college` IN('".$k['bname']."'))";
+							$sqlclg1 .="and `bookings`.`student` IN(select `id` from `sha_three` where `college` IN('".$k['bname']."'))";	
 						}
 						else
 							return 	array();
@@ -885,8 +885,8 @@ function ClientsReport($data)
 			}
 			elseif(!empty($clgUniOption['college']) && $clgUniOption['college']['option']=='all')
 			{
-				$sqlClient="select `id` from `clients` where `category` IN ('3','4')";
-				$clgUniOption['college']['colleges']=$this->db->query($sqlClient)->result_array();
+				$sqlClient="select `id`,`bname` from `clients`";
+				$clgUniOption['college']['colleges']=$this->db->query($sqlClient)->result_array();//see($clgUniOption['college']['colleges']);die();
 				foreach($clgUniOption['college']['colleges'] as $k )
 				{
 					$sqlclg="select count(*),`clients`.`bname` from `bookings`left JOIN `sha_one` on `bookings`.`student` = `sha_one`.`id` left join `clients` on `sha_one`.`college`=`clients`.`id` where `serviceOnlyBooking`='0'";
@@ -899,47 +899,104 @@ function ClientsReport($data)
 						$toDate1=normalToMysqlDate($data['CaR_toDate_two']);
 						$sqlclg .=" and  `bookings`.`booking_from`>='".$fromDate."' and `bookings`.`booking_from`<='".$toDate."'";
 						$sqlclg1 .=" and  `bookings`.`booking_from`>='".$fromDate1."' and `bookings`.`booking_from`<='".$toDate1."'";
-					$sqlclg .="and  `clients`.`id` in ('".$k['id']."') order by `clients`.`bname`"	;
-					$sqlclg1 .="and  `clients`.`id` in ('".$k['id']."') order by `clients`.`bname`";	
+					$sqlclg .="and `bookings`.`student` IN(select `id` from `sha_three` where `college` IN(?))"	;
+					$sqlclg1 .="and `bookings`.`student` IN(select `id` from `sha_three` where `college` IN(?))";	
 					}
 					else
 						return 	array();
 				
-					$query=$this->db->query($sqlclg);//echo $this->db->last_query();
-					$query1=$this->db->query($sqlclg1);//echo $this->db->last_query();
+					$query=$this->db->query($sqlclg,$k['bname']);//echo $this->db->last_query();
+					$query1=$this->db->query($sqlclg1,$k['bname']);//echo $this->db->last_query();
 					$count['year1'][]=$query->row_array();
 					$count['year2'][]=$query1->row_array();
 				}		
 			}
 		}
+		// see($count);die(0);
 		return $count;
 	}
 
-	// function familyTrainingAttendenceReport($data)
-	// {
-	// 	see($data);//die();
-	// 	//echo $data['HR_type'];
-	// 	if(isset($data['HR_type']))
-	// 	{
-	// 	$status=$data['HR_status'];
-	// 	$statusList="'".implode("','",$status)."'";
-	// 	if(in_array('HSN',$data['HR_type']))
-	// 	{
-	// 	$sql="select `hfa_one`.`id`,`hfa_one`.`fname`,`hfa_one`.`lname`,`hfa_one`.`email`,`hfa_one`.`mobile`,`sha_one`.`id` as shaid,`sha_one`.`fname` as shafname,`sha_one`.`lname` as shalname,`sha_one`.`dob` as shadob,`sha_one`.`nominated_hfa_id`,`sha_three`.`college` from `hfa_one` left JOIN `sha_one` ON `sha_one`.`nominated_hfa_id`=`hfa_one`.`id` LEFT JOIN `sha_three` on `sha_three`.`id`=`sha_one`.`id` where";
-	// 	$sql.=" `hfa_one`.`status` IN (".$statusList.") ";
-	// 	$sql.=" and `sha_one`.`homestay_nomination`='1' ";
-	// 	}
-	// 	if(in_array('U18',$data['HR_type']))
-	// 	{
-	// 		$sql.=" and FLOOR(ABS(DATEDIFF(CURRENT_TIMESTAMP, `sha_one`.`dob`))/365.25)<'18' ";
-	// 	}
-		
-	// 	$query=$this->db->query($sql);
-	// 	$res=$query->result_array();echo $this->db->last_query();
-	// }else{
-	// 	$res=array();
-	// }
-	// 	see($res);die();
-	// }
+	function familyTrainingAttendenceReport($data)
+	{
+		//see($data);//die();
+		if(isset($data['HR_type']))
+		{
+			$status=$data['HR_status'];
+			$statusList="'".implode("','",$status)."'";
+			$sql="select `bookings`.`host`,`bookings`.`student`,`bookings`.`status`,`hfa_one`.`fname`,`hfa_one`.`lname`,`hfa_one`.`email`,`hfa_one`.`mobile`,`sha_one`.`fname` as shafname,`sha_one`.`lname` as shalname,`sha_one`.`dob` as shadob,`sha_three`.`college` from `bookings` left join `hfa_one` on `bookings`.`host`=`hfa_one`.`id` left join `sha_one` on `bookings`.`student`=`sha_one`.`id` left join `sha_three` on `sha_one`.`id` = `sha_three`.`id` where";
+			$sql.=" `bookings`.`status` IN (".$statusList.") ";
+			if(in_array('HSN',$data['HR_type']))
+			{
+				$sql.=" and `sha_one`.`homestay_nomination`='1' and `sha_one`.`nominated_hfa_id`=`bookings`.`host`";
+			}
+			if(in_array('U18',$data['HR_type']))
+			{	
+				$sql.=" and FLOOR(ABS(DATEDIFF(CURRENT_TIMESTAMP, `sha_one`.`dob`))/365.25)<'18' ";
+			}
+			$query=$this->db->query($sql);
+			$res=$query->result_array();//echo $this->db->last_query();
+
+		}
+		else
+		{
+			$res=array();
+		}
+		return $res;
+	}
+
+	function gethfaTrainingDates($hfaid)
+	{
+		$sql="select `id`,`training_date` from `hfa_training_attendence` where `hfa_id` in ('".$hfaid."')";
+		$query=$this->db->query($sql);
+		$dates=$query->result_array();
+
+		return $dates;
+	}
+
+	function uploadTrainingAttendence($hfaid, $dates)
+	{	
+		$date= explode(", ",$dates);
+		//see($date);
+		foreach($date as $dt)
+		{	
+			$d = date('d-m-Y',strtotime($dt));
+			if($d != $dt)
+			{
+				continue;
+			}
+			else
+			{
+				$d = date('Y-m-d',strtotime($dt));
+				$pastdates=$this->checkDuplicateDates($hfaid);
+				if(!empty($pastdates))
+				{
+					foreach($pastdates as $pd)
+					{
+						if($pd['training_date']==$d){
+							continue;
+						}
+						else
+						{
+							$sql=" insert into `hfa_training_attendence` (`hfa_id`,`training_date`,`date`) values('".$hfaid."','".$d."',NOW())";
+							$query=$this->db->query($sql);
+						}
+					}
+				}
+				else
+				{
+					$sql=" insert into `hfa_training_attendence` (`hfa_id`,`training_date`,`date`) values('".$hfaid."','".$d."',NOW())";
+					$query=$this->db->query($sql);
+				}
+			}
+		}
+		//die();
+	}
+
+	function checkDuplicateDates($hfaid){
+		$sql="select * from `hfa_training_attendence` where `hfa_id` in ('".$hfaid."')";
+		$query = $this->db->query($sql);
+		$pastdates = $query->result_array();
+		return $pastdates;
+	}
 
 }

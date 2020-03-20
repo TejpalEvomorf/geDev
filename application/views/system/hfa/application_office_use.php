@@ -529,30 +529,45 @@ $smokingHabbits=smokingHabbits();
         </div>
     </div>
 
-    <!---- Training Attendence #Starts ------->
-
     <div class="panel panel-profile panel-bluegraylight family-notes">
         <div class="panel-heading">
             <h2>Training event Attendence</h2>
         </div>
         <div class="panel-body">
              <div class="widget referral-info-widget infobar" id="attendence">
-              <div class="widget-heading" style="padding-left:0;">Attendence HISTORY</div>
-             
-                
-            </div>
-      
-           
-        </div>
-    </div>
-    <!---- Family Attendence #Ends ------->
-    
-    
-    
-</div>
+				 <div class="widget-heading" style="padding-left:0;">Attendence HISTORY</div>
+				 <div class="widget-body" style="border-bottom:0px;"> 
+					 <?php  $dates=gethfaTrainingDates($formOne['id']); if(!empty($dates)){  ?>					
+						<input type="checkbox" class="read-more-state" id="extraNotes" />
+				<ul class="timeline read-more-wrap" style="margin-top: 0 !important; margin-left: -24px ;">
+					<?php   foreach($dates as $dK=>$date): ?>
+						<li  style="padding-bottom: 0;" class="timeline-grey <?php if($dK>2){?>read-more-target<?php } ?>">
+						<div class="timeline-icon"><i class="material-icons">alarm</i></div>
+						<div class="timeline-body">
+							<div class="timeline-header">
+								<span class="notes-list-head" ><?=date('d M Y',strtotime($date['training_date']))?></span>				
+							</div>
+							
+						</div>
+						
+					</li>     
+					<?php endforeach; ?>	
+				</ul>
+				<?php }else {?>
 
- <div class="modal fade" id="model_hfafamilynote" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-					<div class="modal-dialog" id="model_hfafamilynote_content">
+		<div class="m-n form-group" style="margin-left: -16px !important;">
+			Attendence history not available
+		</div>
+		<?php } ?>	
+		</div>
+		</div>
+		</div>
+		</div>
+
+		</div>
+
+<div class="modal fade" id="model_hfafamilynote" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" id="model_hfafamilynote_content">
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>

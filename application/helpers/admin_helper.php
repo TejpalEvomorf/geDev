@@ -2509,4 +2509,26 @@ function find_closestDate($array, $date)
   
 	  return $array[$closest];
   }
+
+function trainingreportFields()
+  {
+	return array(
+			'hfa_id'=>'Host family id',
+			'hfa_name'=>'Host family name',
+			'hfa_mobile'=>'Mobile number',
+			'hfa_email'=>'Email address',
+			'sha_name'=>'Student name',
+			'sha_age'=>'Student age',
+			'sha_college'=>'Student college',
+			'past_event'=>'Past event attendence',
+			'current_event'=>'Current event attendence'
+	);
+  }	
+
+function gethfaTrainingDates($hfaId)
+{
+	$obj=& get_instance();
+	$obj->load->model('report_model');
+	return $obj->report_model->gethfaTrainingDates($hfaId);
+}
 ?>
