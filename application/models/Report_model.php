@@ -967,22 +967,8 @@ function ClientsReport($data)
 			else
 			{
 				$d = date('Y-m-d',strtotime($dt));
-				$pastdates=$this->checkDuplicateDates($hfaid);
-				if(!empty($pastdates))
-				{
-					foreach($pastdates as $pd)
-					{
-						if($pd['training_date']==$d){
-							continue;
-						}
-						else
-						{
-							$sql=" insert into `hfa_training_attendence` (`hfa_id`,`training_date`,`date`) values('".$hfaid."','".$d."',NOW())";
-							$query=$this->db->query($sql);
-						}
-					}
-				}
-				else
+				$pastdates=$this->checkDuplicateDates($hfaid);	
+				if(!in_array($d,$pastdates))
 				{
 					$sql=" insert into `hfa_training_attendence` (`hfa_id`,`training_date`,`date`) values('".$hfaid."','".$d."',NOW())";
 					$query=$this->db->query($sql);
@@ -993,10 +979,18 @@ function ClientsReport($data)
 	}
 
 	function checkDuplicateDates($hfaid){
-		$sql="select * from `hfa_training_attendence` where `hfa_id` in ('".$hfaid."')";
+		$sql="select `training_date` from `hfa_training_attendence` where `hfa_id` in ('".$hfaid."')";
 		$query = $this->db->query($sql);
 		$pastdates = $query->result_array();
-		return $pastdates;
+		$pd_arr = [];
+		if(!empty($pastdates))
+		{
+			foreach($pastdates as $pd)
+			{
+				array_push($pd_arr, $pd['training_date']);
+			}
+		}
+		return $pd_arr;
 	}
 
 }

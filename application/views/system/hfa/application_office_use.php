@@ -538,7 +538,7 @@ $smokingHabbits=smokingHabbits();
 				 <div class="widget-heading" style="padding-left:0;">Attendence HISTORY</div>
 				 <div class="widget-body" style="border-bottom:0px;"> 
 					 <?php  $dates=gethfaTrainingDates($formOne['id']); if(!empty($dates)){  ?>					
-						<input type="checkbox" class="read-more-state" id="extraNotes" />
+						<input type="checkbox" class="read-more-state" id="training_dates" />
 				<ul class="timeline read-more-wrap" style="margin-top: 0 !important; margin-left: -24px ;">
 					<?php   foreach($dates as $dK=>$date): ?>
 						<li  style="padding-bottom: 0;" class="timeline-grey <?php if($dK>2){?>read-more-target<?php } ?>">
@@ -553,7 +553,12 @@ $smokingHabbits=smokingHabbits();
 					</li>     
 					<?php endforeach; ?>	
 				</ul>
-				<?php }else {?>
+				
+<?php
+if(count($dates)>3){?>
+<label for="training_dates" class="read-more-trigger">See all</label>
+<?php
+  }}else {?>
 
 		<div class="m-n form-group" style="margin-left: -16px !important;">
 			Attendence history not available
@@ -735,6 +740,20 @@ function allnote(id){
 
 $(document).ready(function(){
 	
+	$("label[for='training_dates']").click(function(){
+		setTimeout(function(){
+		
+		if($(".read-more-state").is(':checked'))
+			$("label[for='training_dates']").text('See less');
+		else
+			$("label[for='training_dates']").text('See all');
+			
+			},500);
+		
+	});
+
+
+
 		$('#hfafamilynoteSubmit').click(function(){
 		//var notes_titleField = $('input#notes_title').parsley();
 		//window.ParsleyUI.removeError(notes_titleField,'notes_titleFieldError');
