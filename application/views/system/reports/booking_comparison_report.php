@@ -39,20 +39,20 @@ $reportFields=bookings_report_fields();
                                                           
                                                               <div class="m-n form-group col-xs-6" style="padding-left:0;">
                                                                   <label class="control-label" style="margin-top:0;">From date</label>
-                                                                      <input type="text" class="form-control" id="CaR_fromDate" name="CaR_fromDate" value="<?=date('d/m/Y')?>" readonly="readonly" style="cursor:text;">
+                                                                  <input type="text" class="form-control" id="CaR_fromDate" name="CaR_fromDate" value="<?=date('d/m/Y')?>" readonly="readonly" style="cursor:text;">
                                                               </div>
                                                               <div class="form-group col-xs-6" style="padding-right:0;">
                                                                   <label for="officeUse-changeEmployee" class="control-label" style="margin-top:0;">To date</label>
-                                                                 <input type="text" class="form-control" id="CaR_toDate" name="CaR_toDate" readonly="readonly" style="cursor:text;" >
+                                                                 <input type="text" class="form-control" id="CaR_toDate" name="CaR_toDate" value="<?=date('d/m/Y')?>" readonly="readonly" style="cursor:text;" >
                                                               </div>
                                                               <!----- compared year date ------>
                                                               <div class="m-n form-group col-xs-6" style="padding-left:0;">
                                                                   <label class="control-label" style="margin-top:0;">From date</label>
-                                                                      <input type="text" class="form-control" id="CaR_fromDate_two" name="CaR_fromDate_two" value="<?=date('d/m/Y')?>" readonly="readonly" style="cursor:text;">
+                                                                  <input type="text" class="form-control" id="CaR_fromDate_two" name="CaR_fromDate_two" value="<?=date('d/m/Y')?>" readonly="readonly" style="cursor:text;">
                                                               </div>
                                                               <div class="form-group col-xs-6" style="padding-right:0;">
                                                                   <label for="officeUse-changeEmployee" class="control-label" style="margin-top:0;">To date</label>
-                                                                 <input type="text" class="form-control" id="CaR_toDate_two" name="CaR_toDate_two" readonly="readonly" style="cursor:text;" >
+                                                                 <input type="text" class="form-control" id="CaR_toDate_two" name="CaR_toDate_two" value="<?=date('d/m/Y')?>" readonly="readonly" style="cursor:text;" >
                                                               </div>
                       
                                                       </div>

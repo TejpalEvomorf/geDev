@@ -3388,8 +3388,12 @@ class Reports extends CI_Controller {
 	{
 		$data=$_POST;
 		// see($data);die(1);
-		$sheet1Title=date('d M Y',strtotime($data['CaR_fromDate']))." to ".date('d M Y',strtotime($data['CaR_toDate']));
-		$sheet2Title=date('d M Y',strtotime($data['CaR_fromDate_two']))." to ".date('d M Y',strtotime($data['CaR_toDate_two']));
+		$from1 = date_format(date_create_from_format("d/m/Y",$data['CaR_fromDate']),'d M Y');
+		$from2 = date_format(date_create_from_format("d/m/Y",$data['CaR_fromDate_two']),'d M Y');
+		$to1 = date_format(date_create_from_format("d/m/Y",$data['CaR_toDate']),'d M Y');
+		$to2 = date_format(date_create_from_format("d/m/Y",$data['CaR_toDate_two']),'d M Y');
+		$sheet1Title=$from1." to ".$to1;
+		$sheet2Title=$from2." to ".$to2;
 		$this->load->library('excel');
 		$this->excel->setActiveSheetIndex(0);
 		$this->excel->getActiveSheet()->setTitle($sheet1Title);
@@ -4100,14 +4104,17 @@ class Reports extends CI_Controller {
 		$this->excel->setActiveSheetIndex(2)->setCellValue('D2', $sheet2Title);
 		$this->excel->setActiveSheetIndex(2)->setCellValue('E2', 'Difference');
 		$this->excel->getActiveSheet()->getStyle('B2:E2')->getFont()->setSize(10)->setBold(true);
+		$this->excel->getActiveSheet()->getColumnDimension('B')->setAutosize(true);
+		$this->excel->getActiveSheet()->getColumnDimension('C')->setAutosize(true);
+		$this->excel->getActiveSheet()->getColumnDimension('D')->setAutosize(true);
+		$this->excel->getActiveSheet()->getColumnDimension('E')->setAutosize(true);
 		$count1=$count['year1'];
 		$count2=$count['year2'];
 		$x=3;
 		foreach($count1 as $k=>$v){
-			$bname = $v['bname'];
+			$bname = $k;
 			$totalbookings=$v['count(*)'];
 			$this->excel->setActiveSheetIndex(2)->setCellValue('B'.$x,$bname);
-			$this->excel->getActiveSheet()->getColumnDimension('B')->setAutosize(true);
 			$this->excel->setActiveSheetIndex(2)->setCellValue('C'.$x,$totalbookings);
 			$x++;
 		}
@@ -4118,7 +4125,6 @@ class Reports extends CI_Controller {
 		{
 			$totalbookings=$v['count(*)'];
 			$this->excel->setActiveSheetIndex(2)->setCellValue('D'.$y,$totalbookings);
-			$this->excel->getActiveSheet()->getColumnDimension('E')->setAutosize(true);
 			$this->excel->setActiveSheetIndex(2)->setCellValue('E'.$y,'=D'.$y.'-C'.$y);
 			$y++;
 		}
