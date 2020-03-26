@@ -692,7 +692,7 @@ function ClientsReport($data)
 				foreach ($res['client']['clients'] as $k => $v) {
 					array_push($clients, $v['id']);
 				}
-				$sql =" select * from `bookings` left join `sha_one` on `bookings`.`student` = `sha_one`.`id` where `serviceOnlyBooking`='0' and `sha_one`.`client` IN('".implode("','",$clients)."') ";
+				$sql =" select * from `bookings` where `serviceOnlyBooking`='0' and `bookings`.`student` IN(select `sha_one`.`id` from `sha_one` where `sha_one`.`client` IN('".implode("','",$clients)."')) ";
 				$sql1 = $sql;
 			}
 			else
@@ -710,7 +710,7 @@ function ClientsReport($data)
 					array_push($colleges, '"'.$v['bname'].'"');
 				}
 				$sqlClg=implode(',',$colleges);
-				$sql =" select * from `bookings` left join `sha_three` on `bookings`.`student` = `sha_three`.`id` where `serviceOnlyBooking`='0' and  `sha_three`.`college` IN (".$sqlClg.")";
+				$sql =" select * from `bookings` where `serviceOnlyBooking`='0' and `bookings`.`student` IN(select `sha_three`.`id` from `sha_three` where `sha_three`.`college` IN (".$sqlClg."))";
 				$sql1 = $sql;
 			}
 			else
