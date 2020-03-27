@@ -4334,5 +4334,114 @@ class Reports extends CI_Controller {
 
 		}
 	}
+
+	function active_bookings()
+	{
+			if(checkLogin())
+			{
+				recentActionsAddData('report','active_bookings','view');
+				$data['page']='reports-active_bookings';
+				$this->load->view('system/header',$data);
+				$this->load->view('system/reports/active_bookings_report');
+				$this->load->view('system/footer');
+			}
+			else
+				redirectToLogin();
+	}
+	
+	function active_bookings_submit()
+	{
+		$data=$_POST;
+		//see($data);die(1);
+		$this->load->library('excel');
+		$this->excel->setActiveSheetIndex(0);
+		$this->excel->getActiveSheet()->setTitle('Active Bookings');
+		
+		$this->excel->getActiveSheet()->getDefaultStyle()->applyFromArray(array(
+				'font'=>array(
+				'name'      =>  'Arial',
+				'size'      =>  10,
+			)
+		));
+		
+		$fields=array();
+		$fieldIndex=$lastIndex='A';
+		
+		foreach($data['CaR_field'] as $hr_field)
+		{
+			$fields[$fieldIndex]=$hr_field;
+			$lastIndex=$fieldIndex;
+			$fieldIndex++;
+		}
+		//see($fields);
+		foreach ($fields as $fieldK=>$field){//echo $fieldK.', ';
+	   	$this->excel->getActiveSheet()->getColumnDimension($fieldK)->setAutosize(true);}
+	   
+	  $x_start=1;
+	  $tmpFields=bookingsHolidayCheckups_report_fields();
+	  $reportFields = array_slice($tmpFields,0,-2);
+	  foreach($fields as $k=>$v)
+	  {
+		  $colHeading=$reportFields[$v];
+		  $this->excel->getActiveSheet()->setCellValue($k.$x_start, $colHeading);
+	  }
+		  
+		$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border:: BORDER_THIN);
+		$this->excel->getActiveSheet()->getStyle('A'.$x_start.':'.$lastIndex.$x_start)->getFont()->setSize(10)->setBold(true);  
+		
+		$x=$x_start+1;
+		
+	$this->load->model('report_model');
+	$bookings=$this->report_model->bookingListActiveBookingsReport($data);//see($bookings);
+	
+	$stateList=stateList();
+	$genderList=genderList();
+	$bookingStatusList=bookingStatusList();
+	//see($fields);
+	foreach($bookings as $booking)
+	{
+		$shaOne=getShaOneAppDetails($booking['student']);
+		$shaTwo=getShaTwoAppDetails($booking['student']);
+		$shaThree=getShaThreeAppDetails($booking['student']);
+		$hfaOne=getHfaOneAppDetails($booking['host']);
+		
+		foreach($fields as $k=>$v)
+		{
+			$value='';
+			if($v=='sha_name')
+				$value=ucwords($shaOne['fname'].' '.$shaOne['lname']);
+			elseif($v=='student_college_id')
+				$value=$shaOne['sha_student_no'];
+			elseif($v=='college_name')
+				$value=$shaThree['college'];
+			elseif($v=='booking_number')
+				$value=$booking['id'];
+			elseif($v=='booking_start_date')
+				$value=date('d M Y',strtotime($booking['booking_from']));
+			elseif($v=='booking_end_date')
+			{
+				if($booking['booking_to']!='0000-00-00')
+					$value=date('d M Y',strtotime($booking['booking_to'].' +1 day'));
+				else
+					$value='Not set';	
+			}
+			elseif($v=='hfa_name')
+				$value=ucwords($hfaOne['lname']).' Family';
+			
+			$this->excel->getActiveSheet()->setCellValue($k.$x, $value);	
+		}
+		
+		$x++;
+	}
+
+	
+				$filename='Active_bookings_report.xlsx'; //save our workbook as this file name
+				header('Content-Type: application/vnd.ms-excel'); //mime type
+				header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+				header('Cache-Control: max-age=0'); //no cache
+				$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');  
+				$objWriter->save('static/report/'.$filename);
+	}
+
 	
 }

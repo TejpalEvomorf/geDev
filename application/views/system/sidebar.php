@@ -259,6 +259,7 @@ else
     
     <li><a  class="withripple" href="javascript:;"><span class="icon"><i class="material-icons">insert_drive_file</i></span><span>Reports</span></a>
         	<ul class="acc-menu">
+                 <li><a  class="withripple" href="<?=site_url()?>reports/active_bookings"><span>Active Bookings</span></a></li>
                  <li><a  class="withripple" href="<?=site_url()?>reports/bookings"><span>Bookings</span></a></li>
                   <li><a  class="withripple" href="<?=site_url()?>reports/booking_allocation"><span>Booking allocation</span></a></li>
                   <li><a  class="withripple" href="<?=site_url()?>reports/booking_comparison"><span>Booking comparison</span></a></li>

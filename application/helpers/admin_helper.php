@@ -160,7 +160,8 @@ function pageTitleS($page='')
 		'reports-bookings_holidayCheckup'=>'Holiday check-up',
 		'reports-clients_report'=>'Clients Report',
 		'reports-training_event'=>'Training Event',
-		'reports-booking_comparison'=>'Booking Comparison'
+		'reports-booking_comparison'=>'Booking Comparison',
+		'reports-active_bookings'=>'Active bookings'
 	);
 	
 	$pageTitle='';
