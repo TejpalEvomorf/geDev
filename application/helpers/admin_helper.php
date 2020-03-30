@@ -160,8 +160,8 @@ function pageTitleS($page='')
 		'reports-bookings_holidayCheckup'=>'Holiday check-up',
 		'reports-clients_report'=>'Clients Report',
 		'reports-training_event'=>'Training Event',
-		'reports-booking_comparison'=>'Booking Comparison',
-		'reports-active_bookings'=>'Active bookings'
+		'reports-booking_comparison'=>'Booking comparison report',
+		'reports-active_bookings'=>'Active bookings report'
 	);
 	
 	$pageTitle='';
@@ -2177,9 +2177,11 @@ function shaActivityDesc($activity)
 			'booking_holidayCheckup'=>'Holiday check-up'.$reportText,
 			'clients_report'=>'Clients'.$reportText,
 			'training_event'=>'Training Event'.$reportText,
-			'booking_comparison'=>'Booking Comparison'.$reportText
+			'booking_comparison'=>'Booking comparison'.$reportText,
+			'active_bookings'=>'Active bookings'.$reportText
 		);
 	
+
 		$desc=$report[$activity['action_on']];
 		
 		return compact('desc','link');

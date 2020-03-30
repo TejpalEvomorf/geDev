@@ -73,7 +73,7 @@ $reportFields = array_slice($tmpFields,0,-2);
                                                                </div>
                                                                <div class="radio block">
                                                                     <label>
-                                                                        <input type="radio" name="CaR_holidayDateType" data-label="end" value="booking_activeDate">
+                                                                        <input type="radio" name="CaR_holidayDateType" data-label="active" value="booking_activeDate">
                                                                         <span class="circle"></span>
                                                                         <span class="check"></span>
                                                                         Apply to active bookings

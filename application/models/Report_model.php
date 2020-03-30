@@ -938,8 +938,14 @@ function ClientsReport($data)
 
 			if($data['CaR_holidayDateType']=='booking_startDate')
 				$sql .=" and `booking_from`>='".$fromDate."' and `booking_from`<='".$toDate."'";
-			elseif($data['CaR_holidayDateType']=='booking_endDate')	
-				$sql .=" and  `booking_to`>='".$fromDate."' and `booking_to`<='".$toDate."'";
+			elseif($data['CaR_holidayDateType']=='booking_endDate'){
+				$date = date_format(date_create_from_format("d/m/Y",$data['CaR_fromDate']),"m/d/Y");
+				$sub = new DateTime($date);
+				$strdate = $sub->sub(new DateInterval('P1D'));
+				$final = $strdate->format('d/m/Y');
+				$finalfromDate=normalToMysqlDate($final);
+				$sql .=" and  `booking_to`>='".$finalfromDate."' and `booking_to`<='".$toDate."'";
+			}
 			else
 			{
 				$sql .=" and  (";
@@ -975,7 +981,7 @@ function ClientsReport($data)
 		}
 		
 		$sql .="order by `bookings`.`id`";	
-		$query=$this->db->query($sql);//echo $this->db->last_query();
+		$query=$this->db->query($sql);//echo $this->db->last_query();die();
 		$bookings=$query->result_array();
 		return $bookings;
 	}
