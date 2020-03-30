@@ -4,7 +4,7 @@ $reportFields=bookings_report_fields();
 ?>
 
 <div class="page-heading report-page-heading">
-      <h1>Booking comparison</h1>
+      <h1>Booking comparison report</h1>
 </div>
 
 
@@ -25,7 +25,7 @@ $reportFields=bookings_report_fields();
                                           
                                           
                                           <div class="col-md-6 no-pad">
-										  	<?php $this->load->view('system/reports/clientRadioBtn');?>
+										  	<?php $this->load->view('system/reports/comparisonRadioBtn');?>
                                           </div>
                                           
                                           <div class="col-md-6">
@@ -188,7 +188,7 @@ $(document).ready(function(){
 						$('#CaR_submitProcess').hide();
 						$('#CaR_submit').show();
 						backBtn.show();
-						window.open('<?=site_url()?>static/report/Booking_comparison_test.xlsx');	
+						window.open('<?=site_url()?>static/report/Booking_comparison-report.xlsx');	
 					}
 				});
 		});

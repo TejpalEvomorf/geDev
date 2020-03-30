@@ -4154,7 +4154,7 @@ class Reports extends CI_Controller {
 				  )
 			));
 
-				$filename='Booking_comparison_test.xlsx'; //save our workbook as this file name
+				$filename='Booking_comparison_report.xlsx'; //save our workbook as this file name
 				header('Content-Type: application/vnd.ms-excel'); //mime type
 				header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
 				header('Cache-Control: max-age=0'); //no cache

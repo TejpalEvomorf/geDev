@@ -7,11 +7,13 @@ $clientGroupList=clientGroupList();
       <h2>Select Client / College / University</h2>
   </div>
   <div class="panel-body">
-		  <label  class="mt-n control-label filterItemLabel">Selelct whether you want to export for clients or colleges/universities or both</label>
-          <div class="checkbox">
-                <div class="checkbox block">
+		  <label  class="mt-n control-label filterItemLabel">Selelct whether you want to export for clients or colleges/universities</label>
+          <div class="radio">
+                <div class="radio block">
 					<label>
-						<input type="checkbox" class="reportSelectClientClg clientradiobtn" name="reportSelectClientClg[]"  value="clients" >
+						<input type="radio" class="reportSelectClientClg clientradiobtn" name="reportSelectClientClg[]"  value="clients" >
+						<span class="circle"></span>
+						<span class="check"></span>
 						Clients
 					</label>
                 </div>
@@ -64,10 +66,12 @@ $clientGroupList=clientGroupList();
                     <!--clients ends-->
                 
             </div>
-            <div class="checkbox">
-                <div class="checkbox block">
+            <div class="radio">
+                <div class="radio block">
                     <label>
-						<input type="checkbox" class="reportSelectClientClg clgradiobtn" name="reportSelectClientClg[]"  value="colleges" >
+						<input type="radio" class="reportSelectClientClg clgradiobtn" name="reportSelectClientClg[]"  value="colleges" >
+						<span class="circle"></span>
+						<span class="check"></span>
 						Colleges/Universities
 					</label>
                 </div>
